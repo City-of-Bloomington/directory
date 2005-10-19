@@ -1,0 +1,37 @@
+BODY {
+        margin: 0;
+        background: white url("../gfx/barend.gif");
+        background-repeat: repeat-x;
+        background-attachment: scroll;
+        background-position: top left;
+
+        font-family: 'Lucida Grande', Helvetica;
+        font-size: 10pt;
+}
+
+A, A:visited {
+        color: blue;
+        text-decoration: underline;
+}
+
+A:active, A:hover {
+        color: purple;
+        text-decoration: underline;
+}
+
+H1 {
+        color: #3344cc;
+        font-size: 12pt;
+        margin-left: 10px;
+}
+
+H2 {
+        color: #3344cc;
+        font-size: 11pt;
+        margin-left: 10px;
+}
+
+DIV {
+        margin: 10px;
+        margin-left: 50px;
+}
