@@ -25,7 +25,7 @@
 			<td><input name="extension" size="5" /></td></tr>
 		</table>
 
-		<button type="submit" class="search" value="Search" />
+		<button type="submit" class="search">Search</button>
 	</fieldset>
 	</form>
 

@@ -7,7 +7,7 @@
 			<label>Last<input name="lastname" size="6" /></label>
 			<label>First<input name="firstname" size="6" /></label>
 			<label>Ext<input name="extension" size="6" /></label>
-			<button type="submit" class="search" value="Search" />
+			<button type="submit" class="search">Search</button>
 		</fieldset>
 	</form>
 </div>
