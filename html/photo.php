@@ -1,48 +1,15 @@
 <?php
-#  --
-#  --    Employee Directory
-#  --    ITS Systems Group
-#  --    City of Bloomington, IN
-#  --
-#  --           File:  photo.php
-#  --     Maintainer:  Dan Neumeyer <neumeyed@bloomingtonIN.gov>
-#  --  Configuration:  connect.inc.php
-#  --
-#  --    Description:  Retrieves a photo for a single person.
-#  --
-#  --     Parameters:
-#  --            uid - User ID of the person whose photo should be retrieved.
-#  --
+/*
+	Gets a user's photo out of LDAP and streams it to the browser as an image
 
-include('errors.inc.php');
-include('connect.inc.php');
+	$_GET variables:	uid
+*/
+	$result = ldap_search($LDAP_SERVER, $LDAP_DN, "uid=$_GET[uid]");
+	$entries = ldap_get_entries($LDAP_SERVER, $result);
 
 
-function sanitize($str) {
-	$tmp = str_replace('\\', '\\\\', $str);
-	$tmp = str_replace('(', '\(', $tmp);
-	$tmp = str_replace(')', '\)', $tmp);
-	$tmp = str_replace('*', '\*', $tmp);
-	return $tmp;
-}
+	$jpegPhotos = ldap_get_values_len($LDAP_SERVER, ldap_first_entry($LDAP_SERVER, $result), 'jpegphoto');
 
-$uid = sanitize($_GET['uid']);
-
-
-if (! $uid) {
-	trigger_error('You must specify a user ID.', E_USER_ERROR);
-}
-
-
-$res = ldap_search($ldap, $baseDN, "uid=$uid");
-$entries = ldap_get_entries($ldap, $res);
-
-if ($entries['count'] == 0) {
-	trigger_error('Your search returned no results.', E_USER_ERROR);
-}
-
-$jpegPhotos = ldap_get_values_len($ldap, ldap_first_entry($ldap, $res), 'jpegphoto');
-
-header('Content-type: image/jpeg');
-print($jpegPhotos[0]);
+	Header('Content-type: image/jpeg');
+	print($jpegPhotos[0]);
 ?>
