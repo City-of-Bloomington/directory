@@ -1,6 +1,12 @@
 #details { margin:1em; }
-#details th { text-align:right; background-color:inherit; }
+#details th { text-align:right; background-color:inherit; color: #888888; text-transform: lowercase; padding-bottom: 10px;}
 
+#mainContent h3 { font-size: 10pt; }
+
+#details h1 { font-size: 16pt; font-weight: bold; text-align: left; }
+#details h3 { font-size: 11pt; font-weight: normal; }
+
+#details td { font-size: 10pt; padding-bottom: 10px; }
 
 /*  The rest of these override the default skin */
 #mainContent { margin:1em; }
@@ -8,3 +14,6 @@
 div.menuBar #firstname { width:8ex; }
 div.menuBar #lastname { width:8ex; }
 div.menuBar #extension { width:6ex; }
+
+
+
