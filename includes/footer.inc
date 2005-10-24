@@ -1,4 +1,7 @@
 <div id="footer">
+	<div class="menuBar">
+		<a href="http://bandit.bloomington.in.gov/svn/listing.php?repname=Directory;path=%2F;sc=0">Subversion</a>
+	</div>
 	<p>Email corrections to <a href="mailto:helpdesk@bloomington.in.gov?subject=Directory%20correction">helpdesk@bloomington.in.gov</a>.</p>
 <?php
 	#---------------------------------------------------------------------
@@ -13,7 +16,4 @@
 	$processTime = $endTime - $startTime;
 	echo "<p>ProcessTime: $processTime seconds</p>";
 ?>
-	<div class="menuBar">
-		<a href="http://bandit.bloomington.in.gov/svn/listing.php?repname=Directory;path=%2F;sc=0">Subversion</a>
-	</div>
 </div>

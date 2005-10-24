@@ -1,1 +1,10 @@
+#details { margin:1em; }
 #details th { text-align:right; background-color:inherit; }
+
+
+/*  The rest of these override the default skin */
+#mainContent { margin:1em; }
+
+div.menuBar #firstname { width:8ex; }
+div.menuBar #lastname { width:8ex; }
+div.menuBar #extension { width:6ex; }

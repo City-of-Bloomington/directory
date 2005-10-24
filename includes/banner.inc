@@ -6,7 +6,7 @@
 		@import url("/skins/default/skin.css");
 		@import url("<?php echo $BASE_URL; ?>/style.css");
 	</style>
-	<title>Directory</title>
+	<title>Exmployee Directory - City of Bloomington, Indian</title>
 </head>
 <body>
 <div id="banner">

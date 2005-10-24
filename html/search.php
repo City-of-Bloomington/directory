@@ -11,7 +11,6 @@
 	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
 	include("$APPLICATION_HOME/includes/banner.inc");
 	include("$APPLICATION_HOME/includes/menubar.inc");
-	include("$APPLICATION_HOME/includes/navigation.inc");
 ?>
 <div id="mainContent">
 	<h1>Search Results</h1>
@@ -64,13 +63,18 @@
 				$people[$uid] = array("givenname"=>$entries[$i]['givenname'][0], "sn"=>$entries[$i]['sn'][0]);
 				if (isset($entries[$i]['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $entries[$i]['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
 				if (isset($entries[$i]['mail'][0])) { $people[$uid]['mail'] = $entries[$i]['mail'][0]; } else { $people[$uid]['mail'] = ""; }
+				if (isset($entries[$i]['displayname'][0]) && $entries[$i]['displayname'][0]) { $people[$uid]['displayname'] = $entries[$i]['displayname'][0]; } else { $people[$uid]['displayname'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
 			}
 			ksort($people);
 
 			foreach ($people as $uid => $person)
 			{
+				# Choose the name to display
+				if (isset($person['displayname']) and ($person['displayname'][0])) { $displayName = $person['displayname'][0]; }
+				else { $displayName = "{$person['givenname'][0]} {$person['sn'][0]}"; }
+
 				echo "
-				<tr><td><a href=\"viewPerson.php?uid=$uid\">$person[givenname] $person[sn]</a></td>
+				<tr><td><a href=\"viewPerson.php?uid=$uid\">$person[displayname]</a></td>
 					<td>$person[telephonenumber]</td>
 					<td><a href=\"mailto:$person[mail]\">$person[mail]</td>
 				</tr>
