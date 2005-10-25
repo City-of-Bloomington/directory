@@ -4,7 +4,7 @@
 	include("$APPLICATION_HOME/includes/menubar.inc");
 ?>
 <div id="mainContent">
-<h1>Search</h1>
+<div class="titleBar">Search</div>
 <form method="get" action="search.php">
 <fieldset><legend>Search by Name</legend>
 	<p>Enter the name of the person you wish to locate.  You can enter a partial name.</p>
@@ -19,7 +19,7 @@
 <fieldset><legend>Search by Phone Number</legend>
 	<p>You may also perform a reverse lookup on a four-digit extension</p>
 	<table>
-	<tr><td><label for="extension">Extension</label></td>
+	<tr><td><label for="extension">Extension:</label></td>
 		<td><input name="extension" id="extension" /></td></tr>
 	</table>
 	<button type="submit" class="search">Search</button>

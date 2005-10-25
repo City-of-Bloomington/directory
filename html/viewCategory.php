@@ -11,7 +11,7 @@
 <div id="mainContent">
 <?php
 	echo "
-	<h3><a href=\"$BASE_URL\">Departments</a> - <a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a></h3>
+	<h3><a href=\"$BASE_URL\">Departments</a> > <a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a></h3>
 
 	<ul>
 	";

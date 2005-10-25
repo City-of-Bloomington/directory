@@ -11,9 +11,10 @@
 /*  The rest of these override the default skin */
 #mainContent { margin:1em; }
 
-div.menuBar #firstname { width:8ex; }
-div.menuBar #lastname { width:8ex; }
+div.menuBar #firstname { width:12ex; }
+div.menuBar #lastname { width:12ex; }
 div.menuBar #extension { width:6ex; }
 
-
-
+div#mainContent #firstname { width:25ex; margin-top: 0; }
+div#mainContent #lastname { width:25ex; margin-top: 0; }
+div#mainContent #extension { width:6ex; margin-top: 0; }
