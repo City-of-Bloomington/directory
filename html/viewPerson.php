@@ -21,11 +21,12 @@
 	if (isset($entries[0]['jpegphoto'])) { $photo = "<img src=\"photo.php?uid=$_GET[uid]\" alt=\"$_GET[uid]\" />"; }
 	else { $photo = "<img src=\"images/nophoto.jpg\" alt=\"No Photo\" />"; }
 	echo "
-	<h3><a href=\"$BASE_URL\">Departments</a> >
+	<div class=\"breadcrumbs\">
+		<a href=\"$BASE_URL\">Departments</a> >
 		<a href=\"viewCategory.php?category={$entries[0]['businesscategory'][0]}\">{$entries[0]['businesscategory'][0]}</a> >
 		<a href=\"viewDepartment.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]}\">{$entries[0]['departmentnumber'][0]}</a> >
 		<a href=\"viewLocation.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]};location={$entries[0]['physicaldeliveryofficename'][0]}\">{$entries[0]['physicaldeliveryofficename'][0]}</a>
-	</h3>
+	</div>
 	<table id=\"details\">
 	<tr><th>$photo</th>
 		<td><h1>$displayName</h1>

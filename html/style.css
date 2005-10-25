@@ -1,20 +1,23 @@
+/* Some new classes specific to this application */
 #details { margin:1em; }
-#details th { text-align:right; background-color:inherit; color: #888888; text-transform: lowercase; padding-bottom: 10px;}
-
-#mainContent h3 { font-size: 10pt; }
-
 #details h1 { font-size: 16pt; font-weight: bold; text-align: left; }
 #details h3 { font-size: 11pt; font-weight: normal; }
-
+#details th { text-align:right; background-color:inherit; color: #888888; text-transform: lowercase; padding-bottom: 10px;}
 #details td { font-size: 10pt; padding-bottom: 10px; }
 
-/*  The rest of these override the default skin */
+/*  The rest of these override the classes for the default skin */
 #mainContent { margin:1em; }
 
 div.menuBar #firstname { width:12ex; }
 div.menuBar #lastname { width:12ex; }
 div.menuBar #extension { width:6ex; }
 
-div#mainContent #firstname { width:25ex; margin-top: 0; }
-div#mainContent #lastname { width:25ex; margin-top: 0; }
-div#mainContent #extension { width:6ex; margin-top: 0; }
+#mainContent #firstname { width:25ex; margin-top: 0; }
+#mainContent #lastname { width:25ex; margin-top: 0; }
+#mainContent #extension { width:6ex; margin-top: 0; }
+
+/* We'd like to bold the top elements of ths directory listings. */
+ul li { font-weight:bold; }
+ul ul li { font-weight:normal; }
+ul ul ul li { font-weight:normal; }
+li table { font-weight:normal; }

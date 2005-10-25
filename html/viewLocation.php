@@ -13,11 +13,12 @@
 <div id="mainContent">
 	<?php
 		echo "
-		<h3><a href=\"$BASE_URL\">Departments</a> >
-		<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> >
-		<a href=\"viewDepartment.php?category=$_GET[category];department=$_GET[department]\">$_GET[department]</a> >
-		<a href=\"viewLocation.php?category=$_GET[category];department=$_GET[department];location=$_GET[location]\">$_GET[location]</a>
-		</h3>
+		<div class=\"breadcrumbs\">
+			<a href=\"$BASE_URL\">Departments</a> >
+			<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> >
+			<a href=\"viewDepartment.php?category=$_GET[category];department=$_GET[department]\">$_GET[department]</a> >
+			<a href=\"viewLocation.php?category=$_GET[category];department=$_GET[department];location=$_GET[location]\">$_GET[location]</a>
+		</div>
 
 		<table>
 		";
