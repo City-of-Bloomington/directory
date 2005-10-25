@@ -5,8 +5,8 @@
 ?>
 <div id="mainContent">
 
-	<h1>Main Numbers</h1>
-
+	<div class="titleBar">Main Numbers</div>
+	
 	<table>
 	<tr><th>Animal Shelter:</th>
 		<td>349-3492</td></tr>
