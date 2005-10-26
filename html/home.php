@@ -36,7 +36,6 @@
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Showers">Showers</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Street">Street</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Traffic">Traffic</a></li>
-								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Utilities%20Service%20Center">Utilities Service Center</a></li>
 							</ul>
 						</li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li>
