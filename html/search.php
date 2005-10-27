@@ -14,7 +14,6 @@
 ?>
 <div id="mainContent">
 	<h1>Search Results</h1>
-	<table>
 	<?php
 		# Clean all the stuff they typed
 		$_GET['firstname'] = sanitize($_GET['firstname']);
@@ -49,7 +48,8 @@
 		$entries = ldap_get_entries($LDAP_SERVER, $results);
 
 		# If we only get one hit back, send them directly to that person
-		if ($entries['count'] == 1)
+		if ($entries['count'] == 0) { echo "<h1>No matches found</h1>"; }
+		elseif ($entries['count'] == 1)
 		{
 			Header("Location: viewPerson.php?uid={$entries[0]['uid'][0]}");
 			exit();
@@ -83,7 +83,6 @@
 			}
 		}
 	?>
-	</table>
 </div>
 <?php
 	include("$APPLICATION_HOME/includes/footer.inc");
