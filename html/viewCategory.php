@@ -63,6 +63,7 @@
 				if (isset($entries[$i]['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $entries[$i]['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
 				if (isset($entries[$i]['mail'][0])) { $people[$uid]['mail'] = $entries[$i]['mail'][0]; } else { $people[$uid]['mail'] = ""; }
 				if (isset($entries[$i]['displayname'][0]) && $entries[$i]['displayname'][0]) { $people[$uid]['displayname'] = $entries[$i]['displayname'][0]; } else { $people[$uid]['displayname'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
+				if (isset($entries[$i]['title'][0]) && $entries[$i]['title'][0]) { $people[$uid]['title'] = $entries[$i]['title'][0]; } else { $people[$uid]['title'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
 			}
 			ksort($people);
 
@@ -73,7 +74,7 @@
 				else { $displayName = "{$person['givenname'][0]} {$person['sn'][0]}"; }
 
 				echo "
-				<tr><td><a href=\"viewPerson.php?uid=$uid\">$person[displayname]</a></td>
+				<tr><td><a href=\"viewPerson.php?uid=$uid\">$person[displayname]</a>, $person[title]</td>
 					<td>$person[telephonenumber]</td>
 					<td><a href=\"mailto:$person[mail]\">$person[mail]</td>
 				</tr>
