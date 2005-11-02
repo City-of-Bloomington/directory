@@ -53,6 +53,12 @@
 		<td><a href=\"mailto:$mail\">$mail</a></td></tr>
 	</table>
 	";
+
+	if (isset($_SESSION['USERNAME']) && $_SERVER['REMOTE_ADDR']==$_SESSION['IP_ADDRESS'])
+	{
+		echo "<div><button type=\"button\" class=\"editLarge\" onclick=\"document.location.href='editPersonForm.php?uid=$_GET[uid]';\">Edit</button></div>";
+	}
+
 ?>
 </div>
 <?php
