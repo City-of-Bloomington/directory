@@ -16,7 +16,9 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Engineering">Engineering</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=HAND">HAND</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">ITS</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Legal">Legal</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=Legal">Legal</a>
+							<ul><li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li></ul>
+						</li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Mayor's%20Office">Mayor's Office</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parking%20Enforcement">Parking Enforcement</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parks and Recreation">Parks and Recreation</a>
@@ -38,7 +40,6 @@
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Traffic">Traffic</a></li>
 							</ul>
 						</li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li>
 					</ul>
 				</li>
 			</ul>
