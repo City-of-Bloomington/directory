@@ -15,14 +15,14 @@
 	if (!isValidUser($_POST['username'],$_POST['password']))
 	{
 		# Send them back to the login
-		Header("Location: $BASE_URL");
+		Header("Location: home.php");
 		exit();
 	}
 
 	if (!userHasApplicationAccess($_POST['username'],"Directory"))
 	{
 		# Send them back to the login
-		Header("Location: $BASE_URL");
+		Header("Location: home.php");
 		exit();
 	}
 
