@@ -68,6 +68,7 @@
 			}
 			ksort($people);
 
+			echo "<table>";
 			foreach ($people as $uid => $person)
 			{
 				# Choose the name to display
@@ -81,6 +82,7 @@
 				</tr>
 				";
 			}
+			echo "</table>";
 		}
 	?>
 </div>
