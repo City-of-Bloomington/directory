@@ -46,14 +46,8 @@
 		</td>
 		<td><ul>
 				<li><a href="viewCategory.php?category=Fire">Fire</a>
-					<ul><li><a href="viewDepartment.php?category=Fire;department=Administration">Administration</a>
-							<ul><li><a href="viewLocation.php?category=Fire;department=Administration;location=Fire%20HQ">Fire HQ</a></li></ul>
-						</li>
-						<li><a href="viewDepartment.php?category=Fire;department=Fire">Fire</a>
-							<ul><li><a href="viewLocation.php?category=Fire;department=Fire;location=Fire%20Administration">Fire Administration</a></li>
-								<li><a href="viewLocation.php?category=Fire;department=Fire;location=Fire%20HQ">Fire HQ</a></li>
-							</ul>
-						</li>
+					<ul><li><a href="viewLocation.php?category=Fire;department=Fire;location=Fire%20Administration">Fire Administration</a></li>
+						<li><a href="viewLocation.php?category=Fire;department=Fire;location=Fire%20HQ">Fire HQ</a></li>
 					</ul>
 				</li>
 				<li><a href="viewCategory.php?category=Police">Police</a>
