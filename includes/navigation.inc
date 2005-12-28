@@ -1,5 +1,5 @@
 <div class="navigation">
-	<div><div class="titleBar">Departments</div>
+	<div class="titleBar">Departments</div>
 	<ul><li><a href="viewLocation.php?category=Bloomington%20Transit;department=Bloomington%20Transit;location=Bloomington%20Transit">Bloomington Transit</a></li>
 		<li><a href="viewCategory.php?category=City%20Hall">City Hall</a>
 			<ul><li><a href="viewDepartment.php?category=City%20Hall;department=City%20Clerk">City Clerk</a></li>
@@ -77,5 +77,4 @@
 			</ul>
 		</li>
 	</ul>
-	</div>
 </div>
