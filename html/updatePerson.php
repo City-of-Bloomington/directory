@@ -35,7 +35,7 @@
 	$_POST['mail'] = trim($_POST['mail']);
 
 	# Make sure we've got the minimum required fields
-	if (!$_POST['givenName'] || !$_POST['sn'] || !$_POST['title'])
+	if (!$_POST['givenName'] || !$_POST['sn'])
 	{
 		$_SESSION['errorMessages'][] = "missingRequiredFields";
 		Header("Location: editPersonForm.php?uid=$_POST[uid]");
@@ -71,7 +71,6 @@
 	# we'll let PHP error out on it's own
 	$modifiedAttributes['givenName'] = $_POST['givenName'];
 	$modifiedAttributes['sn'] = $_POST['sn'];
-	$modifiedAttributes['title'] = $_POST['title'];
 	$modifiedAttributes['businessCategory'] = $_POST['businessCategory'];
 	$modifiedAttributes['departmentNumber'] = $_POST['departmentNumber'];
 	$modifiedAttributes['physicalDeliveryOfficeName'] = $_POST['physicalDeliveryOfficeName'];
@@ -80,6 +79,12 @@
 	$deletedAttributes = array();
 
 	# These may or may not be there.  We need to check and do an add if they're not there already
+	if ($_POST['title'])
+	{
+		if (isset($entries[0]['title'])) { $modifiedAttributes['title'] = $_POST['title']; }
+		else { $addedAttributes['title'] = $_POST['title']; }
+	}
+
 	if ($_POST['displayName'])
 	{
 		if (isset($entries[0]['displayname'])) { $modifiedAttributes['displayName'] = $_POST['displayName']; }

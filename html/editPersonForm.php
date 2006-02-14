@@ -27,12 +27,12 @@
 	# Get the details out of LDAP that we're going to use
 	$givenName = htmlspecialchars($entries[0]['givenname'][0],ENT_QUOTES);
 	$sn = htmlspecialchars($entries[0]['sn'][0],ENT_QUOTES);
-	$title = htmlspecialchars($entries[0]['title'][0],ENT_QUOTES);
 	$businessCategory = htmlspecialchars($entries[0]['businesscategory'][0],ENT_QUOTES);
 	$departmentNumber = htmlspecialchars($entries[0]['departmentnumber'][0],ENT_QUOTES);
 	$physicalDeliveryOfficeName = htmlspecialchars($entries[0]['physicaldeliveryofficename'][0],ENT_QUOTES);
 
 	# People may not have all of these entries.  Make sure they have 'em before trying to display 'em
+	$title = isset($entries[0]['title'][0]) ? htmlspecialchars($entries[0]['title'][0],ENT_QUOTES) : "";
 	$displayName = isset($entries[0]['displayname'][0]) ? htmlspecialchars($entries[0]['displayname'][0],ENT_QUOTES) : "";
 	$telephoneNumber = isset($entries[0]['telephonenumber'][0]) ? $entries[0]['telephonenumber'][0] : "";
 	$facsimileTelephoneNumber = isset($entries[0]['facsimiletelephonenumber'][0]) ? $entries[0]['facsimiletelephonenumber'][0] : "";

@@ -20,6 +20,8 @@
 	# Get their photo, if they've got one
 	if (isset($entries[0]['jpegphoto'])) { $photo = "<img src=\"photo.php?uid=$_GET[uid]\" alt=\"$_GET[uid]\" />"; }
 	else { $photo = "<img src=\"images/nophoto.jpg\" alt=\"No Photo\" />"; }
+
+	$title = isset($entries[0]['title'][0]) ? $entries[0]['title'][0] : "";
 	echo "
 	<div class=\"breadcrumbs\">
 		<a href=\"$BASE_URL\">Departments</a> >
@@ -30,7 +32,7 @@
 	<table id=\"details\">
 	<tr><th>$photo</th>
 		<td><h1>$displayName</h1>
-			<h3>{$entries[0]['title'][0]}</h3>
+			<h3>$title</h3>
 			<h3>{$entries[0]['departmentnumber'][0]}</h3>
 			<h3>{$entries[0]['businesscategory'][0]}</h3>
 		</td></tr>
