@@ -41,10 +41,10 @@
 
 
 	$departments = array("Bloomington Transit",
-							"Accounting","City Clerk","Community and Familty Resources","Controller","Council Office","Employee Services","Engineering",
+							"Accounting","City Clerk","Community and Family Resources","Controller","Council Office","Employee Services","Engineering",
 								"HAND","ITS","Legal","Mayor&#039;s Office","Parking Enforcement","Parks and Recreation","Planning","Public Works","Risk Management",
 							"Administration","Fire",
-							"Detectives","Records","Uniformed Officers",
+							"Detectives","Records","Uniformed Officers","Dispatch",
 							"Stonebelt",
 							"Blucher Poole","Communication","Customer Services","Dillman","Fleet Maintenance","Monroe","Purchasing","T&amp;D");
 
