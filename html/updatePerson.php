@@ -10,19 +10,14 @@
 						businessCategory
 						departmentNumber
 */
-	# Make sure the person's actually logged in
-	if (!isset($_SESSION['USERNAME']) || $_SERVER['REMOTE_ADDR']!=$_SESSION['IP_ADDRESS'])
-	{
-		Header("Location: viewPerson.php?uid=$_GET[uid]");
-		exit();
-	}
+	verifyUser("Administrator");
 
 	# Go ahead and bind to the LDAP server so we can edit stuff
-	ldap_unbind($LDAP_SERVER);
+	ldap_unbind($LDAP_CONNECTION);
 
-	$LDAP_SERVER = ldap_connect("ldap.bloomington.in.gov");
-	ldap_set_option($LDAP_SERVER, LDAP_OPT_PROTOCOL_VERSION, 3);
-	ldap_bind($LDAP_SERVER,"uid=$LDAP_ADMIN_USER,o=city.bloomington.in.us",$LDAP_ADMIN_PASS) or die(ldap_error($LDAP_SERVER));
+	$LDAP_CONNECTION = ldap_connect($LDAP_SERVER);
+	ldap_set_option($LDAP_CONNECTION, LDAP_OPT_PROTOCOL_VERSION, 3);
+	ldap_bind($LDAP_CONNECTION,"uid=$LDAP_ADMIN_USER,o=city.bloomington.in.us",$LDAP_ADMIN_PASS) or die(ldap_error($LDAP_CONNECTION));
 	#----------------------------------------------------------------------------------------------------
 	# Clean all the inputs
 	#----------------------------------------------------------------------------------------------------
@@ -61,8 +56,8 @@
 	# You can't modify something that's not there, you have to add it.
 	# You can't modify something to be an empty string.  You have to delete it.
 	#----------------------------------------------------------------------------------------------------
-	$result = ldap_search($LDAP_SERVER, $LDAP_DN, "uid=$_POST[uid]");
-	$entries = ldap_get_entries($LDAP_SERVER, $result);
+	$result = ldap_search($LDAP_CONNECTION, $LDAP_DN, "uid=$_POST[uid]");
+	$entries = ldap_get_entries($LDAP_CONNECTION, $result);
 
 	#----------------------------------------------------------------------------------------------------
 	# Set up to do a modify for existing attributes that we have values for
@@ -138,9 +133,9 @@
 	# Put all the data back into LDAP
 	#----------------------------------------------------------------------------------------------------
 	$dn = "uid=$_POST[uid],ou=people,o=city.bloomington.in.us";
-	ldap_mod_replace($LDAP_SERVER,$dn,$modifiedAttributes) or die(print_r($modifiedAttributes).ldap_error($LDAP_SERVER));
-	if (count($addedAttributes)) { ldap_mod_add($LDAP_SERVER,$dn,$addedAttributes) or die(print_r($addedAttributes).ldap_error($LDAP_SERVER)); }
-	if (count($deletedAttributes)) { ldap_mod_del($LDAP_SERVER,$dn,$deletedAttributes) or die(print_r($deletedAttributes).ldap_error($LDAP_SERVER)); }
+	ldap_mod_replace($LDAP_CONNECTION,$dn,$modifiedAttributes) or die(print_r($modifiedAttributes).ldap_error($LDAP_CONNECTION));
+	if (count($addedAttributes)) { ldap_mod_add($LDAP_CONNECTION,$dn,$addedAttributes) or die(print_r($addedAttributes).ldap_error($LDAP_CONNECTION)); }
+	if (count($deletedAttributes)) { ldap_mod_del($LDAP_CONNECTION,$dn,$deletedAttributes) or die(print_r($deletedAttributes).ldap_error($LDAP_CONNECTION)); }
 
 	Header("Location: viewPerson.php?uid=$_POST[uid]");
 ?>

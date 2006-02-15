@@ -44,8 +44,8 @@
 
 
 		# Do the search
-		$results = ldap_search($LDAP_SERVER, $LDAP_DN, $query);
-		$entries = ldap_get_entries($LDAP_SERVER, $results);
+		$results = ldap_search($LDAP_CONNECTION, $LDAP_DN, $query);
+		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
 
 		# If we only get one hit back, send them directly to that person
 		if ($entries['count'] == 0) { echo "<h1>No matches found</h1>"; }

@@ -6,7 +6,7 @@
 <div id="mainContent">
 
 	<div class="titleBar">Main Numbers</div>
-	
+
 	<table>
 	<tr><th>Animal Shelter:</th>
 		<td>349-3492</td>

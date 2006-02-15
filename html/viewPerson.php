@@ -10,8 +10,8 @@
 ?>
 <div id="mainContent">
 <?php
-	$result = ldap_search($LDAP_SERVER, $LDAP_DN, "uid=$_GET[uid]");
-	$entries = ldap_get_entries($LDAP_SERVER, $result);
+	$result = ldap_search($LDAP_CONNECTION, $LDAP_DN, "uid=$_GET[uid]");
+	$entries = ldap_get_entries($LDAP_CONNECTION, $result);
 
 	# Choose the name to display
 	if (isset($entries[0]['displayname']) and ($entries[0]['displayname'][0])) { $displayName = $entries[0]['displayname'][0]; }
@@ -56,7 +56,7 @@
 	</table>
 	";
 
-	if (isset($_SESSION['USERNAME']) && $_SERVER['REMOTE_ADDR']==$_SESSION['IP_ADDRESS'])
+	if (isset($_SESSION['USER_ID']) && $_SERVER['REMOTE_ADDR']==$_SESSION['IP_ADDRESS'])
 	{
 		echo "<div><button type=\"button\" class=\"editLarge\" onclick=\"document.location.href='editPersonForm.php?uid=$_GET[uid]';\">Edit</button></div>";
 	}

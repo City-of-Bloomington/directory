@@ -9,6 +9,7 @@
 <div id="loginBox">
 	<form id="loginBox" method="post" action="authenticate.php">
 	<fieldset><legend>Login</legend>
+		<input name="returnURL" type="hidden" value="<?php echo $BASE_URL; ?>" />
 		<table>
 		<tr><td><label for="username">Username:</label></td>
 			<td><input name="username" id="username" /></td></tr>

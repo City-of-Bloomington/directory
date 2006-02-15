@@ -24,8 +24,8 @@
 	#----------------------------------------------------------------------------------------------------------
 	# Get all the deliveryOffices in this department
 	#----------------------------------------------------------------------------------------------------------
-	$officeResults = ldap_search($LDAP_SERVER,$LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department]))",array("physicalDeliveryOfficeName"));
-	$officeEntries = ldap_get_entries($LDAP_SERVER,$officeResults);
+	$officeResults = ldap_search($LDAP_CONNECTION,$LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department]))",array("physicalDeliveryOfficeName"));
+	$officeEntries = ldap_get_entries($LDAP_CONNECTION,$officeResults);
 
 	$offices = array();
 	for($i=0; $i<$officeEntries['count']; $i++)
@@ -40,8 +40,8 @@
 		#----------------------------------------------------------------------------------------------------------
 		echo "<li><a href=\"viewLocation.php?category=$_GET[category];department=$_GET[department];location=$office\">$office</a><table>";
 		$query = "(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$office))";
-		$searchResults = ldap_search($LDAP_SERVER, $LDAP_DN, $query);
-		$entries = ldap_get_entries($LDAP_SERVER, $searchResults);
+		$searchResults = ldap_search($LDAP_CONNECTION, $LDAP_DN, $query);
+		$entries = ldap_get_entries($LDAP_CONNECTION, $searchResults);
 		$people = array();
 
 		for ($i = 0; $i < $entries['count']; $i++)

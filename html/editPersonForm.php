@@ -4,12 +4,7 @@
 
 	$_GET variables:	uid - User ID of the person to display.
 */
-	# Make sure the person's actually logged in
-	if (!isset($_SESSION['USERNAME']) || $_SERVER['REMOTE_ADDR']!=$_SESSION['IP_ADDRESS'])
-	{
-		Header("Location: viewPerson.php?uid=$_GET[uid]");
-		exit();
-	}
+	verifyUser("Administrator");
 
 	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
 	include("$APPLICATION_HOME/includes/banner.inc");
@@ -17,8 +12,8 @@
 ?>
 <div id="mainContent">
 <?php
-	$result = ldap_search($LDAP_SERVER, $LDAP_DN, "uid=$_GET[uid]");
-	$entries = ldap_get_entries($LDAP_SERVER, $result);
+	$result = ldap_search($LDAP_CONNECTION, $LDAP_DN, "uid=$_GET[uid]");
+	$entries = ldap_get_entries($LDAP_CONNECTION, $result);
 
 	# Get their photo, if they've got one
 	if (isset($entries[0]['jpegphoto'])) { $photo = "<img src=\"photo.php?uid=$_GET[uid]\" alt=\"$_GET[uid]\" />"; }
@@ -52,7 +47,7 @@
 
 	$offices = array("Bloomington Transit","Showers","BACC","Banneker Center","Cascades Golf Course","Frank Southern Center","Juke Box Community Building","Twin Lakes",
 						"Fire HQ","Fire Administration","Police HQ",
-						"Stonebelt","Utilities Service Center","Monroe");
+						"Dillman","Stonebelt","Utilities Service Center","Monroe");
 
 	echo "
 	<div class=\"breadcrumbs\">

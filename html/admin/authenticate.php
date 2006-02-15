@@ -8,27 +8,9 @@
 	$_POST Variables:	username
 						password
 */
-	# Clear out any old session
-	session_destroy();
-	session_start();
+	$user_id = authenticate($_POST['username'],$_POST['password']);
+	if ($user_id) { create_session($user_id); }
 
-	if (!isValidUser($_POST['username'],$_POST['password']))
-	{
-		# Send them back to the login
-		Header("Location: home.php");
-		exit();
-	}
-
-	if (!userHasApplicationAccess($_POST['username'],"Directory"))
-	{
-		# Send them back to the login
-		Header("Location: home.php");
-		exit();
-	}
-
-	# They're good to go, log them into the site
-	$_SESSION['USERNAME'] = $_POST['username'];
-	$_SESSION['IP_ADDRESS'] = $_SERVER['REMOTE_ADDR'];
 
 	Header("Location: $BASE_URL");
 ?>

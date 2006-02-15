@@ -24,8 +24,8 @@
 		";
 
 		# Do the search
-		$results = ldap_search($LDAP_SERVER, $LDAP_DN, "(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$_GET[location]))");
-		$entries = ldap_get_entries($LDAP_SERVER, $results);
+		$results = ldap_search($LDAP_CONNECTION, $LDAP_DN, "(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$_GET[location]))");
+		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
 
 		for ($i = 0; $i < $entries['count']; $i++)
 		{
