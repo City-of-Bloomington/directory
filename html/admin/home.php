@@ -1,7 +1,7 @@
 <?php
-	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
-	include("$APPLICATION_HOME/includes/banner.inc");
-	include("$APPLICATION_HOME/includes/menubar.inc");
+	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
+	include(APPLICATION_HOME."/includes/banner.inc");
+	include(APPLICATION_HOME."/includes/menubar.inc");
 ?>
 <div id="mainContent">
 <div class="titleBar">Admin</div>
@@ -9,7 +9,7 @@
 <div id="loginBox">
 	<form id="loginBox" method="post" action="authenticate.php">
 	<fieldset><legend>Login</legend>
-		<input name="returnURL" type="hidden" value="<?php echo $BASE_URL; ?>" />
+		<input name="returnURL" type="hidden" value="<?php echo BASE_URL; ?>" />
 		<table>
 		<tr><td><label for="username">Username:</label></td>
 			<td><input name="username" id="username" /></td></tr>
@@ -25,7 +25,6 @@
 </div>
 </div>
 <?php
-	include("$APPLICATION_HOME/includes/footer.inc");
-	include("$GLOBAL_INCLUDES/xhtmlFooter.inc");
+	include(APPLICATION_HOME."/includes/footer.inc");
+	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
 ?>
-

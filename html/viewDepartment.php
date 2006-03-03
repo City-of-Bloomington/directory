@@ -5,16 +5,16 @@
 	$_GET variables:	category
 						department
 */
-	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
-	include("$APPLICATION_HOME/includes/banner.inc");
-	include("$APPLICATION_HOME/includes/menubar.inc");
+	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
+	include(APPLICATION_HOME."/includes/banner.inc");
+	include(APPLICATION_HOME."/includes/menubar.inc");
 ?>
 <div id="mainContent">
 <?php
 	echo "
 	<div class=\"breadcrumbs\">
-		<a href=\"$BASE_URL\">Departments</a> >
-		<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> >
+		<a href=\"".BASE_URL."\">Departments</a> &gt;
+		<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> &gt;
 		<a href=\"viewDepartment.php?category=$_GET[category];department=$_GET[department]\">$_GET[department]</a>
 	</div>
 
@@ -24,7 +24,7 @@
 	#----------------------------------------------------------------------------------------------------------
 	# Get all the deliveryOffices in this department
 	#----------------------------------------------------------------------------------------------------------
-	$officeResults = ldap_search($LDAP_CONNECTION,$LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department]))",array("physicalDeliveryOfficeName"));
+	$officeResults = ldap_search($LDAP_CONNECTION,LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department]))",array("physicalDeliveryOfficeName"));
 	$officeEntries = ldap_get_entries($LDAP_CONNECTION,$officeResults);
 
 	$offices = array();
@@ -40,7 +40,7 @@
 		#----------------------------------------------------------------------------------------------------------
 		echo "<li><a href=\"viewLocation.php?category=$_GET[category];department=$_GET[department];location=$office\">$office</a><table>";
 		$query = "(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$office))";
-		$searchResults = ldap_search($LDAP_CONNECTION, $LDAP_DN, $query);
+		$searchResults = ldap_search($LDAP_CONNECTION,LDAP_DN,$query);
 		$entries = ldap_get_entries($LDAP_CONNECTION, $searchResults);
 		$people = array();
 
@@ -70,6 +70,6 @@
 ?>
 </div>
 <?php
-	include("$APPLICATION_HOME/includes/footer.inc");
-	include("$GLOBAL_INCLUDES/xhtmlFooter.inc");
+	include(APPLICATION_HOME."/includes/footer.inc");
+	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
 ?>

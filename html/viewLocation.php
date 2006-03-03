@@ -6,17 +6,17 @@
 						category
 						location
 */
-	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
-	include("$APPLICATION_HOME/includes/banner.inc");
-	include("$APPLICATION_HOME/includes/menubar.inc");
+	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
+	include(APPLICATION_HOME."/includes/banner.inc");
+	include(APPLICATION_HOME."/includes/menubar.inc");
 ?>
 <div id="mainContent">
 	<?php
 		echo "
 		<div class=\"breadcrumbs\">
-			<a href=\"$BASE_URL\">Departments</a> >
-			<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> >
-			<a href=\"viewDepartment.php?category=$_GET[category];department=$_GET[department]\">$_GET[department]</a> >
+			<a href=\"".BASE_URL."\">Departments</a> &gt;
+			<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> &gt;
+			<a href=\"viewDepartment.php?category=$_GET[category];department=$_GET[department]\">$_GET[department]</a> &gt;
 			<a href=\"viewLocation.php?category=$_GET[category];department=$_GET[department];location=$_GET[location]\">$_GET[location]</a>
 		</div>
 
@@ -24,7 +24,7 @@
 		";
 
 		# Do the search
-		$results = ldap_search($LDAP_CONNECTION, $LDAP_DN, "(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$_GET[location]))");
+		$results = ldap_search($LDAP_CONNECTION,LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$_GET[location]))");
 		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
 
 		for ($i = 0; $i < $entries['count']; $i++)
@@ -52,7 +52,7 @@
 	</table>
 </div>
 <?php
-	include("$APPLICATION_HOME/includes/footer.inc");
-	include("$GLOBAL_INCLUDES/xhtmlFooter.inc");
+	include(APPLICATION_HOME."/includes/footer.inc");
+	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
 ?>
 

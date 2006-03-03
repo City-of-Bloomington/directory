@@ -8,17 +8,17 @@
 						extension - Four-digit extension of person to locate. Ignored if
 									firstName or lastName are specified.
 */
-	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
-	include("$APPLICATION_HOME/includes/banner.inc");
-	include("$APPLICATION_HOME/includes/menubar.inc");
+	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
+	include(APPLICATION_HOME."/includes/banner.inc");
+	include(APPLICATION_HOME."/includes/menubar.inc");
 ?>
 <div id="mainContent">
 	<h1>Search Results</h1>
 	<?php
 		# Clean all the stuff they typed
-		$_GET['firstname'] = sanitize($_GET['firstname']);
+		$_GET['firstname'] = isset($_GET['firstname']) ? sanitize($_GET['firstname']) : "";
 		$_GET['lastname'] = sanitize($_GET['lastname']);
-		$_GET['extension'] = sanitize($_GET['extension']);
+		$_GET['extension'] = isset($_GET['extension']) ? sanitize($_GET['extension']) : "";
 
 		# begin easter egg
 		if ($_GET['lastname'] == "monkeys")
@@ -44,7 +44,7 @@
 
 
 		# Do the search
-		$results = ldap_search($LDAP_CONNECTION, $LDAP_DN, $query);
+		$results = ldap_search($LDAP_CONNECTION, LDAP_DN, $query);
 		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
 
 		# If we only get one hit back, send them directly to that person
@@ -87,6 +87,6 @@
 	?>
 </div>
 <?php
-	include("$APPLICATION_HOME/includes/footer.inc");
-	include("$GLOBAL_INCLUDES/xhtmlFooter.inc");
+	include(APPLICATION_HOME."/includes/footer.inc");
+	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
 ?>

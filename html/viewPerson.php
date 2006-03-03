@@ -4,13 +4,13 @@
 
 	$_GET variables:	uid - User ID of the person to display.
 */
-	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
-	include("$APPLICATION_HOME/includes/banner.inc");
-	include("$APPLICATION_HOME/includes/menubar.inc");
+	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
+	include(APPLICATION_HOME."/includes/banner.inc");
+	include(APPLICATION_HOME."/includes/menubar.inc");
 ?>
 <div id="mainContent">
 <?php
-	$result = ldap_search($LDAP_CONNECTION, $LDAP_DN, "uid=$_GET[uid]");
+	$result = ldap_search($LDAP_CONNECTION,LDAP_DN,LDAP_USERNAME_ATTRIBUTE."=$_GET[uid]");
 	$entries = ldap_get_entries($LDAP_CONNECTION, $result);
 
 	# Choose the name to display
@@ -24,9 +24,9 @@
 	$title = isset($entries[0]['title'][0]) ? $entries[0]['title'][0] : "";
 	echo "
 	<div class=\"breadcrumbs\">
-		<a href=\"$BASE_URL\">Departments</a> >
-		<a href=\"viewCategory.php?category={$entries[0]['businesscategory'][0]}\">{$entries[0]['businesscategory'][0]}</a> >
-		<a href=\"viewDepartment.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]}\">{$entries[0]['departmentnumber'][0]}</a> >
+		<a href=\"".BASE_URL."\">Departments</a> &gt;
+		<a href=\"viewCategory.php?category={$entries[0]['businesscategory'][0]}\">{$entries[0]['businesscategory'][0]}</a> &gt;
+		<a href=\"viewDepartment.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]}\">{$entries[0]['departmentnumber'][0]}</a> &gt;
 		<a href=\"viewLocation.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]};location={$entries[0]['physicaldeliveryofficename'][0]}\">{$entries[0]['physicaldeliveryofficename'][0]}</a>
 	</div>
 	<table id=\"details\">
@@ -56,7 +56,7 @@
 	</table>
 	";
 
-	if (isset($_SESSION['USER_ID']) && $_SERVER['REMOTE_ADDR']==$_SESSION['IP_ADDRESS'])
+	if (isset($_SESSION['USER']) && $_SERVER['REMOTE_ADDR']==$_SESSION['IP_ADDRESS'])
 	{
 		echo "<div><button type=\"button\" class=\"editLarge\" onclick=\"document.location.href='editPersonForm.php?uid=$_GET[uid]';\">Edit</button></div>";
 	}
@@ -64,6 +64,6 @@
 ?>
 </div>
 <?php
-	include("$APPLICATION_HOME/includes/footer.inc");
-	include("$GLOBAL_INCLUDES/xhtmlFooter.inc");
+	include(APPLICATION_HOME."/includes/footer.inc");
+	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
 ?>

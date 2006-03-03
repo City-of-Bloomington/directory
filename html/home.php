@@ -1,7 +1,7 @@
 <?php
-	include("$GLOBAL_INCLUDES/xhtmlHeader.inc");
-	include("$APPLICATION_HOME/includes/banner.inc");
-	include("$APPLICATION_HOME/includes/menubar.inc");
+	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
+	include(APPLICATION_HOME."/includes/banner.inc");
+	include(APPLICATION_HOME."/includes/menubar.inc");
 ?>
 <div id="mainContent">
 	<div><div class="titleBar">Departments</div>
@@ -14,15 +14,15 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Council%20Office">Council Office</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Employee%20Services">Employee Services</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Engineering">Engineering</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=HAND">HAND</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">ITS</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=HAND">Housing and Neighborhood Development (HAND)</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">Information Systems Technology (ITS)</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Legal">Legal</a>
 							<ul><li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li></ul>
 						</li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Mayor's%20Office">Mayor's Office</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parking%20Enforcement">Parking Enforcement</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parks and Recreation">Parks and Recreation</a>
-							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=BACC">BACC</a></li>
+							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=BACC">Bloomington Adult Community Center (BACC)</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Banneker%20Center">Banneker Center</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Cascades%20Golf%20Course">Cascades Golf Course</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Frank%20Southern%20Center">Frank Southern Center</a></li>
@@ -76,7 +76,7 @@
 						<li><a href="viewDepartment.php?category=Utilities;department=Fleet%20Maintenance">Fleet Maintenance</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=Monroe">Monroe</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=Purchasing">Purchasing</a></li>
-						<li><a href="viewDepartment.php?category=Utilities;department=T%26D">T&amp;D</a></li>
+						<li><a href="viewDepartment.php?category=Utilities;department=T%26D">Transmission &amp; Distribution (T&amp;D)</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -85,6 +85,6 @@
 	</div>
 </div>
 <?php
-	include("$APPLICATION_HOME/includes/footer.inc");
-	include("$GLOBAL_INCLUDES/xhtmlFooter.inc");
+	include(APPLICATION_HOME."/includes/footer.inc");
+	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
 ?>

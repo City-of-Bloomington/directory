@@ -17,7 +17,7 @@ div.menuBar #extension { width:6ex; }
 #mainContent #extension { width:6ex; margin-top: 0; }
 
 /* We'd like to bold the top elements of ths directory listings. */
-ul li { font-weight:bold; }
-ul ul li { font-weight:normal; }
-ul ul ul li { font-weight:normal; }
+td>ul { font-weight:bold; list-style-type:none; }
+ul ul { font-weight:normal; list-style-type:disc; }
+ul ul ul { list-style-type:circle; }
 li table { font-weight:normal; }

@@ -4,7 +4,7 @@
 
 	$_GET variables:	uid
 */
-	$result = ldap_search($LDAP_CONNECTION, $LDAP_DN, "uid=$_GET[uid]");
+	$result = ldap_search($LDAP_CONNECTION, LDAP_DN, LDAP_USERNAME_ATTRIBUTE."=$_GET[uid]");
 	$entries = ldap_get_entries($LDAP_CONNECTION, $result);
 
 

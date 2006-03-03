@@ -1,16 +1,32 @@
 <?php
 /*
 	Logs a user into the system.
-	A logged in user will have a $_SESSION['USER_ID']
-								$_SESSION['IP_ADDRESS']
-
+	A logged in user will be stored in the session as $_SESSION['USER']
+	There should also be a $_SESSION['IP_ADDRESS'] to check for ijacking attacks.
 
 	$_POST Variables:	username
 						password
 */
-	$user_id = authenticate($_POST['username'],$_POST['password']);
-	if ($user_id) { create_session($user_id); }
+	require_once(APPLICATION_HOME."/classes/User.inc");
 
+	try
+	{
+		$user = new User($_POST['username']);
 
-	Header("Location: $BASE_URL");
+		if ($user->authenticate($_POST['password'])) { $user->startNewSession(); }
+		else
+		{
+			$_SESSION['errorMessages'][] = "wrongPassword";
+			Header("Location: ".BASE_URL);
+			exit();
+		}
+	}
+	catch (Exception $e)
+	{
+		$_SESSION['errorMessages'][] = "unknownUser";
+		Header("Location: ".BASE_URL);
+		exit();
+	}
+
+	Header("Location: ".BASE_URL);
 ?>
