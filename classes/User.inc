@@ -61,6 +61,12 @@
 			$this->setUserID(mysql_insert_id());
 		}
 
+		protected function saveLocalPassword()
+		{
+			$sql = "update users set password=md5('{$this->getPassword()}') where userID={$this->getUserID()}";
+			mysql_query($sql) or die($sql.mysql_error());
+		}
+
 		private function updateRoles()
 		{
 			$sql = "delete from userRoles where userID={$this->getUserID()}";
