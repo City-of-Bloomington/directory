@@ -17,7 +17,7 @@
 
 	$LDAP_CONNECTION = ldap_connect(LDAP_SERVER);
 	ldap_set_option($LDAP_CONNECTION,LDAP_OPT_PROTOCOL_VERSION,3);
-	ldap_bind($LDAP_CONNECTION,LDAP_USERNAME_ATTRIBUTE."=".LDAP_ADMIN_USER.",o=city.bloomington.in.us",LDAP_ADMIN_PASS) or die(ldap_error($LDAP_CONNECTION));
+	ldap_bind($LDAP_CONNECTION,LDAP_USERNAME_ATTRIBUTE."=".LDAP_ADMIN_USER.",o=".LDAP_DOMAIN,LDAP_ADMIN_PASS) or die(ldap_error($LDAP_CONNECTION));
 	#----------------------------------------------------------------------------------------------------
 	# Clean all the inputs
 	#----------------------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@
 	#----------------------------------------------------------------------------------------------------
 	# Put all the data back into LDAP
 	#----------------------------------------------------------------------------------------------------
-	$dn = LDAP_USERNAME_ATTRIBUTE."=".$_POST[LDAP_USERNAME_ATTRIBUTE].",ou=people,o=city.bloomington.in.us";
+	$dn = LDAP_USERNAME_ATTRIBUTE."=".$_POST[LDAP_USERNAME_ATTRIBUTE].",ou=people,o=".LDAP_DOMAIN;
 	ldap_mod_replace($LDAP_CONNECTION,$dn,$modifiedAttributes) or die(print_r($modifiedAttributes).ldap_error($LDAP_CONNECTION));
 	if (count($addedAttributes)) { ldap_mod_add($LDAP_CONNECTION,$dn,$addedAttributes) or die(print_r($addedAttributes).ldap_error($LDAP_CONNECTION)); }
 	if (count($deletedAttributes)) { ldap_mod_del($LDAP_CONNECTION,$dn,$deletedAttributes) or die(print_r($deletedAttributes).ldap_error($LDAP_CONNECTION)); }
