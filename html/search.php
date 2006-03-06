@@ -38,7 +38,7 @@
 		# Check for errors before moving on
 		if (isset($_SESSION['errorMessages']))
 		{
-			Header("Location: home.php");
+			Header("Location: searchForm.php");
 			exit();
 		}
 
