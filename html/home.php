@@ -5,6 +5,7 @@
 ?>
 <div id="mainContent">
 	<div><div class="titleBar">Departments</div>
+	<?php include(GLOBAL_INCLUDES."/errorMessages.inc"); ?>
 	<table>
 	<tr><td><ul><li><a href="viewLocation.php?category=Bloomington%20Transit;department=Bloomington%20Transit;location=Bloomington%20Transit">Bloomington Transit</a></li>
 				<li><a href="viewCategory.php?category=City%20Hall">City Hall</a>

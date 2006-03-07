@@ -17,14 +17,14 @@
 		else
 		{
 			$_SESSION['errorMessages'][] = "wrongPassword";
-			Header("Location: ".BASE_URL);
+			Header("Location: home.php");
 			exit();
 		}
 	}
 	catch (Exception $e)
 	{
 		$_SESSION['errorMessages'][] = "unknownUser";
-		Header("Location: ".BASE_URL);
+		Header("Location: home.php");
 		exit();
 	}
 
