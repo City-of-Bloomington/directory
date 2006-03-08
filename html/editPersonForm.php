@@ -46,7 +46,8 @@
 	$businessCategories = array("Bloomington Transit","City Hall","Fire","Police","Stonebelt","Utilities");
 
 	$offices = array("Bloomington Transit","Showers","BACC","Banneker Center","Cascades Golf Course","Frank Southern Center","Juke Box Community Building","Twin Lakes",
-						"Fire HQ","Fire Administration","Police HQ",
+						"Fire HQ","Fire Administration","Fire Station 1","Fire Station 2","Fire Station 3","Fire Station 4","Fire Station 5",
+						"Police HQ",
 						"Dillman","Stonebelt","Blucher Poole","Utilities Service Center","Monroe");
 
 	echo "
