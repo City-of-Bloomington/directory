@@ -23,7 +23,7 @@
 	}
 	catch (Exception $e)
 	{
-		$_SESSION['errorMessages'][] = "unknownUser";
+		$_SESSION['errorMessages'][] = $e->getMessage();
 		Header("Location: home.php");
 		exit();
 	}

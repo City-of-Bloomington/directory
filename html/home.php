@@ -35,6 +35,7 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Planning">Planning</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Public%20Works">Public Works</a>
 							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Animal%20Shelter">Animal Shelter</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Fleet%20Maintenance">Fleet Maintenance</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Sanitation">Sanitation</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Showers">Showers</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Street">Street</a></li>
@@ -74,7 +75,6 @@
 						<li><a href="viewDepartment.php?category=Utilities;department=Customer%20Services">Customer Services</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=Dillman">Dillman</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=Engineering">Engineering</a></li>
-						<li><a href="viewDepartment.php?category=Utilities;department=Fleet%20Maintenance">Fleet Maintenance</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=Monroe">Monroe</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=Purchasing">Purchasing</a></li>
 						<li><a href="viewDepartment.php?category=Utilities;department=T%26D">Transmission &amp; Distribution (T&amp;D)</a></li>

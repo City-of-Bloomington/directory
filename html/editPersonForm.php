@@ -41,11 +41,12 @@
 							"Administration","Fire",
 							"Detectives","Records","Uniformed Officers","Dispatch",
 							"Stonebelt",
-							"Blucher Poole","Communication","Customer Services","Dillman","Fleet Maintenance","Monroe","Purchasing","T&amp;D");
+							"Blucher Poole","Communication","Customer Services","Dillman","Monroe","Purchasing","T&amp;D");
 
 	$businessCategories = array("Bloomington Transit","City Hall","Fire","Police","Stonebelt","Utilities");
 
 	$offices = array("Bloomington Transit","Showers","BACC","Banneker Center","Cascades Golf Course","Frank Southern Center","Juke Box Community Building","Twin Lakes",
+						"Animal Shelter","Fleet Maintenance","Sanitation","Street","Traffic",
 						"Fire HQ","Fire Administration","Fire Station 1","Fire Station 2","Fire Station 3","Fire Station 4","Fire Station 5",
 						"Police HQ",
 						"Dillman","Stonebelt","Blucher Poole","Utilities Service Center","Monroe");
