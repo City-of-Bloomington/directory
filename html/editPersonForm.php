@@ -47,7 +47,7 @@
 
 	$offices = array("Bloomington Transit","Showers","BACC","Banneker Center","Cascades Golf Course","Frank Southern Center","Juke Box Community Building","Twin Lakes",
 						"Fire HQ","Fire Administration","Police HQ",
-						"Dillman","Stonebelt","Utilities Service Center","Monroe");
+						"Dillman","Stonebelt","Blucher Poole","Utilities Service Center","Monroe");
 
 	echo "
 	<div class=\"breadcrumbs\">
