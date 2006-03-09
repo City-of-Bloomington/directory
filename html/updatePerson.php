@@ -25,7 +25,7 @@
 	$_POST['sn'] = trim($_POST['sn']);
 	$_POST['displayName'] = trim($_POST['displayName']);
 	$_POST['title'] = trim($_POST['title']);
-	$_POST['telephoneNumber'] = ereg_replace("[^0-9\-]","",$_POST['telephoneNumber']);
+	$_POST['telephoneNumber'] = trim(ereg_replace("[^0-9[:space:]ext\-]","",$_POST['telephoneNumber']));
 	$_POST['facsimileTelephoneNumber'] = ereg_replace("[^0-9\-]","",$_POST['facsimileTelephoneNumber']);
 	$_POST['mail'] = trim($_POST['mail']);
 
