@@ -16,7 +16,7 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Employee%20Services">Employee Services</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Engineering">Engineering</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=HAND">Housing and Neighborhood Development (HAND)</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">Information Systems Technology (ITS)</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">Information Technology Services (ITS)</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Legal">Legal</a>
 							<ul><li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li></ul>
 						</li>
