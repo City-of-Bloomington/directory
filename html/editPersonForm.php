@@ -51,6 +51,7 @@
 						"Animal Shelter","Fleet Maintenance","Sanitation","Street","Traffic",
 						"Fire HQ","Fire Administration","Fire Station 1","Fire Station 2","Fire Station 3","Fire Station 4","Fire Station 5",
 						"Police HQ",
+						"Rosehill","Adams Street",
 						"Dillman","Stonebelt","Blucher Poole","Utilities Service Center","Monroe");
 
 	echo "

@@ -23,11 +23,13 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Mayor's%20Office">Mayor's Office</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parking%20Enforcement">Parking Enforcement</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parks and Recreation">Parks and Recreation</a>
-							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=BACC">Bloomington Adult Community Center (BACC)</a></li>
+							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Adams%20Street">Adams Street</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=BACC">Bloomington Adult Community Center (BACC)</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Banneker%20Center">Banneker Center</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Cascades%20Golf%20Course">Cascades Golf Course</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Frank%20Southern%20Center">Frank Southern Center</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Juke%20Box%20Community%20Building">Juke Box Community Building</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Rosehill">Rosehill</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Showers">Showers</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Twin%20Lakes">Twin Lakes</a></li>
 							</ul>
