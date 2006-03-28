@@ -5,7 +5,7 @@
 			<a href="<?php echo BASE_URL; ?>/mainNumbers.php">Main Numbers</a>
 			<a href="<?php echo BASE_URL; ?>/searchForm.php">Advanced Search</a>
 
-			<label>Last Name: <input name="lastname" id="lastname" /></label>
+			<label>Last Name: <input name="lastname" id="lastname" tabindex="1" /></label>
 			<button type="submit" class="search">Search</button>
 		</fieldset>
 	</form>

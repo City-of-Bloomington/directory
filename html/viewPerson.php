@@ -10,49 +10,39 @@
 ?>
 <div id="mainContent">
 <?php
-	$result = ldap_search($LDAP_CONNECTION,LDAP_DN,LDAP_USERNAME_ATTRIBUTE."=$_GET[uid]");
-	$entries = ldap_get_entries($LDAP_CONNECTION, $result);
+	require_once(GLOBAL_INCLUDES."/classes/LDAPEntry.inc");
+	$user = new LDAPEntry($LDAP_CONNECTION,$_GET['uid']);
 
 	# Choose the name to display
-	if (isset($entries[0]['displayname']) and ($entries[0]['displayname'][0])) { $displayName = $entries[0]['displayname'][0]; }
-	else { $displayName = "{$entries[0]['givenname'][0]} {$entries[0]['sn'][0]}"; }
+	if ($user->getDisplayName()) { $displayName = $user->getDisplayName(); }
+	else { $displayName = "{$user->getFirstname()} {$user->getLastname()}"; }
 
 	# Get their photo, if they've got one
-	if (isset($entries[0]['jpegphoto'])) { $photo = "<img src=\"photo.php?uid=$_GET[uid]\" alt=\"$_GET[uid]\" />"; }
+	if ($user->getPhoto()) { $photo = "<img src=\"photo.php?uid=$_GET[uid]\" alt=\"$_GET[uid]\" />"; }
 	else { $photo = "<img src=\"images/nophoto.jpg\" alt=\"No Photo\" />"; }
 
-	$title = isset($entries[0]['title'][0]) ? $entries[0]['title'][0] : "";
 	echo "
 	<div class=\"breadcrumbs\">
 		<a href=\"".BASE_URL."\">Departments</a> &gt;
-		<a href=\"viewCategory.php?category={$entries[0]['businesscategory'][0]}\">{$entries[0]['businesscategory'][0]}</a> &gt;
-		<a href=\"viewDepartment.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]}\">{$entries[0]['departmentnumber'][0]}</a> &gt;
-		<a href=\"viewLocation.php?category={$entries[0]['businesscategory'][0]};department={$entries[0]['departmentnumber'][0]};location={$entries[0]['physicaldeliveryofficename'][0]}\">{$entries[0]['physicaldeliveryofficename'][0]}</a>
+		<a href=\"viewCategory.php?category={$user->getBusinessCategory()}\">{$user->getBusinessCategory()}</a> &gt;
+		<a href=\"viewDepartment.php?category={$user->getBusinessCategory()};department={$user->getDepartment()}\">{$user->getDepartment()}</a> &gt;
+		<a href=\"viewLocation.php?category={$user->getBusinessCategory()};department={$user->getDepartment()};location={$user->getOffice()}\">{$user->getOffice()}</a>
 	</div>
 	<table id=\"details\">
 	<tr><th>$photo</th>
 		<td><h1>$displayName</h1>
-			<h3>$title</h3>
-			<h3>{$entries[0]['departmentnumber'][0]}</h3>
-			<h3>{$entries[0]['businesscategory'][0]}</h3>
+			<h3>{$user->getTitle()}</h3>
+			<h3>{$user->getDepartment()}</h3>
+			<h3>{$user->getBusinessCategory()}</h3>
 		</td></tr>
-	";
-
-
-	# People may not have all of these entries.  Make sure they have 'em before trying to display 'em
-	$telephonenumber = isset($entries[0]['telephonenumber'][0]) ? $entries[0]['telephonenumber'][0] : "";
-	$facsimiletelephonenumber = isset($entries[0]['facsimiletelephonenumber'][0]) ? $entries[0]['facsimiletelephonenumber'][0] : "";
-	$physicaldeliveryofficename = isset($entries[0]['physicaldeliveryofficename'][0]) ? $entries[0]['physicaldeliveryofficename'][0] : "";
-	$mail = isset($entries[0]['mail'][0]) ? $entries[0]['mail'][0] : "";
-	echo "
 	<tr><th>Phone</th>
-		<td>$telephonenumber</td></tr>
+		<td>{$user->getPhone()}</td></tr>
 	<tr><th>Fax</th>
-		<td>$facsimiletelephonenumber</td></tr>
+		<td>{$user->getFax()}</td></tr>
 	<tr><th>Delivery Office</th>
-		<td>$physicaldeliveryofficename</td></tr>
+		<td>{$user->getOFfice()}</td></tr>
 	<tr><th>Email</th>
-		<td><a href=\"mailto:$mail\">$mail</a></td></tr>
+		<td><a href=\"mailto:{$user->getEmail()}\">{$user->getEmail()}</a></td></tr>
 	</table>
 	";
 
