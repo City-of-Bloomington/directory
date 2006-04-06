@@ -10,18 +10,16 @@
 	<tr><td><ul><li><a href="viewLocation.php?category=Bloomington%20Transit;department=Bloomington%20Transit;location=Bloomington%20Transit">Bloomington Transit</a></li>
 				<li><a href="viewCategory.php?category=City%20Hall">City Hall</a>
 					<ul><li><a href="viewDepartment.php?category=City%20Hall;department=City%20Clerk">City Clerk</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Community%20and%20Family%20Resources">Community and Family Resources</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=Community%20and%20Family%20Resources">Community and Family Resources (CFRD)</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Controller">Controller</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Council%20Office">Council Office</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Employee%20Services">Employee Services</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Engineering">Engineering</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=HAND">Housing and Neighborhood Development (HAND)</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">Information Technology Services (ITS)</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">Information &amp; Technology Services (ITS)</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Legal">Legal</a>
 							<ul><li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li></ul>
 						</li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Mayor's%20Office">Mayor's Office</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Parking%20Enforcement">Parking Enforcement</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=Office%20of%20the%20Mayor">Office of the Mayor (OOTM)</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Parks and Recreation">Parks and Recreation</a>
 							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Adams%20Street">Adams Street</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=BACC">Bloomington Adult Community Center (BACC)</a></li>
@@ -37,7 +35,10 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Planning">Planning</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Public%20Works">Public Works</a>
 							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Animal%20Shelter">Animal Shelter</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Engineering">Engineering</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Facilities">Facilities</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Fleet%20Maintenance">Fleet Maintenance</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Parking%20Enforcement">Parking Enforcement</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Sanitation">Sanitation</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Showers">Showers</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Street">Street</a></li>

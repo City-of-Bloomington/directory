@@ -38,8 +38,8 @@
 
 
 	$departments = array("Bloomington Transit",
-							"Accounting","City Clerk","Community and Family Resources","Controller","Council Office","Employee Services","Engineering",
-								"HAND","ITS","Legal","Mayor&#039;s Office","Parking Enforcement","Parks and Recreation","Planning","Public Works","Risk Management",
+							"Accounting","City Clerk","Community and Family Resources","Controller","Council Office","Employee Services",
+								"HAND","ITS","Legal","Office of the Mayor","Parks and Recreation","Planning","Public Works","Risk Management",
 							"Administration","Fire",
 							"Detectives","Records","Uniformed Officers","Dispatch",
 							"Stonebelt",
@@ -48,7 +48,7 @@
 	$businessCategories = array("Bloomington Transit","City Hall","Fire","Police","Stonebelt","Utilities");
 
 	$offices = array("Bloomington Transit","Showers","BACC","Banneker Center","Cascades Golf Course","Frank Southern Center","Juke Box Community Building","Twin Lakes",
-						"Animal Shelter","Fleet Maintenance","Sanitation","Street","Traffic",
+						"Animal Shelter","Engineering","Facilities","Fleet Maintenance","Parking Enforcement","Sanitation","Street","Traffic",
 						"Fire HQ","Fire Administration","Fire Station 1","Fire Station 2","Fire Station 3","Fire Station 4","Fire Station 5",
 						"Police HQ",
 						"Rosehill","Adams Street",
