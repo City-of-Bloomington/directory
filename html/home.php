@@ -63,12 +63,6 @@
 						<li><a href="viewLocation.php?category=Police;department=Uniformed%20Officers;location=Police%20HQ">Uniformed Officers</a></li>
 					</ul>
 				</li>
-				<li><a href="viewCategory.php?category=Stonebelt">Stonebelt</a>
-					<ul><li><a href="viewDepartment.php?category=Stonebelt;department=Parks%20and%20Recreation">Parks and Recreation</a>
-							<ul><li><a href="viewLocation.php?category=Stonebelt;department=Parks%20and%20Recreation;location=Banneker%20Center">Banneker Center</a></li></ul>
-						</li>
-					</ul>
-				</li>
 
 				<li><a href="viewCategory.php?category=Utilities">Utilities</a>
 					<ul><li><a href="viewDepartment.php?category=Utilities;department=Accounting">Accounting</a></li>

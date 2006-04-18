@@ -45,7 +45,7 @@
 							"Stonebelt",
 							"Blucher Poole","Communication","Customer Services","Dillman","Monroe","Purchasing","T&amp;D");
 
-	$businessCategories = array("Bloomington Transit","City Hall","Fire","Police","Stonebelt","Utilities");
+	$businessCategories = array("Bloomington Transit","City Hall","Fire","Police","Utilities");
 
 	$offices = array("Bloomington Transit","Showers","BACC","Banneker Center","Cascades Golf Course","Frank Southern Center","Juke Box Community Building","Twin Lakes",
 						"Animal Shelter","Engineering","Facilities","Fleet Maintenance","Parking Enforcement","Sanitation","Street","Traffic",
