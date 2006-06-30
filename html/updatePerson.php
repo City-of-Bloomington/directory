@@ -53,8 +53,6 @@
 		exit();
 	}
 
-	print_r($user);
-
-
-	#Header("Location: viewPerson.php?uid=$_POST[uid]");
+	$user->save();
+	Header("Location: viewPerson.php?uid=$_POST[uid]");
 ?>

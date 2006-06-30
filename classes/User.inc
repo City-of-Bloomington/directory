@@ -8,8 +8,8 @@
 			if ($id)
 			{
 				# Load an existing user
-				if (is_numeric($id)) { $sql = "select userID,username,password,authenticationMethod from users where userID=$id"; }
-				else { $sql = "select userID,username,password,authenticationMethod from users where username='$id'"; }
+				if (is_numeric($id)) { $sql = "select * from users where userID=$id"; }
+				else { $sql = "select * from users where username='$id'"; }
 				$result = mysql_query($sql) or die($sql.mysql_error());
 				if (mysql_num_rows($result))
 				{
@@ -17,8 +17,9 @@
 
 					$this->setUserID($user['userID']);
 					$this->setUsername($user['username']);
-					$this->setPassword($user['password']);
 					$this->setAuthenticationMethod($user['authenticationMethod']);
+
+					if ($user['password']) { $this->setPassword($user['password']); }
 
 					$this->loadRoles();
 				}
@@ -47,7 +48,7 @@
 		private function update()
 		{
 			$sql = "update users set username='{$this->getUsername()}',authenticationMethod='{$this->getAuthenticationMethod()}'";
-			if ($this->getPassword()) { $sql.=",password='".$this->getPassword()."'"; }
+			if ($this->getPassword()) { $sql.=",password=md5('{$this->getPassword()}')"; } else { $sql.=",password=null"; }
 			$sql.=" where userID=".$this->getUserID();
 			mysql_query($sql) or die($sql.mysql_error());
 		}
@@ -55,16 +56,10 @@
 		private function insert()
 		{
 			$sql = "insert users set username='{$this->getUsername()}',authenticationMethod='{$this->getAuthenticationMethod()}'";
-			if ($this->getPassword()) { $sql.=",password='{$this->getPassword()}'"; }
+			if ($this->getPassword()) { $sql.=",password=md5('{$this->getPassword()}')"; }
 			mysql_query($sql) or die($sql.mysql_error());
 
 			$this->setUserID(mysql_insert_id());
-		}
-
-		protected function saveLocalPassword()
-		{
-			$sql = "update users set password=md5('{$this->getPassword()}') where userID={$this->getUserID()}";
-			mysql_query($sql) or die($sql.mysql_error());
 		}
 
 		private function updateRoles()
@@ -76,9 +71,15 @@
 
 			foreach($roles as $role)
 			{
-				$sql = "insert userRoles set userID={$this->getUserID()},role=$role";
+				$sql = "insert userRoles set userID={$this->getUserID()},role='$role'";
 				mysql_query($sql) or die($sql.mysql_error());
 			}
+		}
+
+		protected function saveLocalPassword()
+		{
+			$sql = "update users set password=md5('{$this->getPassword()}') where userID={$this->getUserID()}";
+			mysql_query($sql) or die($sql.mysql_error());
 		}
 
 		protected function loadRoles()
@@ -96,7 +97,5 @@
 			if (mysql_num_rows(mysql_query($sql))) { return true; }
 			else { return false; }
 		}
-
-
 	}
 ?>
