@@ -6,56 +6,36 @@
 						category
 						location
 */
-	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
-	include(APPLICATION_HOME."/includes/banner.inc");
-	include(APPLICATION_HOME."/includes/menubar.inc");
-?>
-<div id="mainContent">
-	<?php
-		echo "
-		<div class=\"breadcrumbs\">
-			<a href=\"".BASE_URL."\">Departments</a> &gt;
-			<a href=\"viewCategory.php?category=$_GET[category]\">$_GET[category]</a> &gt;
-			<a href=\"viewDepartment.php?category=$_GET[category];department=$_GET[department]\">$_GET[department]</a> &gt;
-			<a href=\"viewLocation.php?category=$_GET[category];department=$_GET[department];location=$_GET[location]\">$_GET[location]</a>
-		</div>
+	$people = array();
 
-		";
-
-		# Do the search
-		$results = ldap_search($LDAP_CONNECTION,LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$_GET[location]))");
-		if (ldap_count_entries($LDAP_CONNECTION,$results))
+	# Do the search
+	$results = ldap_search($LDAP_CONNECTION,LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$_GET[location]))");
+	if (ldap_count_entries($LDAP_CONNECTION,$results))
+	{
+		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
+		foreach($entries as $user)
 		{
-			echo "<table>";
-			$entries = ldap_get_entries($LDAP_CONNECTION, $results);
-
-			for ($i = 0; $i < $entries['count']; $i++)
+			$uid = $user['uid'][0];
+			if ($uid)
 			{
-				$uid = $entries[$i]['uid'][0];
-				$people[$uid] = array("givenname"=>$entries[$i]['givenname'][0], "sn"=>$entries[$i]['sn'][0]);
-				if (isset($entries[$i]['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $entries[$i]['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
-				if (isset($entries[$i]['mail'][0])) { $people[$uid]['mail'] = $entries[$i]['mail'][0]; } else { $people[$uid]['mail'] = ""; }
-				if (isset($entries[$i]['displayname'][0]) && $entries[$i]['displayname'][0]) { $people[$uid]['displayname'] = $entries[$i]['displayname'][0]; } else { $people[$uid]['displayname'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
-				if (isset($entries[$i]['title'][0]) && $entries[$i]['title'][0]) { $people[$uid]['title'] = $entries[$i]['title'][0]; } else { $people[$uid]['title'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
+				$people[$uid] = array("givenname"=>$user['givenname'][0], "sn"=>$user['sn'][0]);
+				if (isset($user['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $user['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
+				if (isset($user['mail'][0])) { $people[$uid]['mail'] = $user['mail'][0]; } else { $people[$uid]['mail'] = ""; }
+				if (isset($user['displayname'][0]) && $user['displayname'][0]) { $people[$uid]['displayname'] = $user['displayname'][0]; } else { $people[$uid]['displayname'] = "{$user['givenname'][0]} {$user['sn'][0]}"; }
+				if (isset($user['title'][0]) && $user['title'][0]) { $people[$uid]['title'] = $user['title'][0]; } else { $people[$uid]['title'] = "{$user['givenname'][0]} {$user['sn'][0]}"; }
 			}
-			ksort($people);
-
-			foreach ($people as $uid => $person)
-			{
-				echo "
-				<tr><td><a href=\"viewPerson.php?uid=$uid\">$person[displayname]</a>, $person[title]</td>
-					<td>$person[telephonenumber]</td>
-					<td><a href=\"mailto:$person[mail]\">$person[mail]</td>
-				</tr>
-				";
-			}
-			echo "</table>";
 		}
-	?>
+		ksort($people);
+	}
 
-</div>
-<?php
-	include(APPLICATION_HOME."/includes/footer.inc");
-	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
+
+	$breadcrumbs = new Block('breadcrumbs.inc');
+	$breadcrumbs->category = $_GET['category'];
+	$breadcrumbs->department = $_GET['department'];
+	$breadcrumbs->location = $_GET['location'];
+
+	$template = new Template();
+	$template->blocks[] = $breadcrumbs;
+	$template->blocks[] = new Block('people/viewLocation.inc',array('people'=>$people));
+	$template->render();
 ?>
-

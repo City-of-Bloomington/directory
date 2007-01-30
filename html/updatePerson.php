@@ -1,58 +1,41 @@
 <?php
 /*
-	Saves a person's info back to LDAP
-
-	$_POST variables:	uid					telephoneNumber
-						givenName			facsimileTelephoneNumber
-						sn					physicalDeliveryOfficeName
-						displayName			mail
-						title				jpegPhoto
-						businessCategory
-						departmentNumber
+	$_GET variables:	uid
 */
 	verifyUser("Administrator");
-
-	# Go ahead and bind to the LDAP server so we can edit stuff
-	ldap_unbind($LDAP_CONNECTION);
-
-	$LDAP_CONNECTION = ldap_connect(LDAP_SERVER);
-	ldap_set_option($LDAP_CONNECTION,LDAP_OPT_PROTOCOL_VERSION,3);
-	ldap_bind($LDAP_CONNECTION,LDAP_USERNAME_ATTRIBUTE."=".LDAP_ADMIN_USER.",o=".LDAP_DOMAIN,LDAP_ADMIN_PASS) or die(ldap_error($LDAP_CONNECTION));
-
-	require_once(GLOBAL_INCLUDES."/classes/LDAPEntry.inc");
-	$user = new LDAPEntry($LDAP_CONNECTION,$_POST['uid']);
-
-
-
-	$user->setFirstname($_POST['givenName']);
-	$user->setLastname($_POST['sn']);
-	$user->setBusinessCategory($_POST['businessCategory']);
-	$user->setDepartment($_POST['departmentNumber']);
-	$user->setOffice($_POST['physicalDeliveryOfficeName']);
-	$user->setTitle($_POST['title']);
-	$user->setDisplayName($_POST['displayName']);
-	$user->setPhone($_POST['telephoneNumber']);
-	$user->setFax($_POST['facsimileTelephoneNumber']);
-	$user->setEmail($_POST['mail']);
-
-	#----------------------------------------------------------------------------------------------------
-	# Check for an uploaded photo.  Only change the users photo if a new one is uploaded
-	#----------------------------------------------------------------------------------------------------
-	if ($_FILES['jpegPhoto']['size'] && is_uploaded_file($_FILES['jpegPhoto']['tmp_name']))
+	if (isset($_GET['uid'])) { $user = new LDAPEntry($_GET['uid']); }
+	if (isset($_POST['uid']))
 	{
-		$user->setPhoto($_FILES['jpegPhoto']['tmp_name']);
+		$user = new LDAPEntry($_POST['uid']);
+		foreach($_POST['user'] as $field=>$value)
+		{
+			$set = 'set'.ucfirst($field);
+			$user->$set($value);
+		}
+
+		# Check for an uploaded photo.
+		# Only change the users photo if a new one is uploaded
+		if ($_FILES['photo']['size'] && is_uploaded_file($_FILES['photo']['tmp_name']))
+		{
+			$user->setPhoto($_FILES['photo']['tmp_name']);
+		}
+
+		try
+		{
+			$user->save();
+			Header("Location: viewPerson.php?uid={$user->getUID()}");
+			exit();
+		}
+		catch (Exception $e) { $_SESSION['errorMessages'][] = $e; }
 	}
 
-	#----------------------------------------------------------------------------------------------------
-	# Make sure we've got the minimum required fields
-	#----------------------------------------------------------------------------------------------------
-	if (!$user->getFirstname() || !$user->getLastname())
-	{
-		$_SESSION['errorMessages'][] = "missingRequiredFields";
-		Header("Location: editPersonForm.php?uid=$_POST[uid]");
-		exit();
-	}
+	$breadcrumbs = new Block('breadcrumbs.inc');
+	$breadcrumbs->category = $user->getBusinessCategory();
+	$breadcrumbs->department = $user->getDepartment();
+	$breadcrumbs->location = $user->getOffice();
 
-	$user->save();
-	Header("Location: viewPerson.php?uid=$_POST[uid]");
+	$template = new Template();
+	$template->blocks[] = $breadcrumbs;
+	$template->blocks[] = new Block('people/updatePersonForm.inc',array('user'=>$user));
+	$template->render();
 ?>

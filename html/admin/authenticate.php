@@ -1,30 +1,30 @@
 <?php
-/*
-	Logs a user into the system.
-	A logged in user will be stored in the session as $_SESSION['USER']
-	There should also be a $_SESSION['IP_ADDRESS'] to check for ijacking attacks.
-
-	$_POST Variables:	username
-						password
-*/
-	require_once(APPLICATION_HOME."/classes/User.inc");
-
+/**
+ * @copyright Copyright (C) 2006 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ */
+/**
+ *	Logs a user into the system.
+ *	A logged in user will have a $_SESSION['USER']
+ *								$_SESSION['IP_ADDRESS']
+ *								$_SESSION['APPLICATION_NAME']
+ *
+ *
+ *	$_POST Variables:	username
+ *						password
+ *						returnURL
+ */
 	try
 	{
 		$user = new User($_POST['username']);
 
 		if ($user->authenticate($_POST['password'])) { $user->startNewSession(); }
-		else
-		{
-			$_SESSION['errorMessages'][] = "wrongPassword";
-			Header("Location: home.php");
-			exit();
-		}
+		else { throw new Exception("wrongPassword"); }
 	}
 	catch (Exception $e)
 	{
-		$_SESSION['errorMessages'][] = $e->getMessage();
-		Header("Location: home.php");
+		$_SESSION['errorMessages'][] = $e;
+		Header("Location: ".BASE_URL);
 		exit();
 	}
 

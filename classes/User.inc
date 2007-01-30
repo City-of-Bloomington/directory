@@ -1,101 +1,156 @@
 <?php
-	require_once(GLOBAL_INCLUDES."/classes/SystemUser.inc");
-
 	class User extends SystemUser
 	{
+		private $id;
+		private $username;
+		private $password;
+		private $authenticationMethod;
+
+		private $roles;
+
 		public function __construct($id = null)
 		{
+			global $PDO;
+
 			if ($id)
 			{
 				# Load an existing user
-				if (is_numeric($id)) { $sql = "select * from users where userID=$id"; }
+				if (is_numeric($id)) { $sql = "select * from users where id=$id"; }
 				else { $sql = "select * from users where username='$id'"; }
-				$result = mysql_query($sql) or die($sql.mysql_error());
-				if (mysql_num_rows($result))
+
+				$result = $PDO->query($sql);
+				if ($user = $result->fetch())
 				{
-					$user = mysql_fetch_array($result);
+					$this->id = $user['id'];
+					$this->username = $user['username'];
+					# Passwords are one-way encrypted.  They should not be loaded by default
+					$this->authenticationMethod = $user['authenticationMethod'];
 
-					$this->setUserID($user['userID']);
-					$this->setUsername($user['username']);
-					$this->setAuthenticationMethod($user['authenticationMethod']);
-
-					if ($user['password']) { $this->setPassword($user['password']); }
-
-					$this->loadRoles();
+					$result->closeCursor();
 				}
-				else { throw new Exception($sql); }
+				else { throw new Exception("unknownUser"); }
 			}
 		}
 
 		public function save()
 		{
-			if ($this->getUserID()) { $this->update(); }
-			else { $this->insert(); }
+			# Check for required fields before saving
+			if (!$this->username || !$this->firstname || !$this->lastname) { throw new Exception("missingRequiredFields"); }
+
+			$fields = array();
+			$fields[] = "username='{$this->username}'";
+			$fields[] = "authenticationMethod='{$this->authenticationMethod}'";
+			$fields = implode(",",$fields);
+
+			if ($this->id) { $this->update($fields); }
+			else { $this->insert($fields); }
 
 			$this->updateRoles();
 		}
 
-		public function delete()
+		private function update($fields)
 		{
-			$sql = "delete from userRoles where userID={$this->getUserID()}";
-			mysql_query($sql) or die($sql.mysql_error());
+			global $PDO;
 
-			$sql = "delete from users where userID={$this->getUserID()}";
-			mysql_query($sql) or die($sql.mysql_error());
+			$sql = "update users set $fields where id={$this->id}";
+
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 		}
 
-
-		private function update()
+		private function insert($fields)
 		{
-			$sql = "update users set username='{$this->getUsername()}',authenticationMethod='{$this->getAuthenticationMethod()}'";
-			if ($this->getPassword()) { $sql.=",password=md5('{$this->getPassword()}')"; } else { $sql.=",password=null"; }
-			$sql.=" where userID=".$this->getUserID();
-			mysql_query($sql) or die($sql.mysql_error());
+			global $PDO;
+
+			$sql = "insert users set $fields";
+
+
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+			$this->id = $PDO->lastInsertID();
+
+			# Save the initial password if we've added one
+			if ($this->getPassword()) { $this->savePassword(); }
 		}
 
-		private function insert()
-		{
-			$sql = "insert users set username='{$this->getUsername()}',authenticationMethod='{$this->getAuthenticationMethod()}'";
-			if ($this->getPassword()) { $sql.=",password=md5('{$this->getPassword()}')"; }
-			mysql_query($sql) or die($sql.mysql_error());
-
-			$this->setUserID(mysql_insert_id());
-		}
 
 		private function updateRoles()
 		{
-			$sql = "delete from userRoles where userID={$this->getUserID()}";
-			mysql_query($sql) or die($sql.mysql_error());
+			global $PDO;
 
 			$roles = $this->getRoles();
 
-			foreach($roles as $role)
+			$sql = "delete from user_roles where user_id={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
+
+			$statement = $PDO->prepare("insert user_roles set user_id={$this->id},role_id=?");
+			foreach($roles as $role_id=>$role)
 			{
-				$sql = "insert userRoles set userID={$this->getUserID()},role='$role'";
-				mysql_query($sql) or die($sql.mysql_error());
+				if (false === $statement->execute(array("$role_id"))) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 			}
 		}
 
 		protected function saveLocalPassword()
 		{
-			$sql = "update users set password=md5('{$this->getPassword()}') where userID={$this->getUserID()}";
-			mysql_query($sql) or die($sql.mysql_error());
-		}
+			global $PDO;
 
-		protected function loadRoles()
-		{
-			$roles = array();
-			$sql = "select role from userRoles where userID={$this->getUserID()}";
-			$result = mysql_query($sql) or die($sql.mysql_error());
-			while(list($role) = mysql_fetch_array($result)) { $roles[] = $role; }
-			$this->setRoles($roles);
+			$sql = "update users set password=md5('{$this->password}') where id={$this->id}";
+			if (false === $PDO->exec($sql)) { $e = $PDO->errorInfo(); throw new Exception($sql.$e[2]); }
 		}
 
 		protected function authenticateDatabase($password)
 		{
-			$sql = "select userID from users where username='{$this->getUsername()}' and password=md5('$password')";
-			if (mysql_num_rows(mysql_query($sql))) { return true; }
+			global $PDO;
+
+			$sql = "select id from users where username='{$this->username}' and password=md5('$password')";
+			$result = $PDO->query($sql);
+			if ($user = $result->fetch()) { return true; }
 			else { return false; }
+			$result->closeCursor();
+		}
+		/* Takes a string or an array of strings and checks if the user has that role */
+		public function hasRole($roles)
+		{
+			if (is_array($roles))
+			{
+				foreach($roles as $role) { if (in_array($role,$this->getRoles())) { return true; } }
+				return false;
+			}
+			else { return in_array($roles,$this->getRoles()); }
+		}
+
+		public function getId() { return $this->id; }
+		public function getUsername() { return $this->username; }
+		public function getPassword() { return $this->password; }
+		public function getAuthenticationMethod() { return $this->authenticationMethod; }
+
+		public function getRoles()
+		{
+			global $PDO;
+
+			if (!$this->roles)
+			{
+				$this->roles = array();
+				$sql = "select role_id,role from user_roles left join roles on role_id=id where user_id={$this->id}";
+				if ($result = $PDO->query($sql))
+				{
+					foreach($result as $row) { $this->roles[$row['role_id']] = $row['role']; }
+					$result->closeCursor();
+				}
+			}
+			return $this->roles;
+		}
+
+		public function setUsername($string) { $this->username = sanitizeString($string); }
+		public function setPassword($string) { $this->password = $string; }
+		public function setAuthenticationMethod($string) { $this->authenticationMethod = $string; }
+		/* Takes an array of role names.  Needs to look up the role_id and add them to the user */
+		public function setRoles($array)
+		{
+			$this->roles = array();
+			foreach($array as $id)
+			{
+				$role = new Role($id);
+				$this->roles[$role->getId()] = $role->getRole();
+			}
 		}
 	}
 ?>

@@ -1,19 +1,20 @@
 create table users (
-	userID int unsigned not null primary key auto_increment,
+	id int unsigned not null primary key auto_increment,
 	username varchar(30) not null,
 	password varchar(32),
 	authenticationMethod varchar(30) not null default 'LDAP'
 );
 
-create table userRoles (
-	userID int unsigned not null,
-	role varchar(30) not null,
-	primary key (userID,role),
-	foreign key (userID) references users(userID),
-	foreign key (role) references roles(role)
-);
-
 create table roles (
-	role varchar(30) not null primary key
+	id int unsigned not null primary key auto_increment,
+	role varchar(30) not null
 );
-insert roles values('Administrator');
+insert roles values(null,'Administrator');
+
+create table user_roles (
+	user_id int unsigned not null,
+	role_id int unsigned not null,
+	primary key (user_id,role_id),
+	foreign key (user_id) references users(id),
+	foreign key (role_id) references roles(id)
+);

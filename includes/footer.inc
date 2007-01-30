@@ -6,5 +6,5 @@
 			if (isset($_SESSION['USER'])) { echo "Logged in as ".$_SESSION['USER']->getUsername(); }
 		?>
 	</div>
-	<?php include(GLOBAL_INCLUDES."/footer.inc"); ?>
+	<?php include(FRAMEWORK."/footer.inc"); ?>
 </div>

@@ -8,20 +8,18 @@
 						extension - Four-digit extension of person to locate. Ignored if
 									firstName or lastName are specified.
 */
-	include(GLOBAL_INCLUDES."/xhtmlHeader.inc");
-	include(APPLICATION_HOME."/includes/banner.inc");
-	include(APPLICATION_HOME."/includes/menubar.inc");
-?>
-<div id="mainContent">
-	<h1>Search Results</h1>
-	<?php
-		# Clean all the stuff they typed
-		$_GET['firstname'] = isset($_GET['firstname']) ? sanitize($_GET['firstname']) : "";
-		$_GET['lastname'] = sanitize($_GET['lastname']);
-		$_GET['extension'] = isset($_GET['extension']) ? sanitize($_GET['extension']) : "";
+	$template = new Template();
 
+	# Clean all the stuff they typed
+	$lastname = isset($_GET['lastname']) ? trim($_GET['lastname']) : "";
+	$firstname = isset($_GET['firstname']) ? trim($_GET['firstname']) : "";
+	$extension = isset($_GET['extension']) ? trim($_GET['extension']) : "";
+
+
+	if ($lastname || $firstname || $extension)
+	{
 		# begin easter egg
-		if ($_GET['lastname'] == "monkeys")
+		if ($lastname == "monkeys")
 		{
 			Header("Location: monkeys.php");
 			exit();
@@ -30,26 +28,17 @@
 
 
 		# Build the LDAP query
-		if ($_GET['firstname'] || $_GET['lastname']) { $query = "(&(|(givenName=$_GET[firstname]*)(displayName=$_GET[firstname]*))(sn=$_GET[lastname]*))"; }
-		elseif ($_GET['extension']) { $query = "telephoneNumber=*$_GET[extension]"; }
-		else { $_SESSION['errorMessages'][] = "missingNameOrExtension"; }
-
-
-		# Check for errors before moving on
-		if (isset($_SESSION['errorMessages']))
-		{
-			Header("Location: searchForm.php");
-			exit();
-		}
+		if ($firstname || $lastname) { $query = "(&(|(givenName=$firstname*)(displayName=$firstname*))(sn=$lastname*))"; }
+		elseif ($extension) { $query = "telephoneNumber=*$extension"; }
 
 
 		# Do the search
 		$results = ldap_search($LDAP_CONNECTION, LDAP_DN, $query);
 		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
+		$people = array();
 
 		# If we only get one hit back, send them directly to that person
-		if ($entries['count'] == 0) { echo "<h1>No matches found</h1>"; }
-		elseif ($entries['count'] == 1)
+		if ($entries['count'] == 1)
 		{
 			Header("Location: viewPerson.php?uid={$entries[0]['uid'][0]}");
 			exit();
@@ -57,36 +46,23 @@
 		else
 		{
 			# Otherwise, show all the people we found
-			for ($i = 0; $i < $entries['count']; $i++)
+			foreach($entries as $entry)
 			{
-				$uid = $entries[$i]['uid'][0];
-				$people[$uid] = array("givenname"=>$entries[$i]['givenname'][0], "sn"=>$entries[$i]['sn'][0]);
-				if (isset($entries[$i]['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $entries[$i]['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
-				if (isset($entries[$i]['mail'][0])) { $people[$uid]['mail'] = $entries[$i]['mail'][0]; } else { $people[$uid]['mail'] = ""; }
-				if (isset($entries[$i]['displayname'][0]) && $entries[$i]['displayname'][0]) { $people[$uid]['displayname'] = $entries[$i]['displayname'][0]; } else { $people[$uid]['displayname'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
-				if (isset($entries[$i]['title'][0]) && $entries[$i]['title'][0]) { $people[$uid]['title'] = $entries[$i]['title'][0]; } else { $people[$uid]['title'] = "{$entries[$i]['givenname'][0]} {$entries[$i]['sn'][0]}"; }
+				$uid = $entry['uid'][0];
+				if ($uid)
+				{
+					$people[$uid] = array("givenname"=>$entry['givenname'][0], "sn"=>$entry['sn'][0]);
+					if (isset($entry['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $entry['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
+					if (isset($entry['mail'][0])) { $people[$uid]['mail'] = $entry['mail'][0]; } else { $people[$uid]['mail'] = ""; }
+					if (isset($entry['displayname'][0]) && $entry['displayname'][0]) { $people[$uid]['displayname'] = $entry['displayname'][0]; } else { $people[$uid]['displayname'] = "{$entry['givenname'][0]} {$entry['sn'][0]}"; }
+					if (isset($entry['title'][0]) && $entry['title'][0]) { $people[$uid]['title'] = $entry['title'][0]; } else { $people[$uid]['title'] = "{$entry['givenname'][0]} {$entry['sn'][0]}"; }
+				}
 			}
 			ksort($people);
-
-			echo "<table>";
-			foreach ($people as $uid => $person)
-			{
-				# Choose the name to display
-				if (isset($person['displayname']) and ($person['displayname'][0])) { $displayName = $person['displayname'][0]; }
-				else { $displayName = "{$person['givenname'][0]} {$person['sn'][0]}"; }
-
-				echo "
-				<tr><td><a href=\"viewPerson.php?uid=$uid\">$person[displayname]</a>, $person[title]</td>
-					<td>$person[telephonenumber]</td>
-					<td><a href=\"mailto:$person[mail]\">$person[mail]</td>
-				</tr>
-				";
-			}
-			echo "</table>";
 		}
-	?>
-</div>
-<?php
-	include(APPLICATION_HOME."/includes/footer.inc");
-	include(GLOBAL_INCLUDES."/xhtmlFooter.inc");
+		$template->blocks[] = new Block('search/searchResults.inc',array('people'=>$people));
+	}
+
+	$template->blocks[] = new Block('search/searchForm.inc');
+	$template->render();
 ?>
