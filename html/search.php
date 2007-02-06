@@ -28,7 +28,7 @@
 
 
 		# Build the LDAP query
-		if ($firstname || $lastname) { $query = "(&(|(givenName=$firstname*)(displayName=$firstname*))(sn=$lastname*))"; }
+		if ($firstname || $lastname) { $query = "(&(|(givenName=$firstname*)(displayName=$firstname*))(|(sn=$lastname*)(sn=*-$lastname*)))"; }
 		elseif ($extension) { $query = "telephoneNumber=*$extension"; }
 
 
