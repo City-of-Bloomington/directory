@@ -16,7 +16,7 @@
 							"Administration","Fire",
 							"Detectives","Records","Uniformed Officers","Dispatch",
 							"Stonebelt",
-							"Blucher Poole","Communication","Customer Services","Dillman","Monroe","Purchasing","T&amp;D");
+							"Blucher Poole","Communication","Customer Services","Engineering","Dillman","Monroe","Purchasing","T&amp;D");
 
 	$businessCategories = array("Bloomington Transit","City Hall","Fire","Police","Utilities");
 
