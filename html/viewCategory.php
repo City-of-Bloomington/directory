@@ -1,9 +1,11 @@
 <?php
-/*
-	Lists all the people in a category
-
-	$_GET variables:	category
-*/
+/**
+ * @copyright Copyright (C) 2006,2007 City of Bloomington, Indiana. All rights reserved.
+ * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.txt
+ * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @param GET category
+ * Lists all the people in a category
+ */
 	#----------------------------------------------------------------------------------------------------------
 	# Get all the departments in this category
 	#----------------------------------------------------------------------------------------------------------
@@ -64,8 +66,11 @@
 		$departments[$department] = $offices;
 	}
 
-	$template = new Template();
-	$template->blocks[] = new Block('breadcrumbs.inc',array('category'=>$_GET['category']));
+	$template = isset($_GET['format']) ? new Template($_GET['format'],$_GET['format']) : new Template();
+	if ($template->outputFormat == 'html')
+	{
+		$template->blocks[] = new Block('breadcrumbs.inc',array('category'=>$_GET['category']));
+	}
 	$template->blocks[] = new Block('people/viewCategory.inc',array('category'=>$_GET['category'],'departments'=>$departments));
 	$template->render();
 ?>
