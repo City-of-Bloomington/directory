@@ -29,20 +29,31 @@
 		$phones['phone'] = $this->user->getWebPhone();
 	}
 
+
+	$displayName = View::escape($displayName);
+	$title = View::escape($this->user->getTitle());
+	$department = View::escape($this->user->getDepartment());
+	$category = View::escape($this->user->getBusinessCategory());
 echo "
 <person>
 	<photo src=\"$photoSRC\"/>
 	<name>$displayName</name>
-	<title>{$this->user->getTitle()}</title>
-	<department>{$this->user->getDepartment()}</department>
-	<businessCategory>{$this->user->getBusinessCategory()}</businessCategory>
+	<title>$title</title>
+	<department>$department</department>
+	<businessCategory>$category</businessCategory>
 	<phoneNumbers>
 ";
-	foreach($phones as $label=>$number) { echo "<phone><label>$label</label><number>$number</number></phone>"; }
+	foreach($phones as $label=>$number)
+	{
+		$label = View::escape($label);
+		echo "<phone><label>$label</label><number>$number</number></phone>";
+	}
+
+	$office = View::escape($this->user->getOffice());
 echo "
 	</phoneNumbers>
 	<fax>{$this->user->getFax()}</fax>
-	<deliveryOffice>{$this->user->getOFfice()}</deliveryOffice>
+	<deliveryOffice>$office</deliveryOffice>
 	<email>{$this->user->getEmail()}</email>
 </person>
 ";
