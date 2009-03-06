@@ -3,7 +3,7 @@
 	<meta http-equiv="Content-Script-Type" content="text/javascript" />
 	<link rel="SHORTCUT ICON" href="/favicon.ico" />
 	<style type="text/css" media="screen">
-		@import url("/skins/default/skin.css");
+		@import url("/skins/isotope/skin.css");
 		@import url("<?php echo BASE_URL; ?>/style.css");
 	</style>
 	<style type="text/css" media="print">@import url("/skins/default/print.css");</style>
