@@ -22,7 +22,8 @@
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Juke%20Box%20Community%20Building">Juke Box Community Building</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Rosehill">Rosehill</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Showers">Showers</a></li>
-								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Twin%20Lakes">Twin Lakes</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=TLRC">Twin Lakes Recreation Center</a></li>
+								<li><a href="viewLocation.php?category=City%20Hall;department=Parks%20and%20Recreation;location=Twin%20Lakes%20softball">Twin Lakes softball</a></li>
 							</ul>
 						</li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Planning">Planning</a></li>
