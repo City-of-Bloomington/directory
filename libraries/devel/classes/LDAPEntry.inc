@@ -177,13 +177,13 @@
 		public function setOffice($string)				{ $this->changeProperty("physicalDeliveryOfficeName",$this->sanitize($string)); }
 		public function setTitle($string)				{ $this->changeProperty("title",$this->sanitize($string)); }
 		public function setEmail($string)				{ $this->changeProperty("mail",$this->sanitize($string)); }
-		public function setPhone($string)				{ $this->changeProperty("telephoneNumber",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
-		public function setPreferredPhone($string)		{ $this->changeProperty("preferredTelephoneNumber",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
-		public function setWebPhone($string)			{ $this->changeProperty("webTelephoneNumber",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
-		public function setFax($string)					{ $this->changeProperty("facsimileTelephoneNumber",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
-		public function setHomePhone($string)			{ $this->changeProperty("homePhone",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
-		public function setCellPhone($string)			{ $this->changeProperty("mobile",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
-		public function setDialup($string)				{ $this->changeProperty("dialupAccess",ereg_replace("[^0-9[:space:]ext\-]","",$string)); }
+		public function setPhone($string)				{ $this->changeProperty("telephoneNumber",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setPreferredPhone($string)		{ $this->changeProperty("preferredTelephoneNumber",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setWebPhone($string)			{ $this->changeProperty("webTelephoneNumber",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setFax($string)					{ $this->changeProperty("facsimileTelephoneNumber",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setHomePhone($string)			{ $this->changeProperty("homePhone",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setCellPhone($string)			{ $this->changeProperty("mobile",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setDialup($string)				{ $this->changeProperty("dialupAccess",preg_replace("/[^0-9ext\s\-]/","",$string)); }
 		public function setPhoto($filePath)				{ $this->changeProperty("jpegPhoto",file_get_contents($filePath)); }
 	}
 ?>

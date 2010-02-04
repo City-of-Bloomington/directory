@@ -16,7 +16,7 @@
 
 	# Figure out what phone numbers to show
 	$phones = array();
-	if (ereg("^10\.",$_SERVER['REMOTE_ADDR']))
+	if (preg_match("/^10\./",$_SERVER['REMOTE_ADDR']))
 	{
 		# Internal website rules
 		# Show all three numbers, if we've got em

@@ -55,7 +55,7 @@ class SubversionWorkingCopy
 		if ($this->status($path))
 		{
 			$out = $this->runCommand(SVN." commit $path -m '$logMessage'");
-			if (!ereg("^Committed",end($out))) { throw new Exception(end($out)); }
+			if (!preg_match("/^Committed/",end($out))) { throw new Exception(end($out)); }
 			return $out;
 		}
 	}

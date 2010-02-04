@@ -19,14 +19,14 @@
 			$this->parameters = $parameters;
 
 			# Parse any parameters already in the script
-			if (ereg("\?",$script))
+			if (preg_match("/\?/",$script))
 			{
 				list($this->script,$parameters) = explode("?",$script);
 
 				$parameters = preg_split('/[;&]/',$parameters);
 				foreach($parameters as $parameter)
 				{
-					if (ereg("=",$parameter))
+					if (preg_match("/=/",$parameter))
 					{
 						list($field,$value) = explode("=",$parameter);
 						if ($value) { $this->parameters[$field] = $value; }

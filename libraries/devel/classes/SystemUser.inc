@@ -60,7 +60,7 @@
 				$entries = ldap_get_entries($connection, $result);
 
 
-				if (eregi("^\{crypt\}(.+)",$entries[0][LDAP_PASSWORD_ATTRIBUTE][0],$matches))
+				if (preg_match("/^\{crypt\}(.+)/i",$entries[0][LDAP_PASSWORD_ATTRIBUTE][0],$matches))
 				{
 					$ldapPassword = $matches[1];
 					$salt = substr($ldapPassword,0,2);
