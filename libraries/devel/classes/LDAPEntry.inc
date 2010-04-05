@@ -159,7 +159,7 @@
 		public function getWebPhone()			{ return $this->webTelephoneNumber; }
 		public function getFax()				{ return $this->facsimileTelephoneNumber; }
 		public function getHomePhone()			{ return $this->homePhone; }
-		public function getCellPhone()			{ return $this->mobile; }
+		public function getMobile()				{ return $this->mobile; }
 		public function getDialup()				{ return $this->dialupAccess; }
 		public function getSambaLMPassword()	{ return $this->sambaLMPassword; }
 		public function getSambaNTPassword()	{ return $this->sambaNTPassword; }
@@ -182,7 +182,7 @@
 		public function setWebPhone($string)			{ $this->changeProperty("webTelephoneNumber",preg_replace("/[^0-9ext\s\-]/","",$string)); }
 		public function setFax($string)					{ $this->changeProperty("facsimileTelephoneNumber",preg_replace("/[^0-9ext\s\-]/","",$string)); }
 		public function setHomePhone($string)			{ $this->changeProperty("homePhone",preg_replace("/[^0-9ext\s\-]/","",$string)); }
-		public function setCellPhone($string)			{ $this->changeProperty("mobile",preg_replace("/[^0-9ext\s\-]/","",$string)); }
+		public function setMobile($string)				{ $this->changeProperty("mobile",preg_replace("/[^0-9ext\s\-]/","",$string)); }
 		public function setDialup($string)				{ $this->changeProperty("dialupAccess",preg_replace("/[^0-9ext\s\-]/","",$string)); }
 		public function setPhoto($filePath)				{ $this->changeProperty("jpegPhoto",file_get_contents($filePath)); }
 	}

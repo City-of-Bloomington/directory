@@ -77,6 +77,8 @@
 				<td><input name="user[webPhone]" id="user-webPhone" value="<?php echo $this->user->getWebPhone(); ?>" /></td></tr>
 			<tr><td><label for="user-fax">Fax</label></td>
 				<td><input name="user[fax]" id="user-fax" value="<?php echo $this->user->getFax(); ?>" /></td></tr>
+			<tr><td><label for="user-mobile">Mobile</label></td>
+				<td><input name="user[mobile]" id="user-mobile" value="<?php echo View::escape($this->user->getMobile()); ?>" />
 			<tr><td><label for="user-office">Delivery Office</label></td>
 				<td><select name="user[office]" id="user-office">
 					<?php
