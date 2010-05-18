@@ -128,12 +128,15 @@
 
 			if (!$this->roles)
 			{
-				$this->roles = array();
-				$sql = "select role_id,role from user_roles left join roles on role_id=id where user_id={$this->id}";
-				if ($result = $PDO->query($sql))
+				if ($this->id)
 				{
-					foreach($result as $row) { $this->roles[$row['role_id']] = $row['role']; }
-					$result->closeCursor();
+					$this->roles = array();
+					$sql = "select role_id,role from user_roles left join roles on role_id=id where user_id={$this->id}";
+					if ($result = $PDO->query($sql))
+					{
+						foreach($result as $row) { $this->roles[$row['role_id']] = $row['role']; }
+						$result->closeCursor();
+					}
 				}
 			}
 			return $this->roles;
