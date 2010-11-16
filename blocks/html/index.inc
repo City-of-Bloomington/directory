@@ -7,8 +7,8 @@
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Controller">Controller</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Council%20Office">Council Office</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Economic%20%26%20Sustainable Development">Economic &amp; Sustainable Development</a></li>
-						<li><a href="viewDepartment.php?category=City%20Hall;department=Employee%20Services">Employee Services</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=HAND">Housing and Neighborhood Development (HAND)</a></li>
+						<li><a href="viewDepartment.php?category=City%20Hall;department=Human%20Resources">Human Resources</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=ITS">Information &amp; Technology Services (ITS)</a></li>
 						<li><a href="viewDepartment.php?category=City%20Hall;department=Legal">Legal</a>
 							<ul><li><a href="viewDepartment.php?category=City%20Hall;department=Risk%20Management">Risk Management</a></li></ul>
