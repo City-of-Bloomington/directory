@@ -9,62 +9,89 @@
 	#----------------------------------------------------------------------------------------------------------
 	# Get all the departments in this category
 	#----------------------------------------------------------------------------------------------------------
-	$departmentResults = ldap_search($LDAP_CONNECTION,LDAP_DN,"businessCategory=$_GET[category]",array("departmentNumber"));
-	$departmentEntries = ldap_get_entries($LDAP_CONNECTION,$departmentResults);
-
+  		
 	$departments = array();
-	foreach($departmentEntries as $department)
+	$category = "$_GET[category]";
+	$results = $adldap->folder()->listing(array($category, 'Departments'), adLDAP::ADLDAP_FOLDER, false, 'folder');
+
+	array_shift($results);
+
+	// Get department name from the DN 
+	foreach($results as $ou) 
 	{
-		if(isset($department['departmentnumber'][0]) && !in_array($department['departmentnumber'][0],$departments))
-		{
-			$departments[$department['departmentnumber'][0]] = array();
-		}
+		$exp = explode(',',$ou['distinguishedname'][0]);
+		$department_name = substr($exp[0],3);
+
+		if (preg_match('/^\*/',$department_name)) { continue; }
+		$departments[$department_name] = array();
 	}
+
 	ksort($departments);
+	#----------------------------------------------------------------------------------------------------------
+	# Get all the deliveryOffices in this department
+	#----------------------------------------------------------------------------------------------------------
 	foreach($departments as $department=>$array)
 	{
-		#----------------------------------------------------------------------------------------------------------
-		# Get all the deliveryOffices in this department
-		#----------------------------------------------------------------------------------------------------------
-		$officeResults = ldap_search($LDAP_CONNECTION,LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$department))",array("physicalDeliveryOfficeName"));
-		$officeEntries = ldap_get_entries($LDAP_CONNECTION,$officeResults);
-
 		$offices = array();
-		foreach($officeEntries as $office)
-		{
-			$name = trim($office['physicaldeliveryofficename'][0]);
-			if ($name && !array_key_exists($name,$offices)) { $offices[$name] = array(); }
+		$results = $adldap->folder()->listing(array($department, $category, 'Departments'), adLDAP::ADLDAP_FOLDER, false, 'folder');
+		array_shift($results);
+
+		foreach($results as $ou) {	
+			$exp = explode(',',$ou['distinguishedname'][0]);
+		   	$office_name = substr($exp[0],3);
+			$offices[$office_name] = array();
 		}
+
 		ksort($offices);
 
-		#----------------------------------------------------------------------------------------------------------
-		# Get all the people in each office
-		#----------------------------------------------------------------------------------------------------------
+	#----------------------------------------------------------------------------------------------------------
+	# Get all the people in each office
+	#----------------------------------------------------------------------------------------------------------
 		foreach($offices as $office=>$array)
 		{
-			$query = "(&(businessCategory=$_GET[category])(departmentNumber=$department)(physicalDeliveryOfficeName=$office))";
-			$searchResults = ldap_search($LDAP_CONNECTION,LDAP_DN,$query);
-			$entries = ldap_get_entries($LDAP_CONNECTION, $searchResults);
 			$people = array();
+			$search_ou = array($office, $department, $category, 'Departments');
 
-			foreach($entries as $entry)
+			$results = $adldap->folder()->listing($search_ou, adLDAP::ADLDAP_FOLDER, false, 'user');
+			array_shift($results);
+
+			foreach($results as $entry)
 			{
-				$uid = trim($entry['uid'][0]);
-				if ($uid)
+				$uid = trim($entry['samaccountname'][0]);
+				$userinfo = $adldap->user()->info($uid, array("physicaldeliveryofficename", "samaccountname", "sn",
+                                                              "givenname", "telephonenumber", "mail", "title", "othertelephone", "displayname"));
+
+				$user = $userinfo[0];
+				if (preg_match('/^\*/',$user['givenname'][0])) { continue; }	
+
+				if ($uid and $user['physicaldeliveryofficename'][0] == $office)
 				{
-					$people[$uid] = array("givenname"=>$entry['givenname'][0], "sn"=>$entry['sn'][0]);
-					$people[$uid]['telephonenumber'] = isset($entry['telephonenumber'][0]) ? $entry['telephonenumber'][0] : "";
-					$people[$uid]['mail'] = isset($entry['mail'][0]) ? $entry['mail'][0] : "";
-					$people[$uid]['displayname'] = isset($entry['displayname'][0]) ? $entry['displayname'][0] : "{$entry['givenname'][0]} {$entry['sn'][0]}";
-					$people[$uid]['title'] = isset($entry['title'][0]) ? $entry['title'][0] : "{$entry['givenname'][0]} {$entry['sn'][0]}";
+					$people[$uid]['givenname'] = $user['givenname'][0];
+					$people[$uid]['sn'] = isset($user['sn'][0]) ? $user['sn'][0] : "";
 				}
+				if (isset($user['telephonenumber'][0])) 
+				{
+				    $people[$uid]['telephonenumber'] = $user['telephonenumber'][0];
+				} 
+				elseif (isset($userinfo[0]['othertelephone'][0])) 
+				{
+				    $people[$uid]['telephonenumber'] = $user['othertelephone'][0];
+				}
+				else { $people[$uid]['telephonenumber'] = "N/A"; }
+
+				$people[$uid]['mail'] = isset($user['mail'][0]) ? $user['mail'][0] : "";
+
+				$people[$uid]['displayname'] = isset($user['displayname'][0]) ? 
+						$user['displayname'][0] : "{$user['givenname'][0]} {$user['sn'][0]}";
+
+				$people[$uid]['title'] = isset($user['title'][0]) ? $user['title'][0] : "";
 			}
 			ksort($people);
 			$offices[$office] = $people;
 		}
-
-		$departments[$department] = $offices;
+	$departments[$department] = $offices;
 	}
+
 
 	$template = isset($_GET['format']) ? new Template($_GET['format'],$_GET['format']) : new Template();
 	if ($template->outputFormat == 'html')

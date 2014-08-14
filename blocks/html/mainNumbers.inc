@@ -71,7 +71,7 @@
 	<td>349-3312</td>
 	<td>220 E. Third St</td></tr>
 <tr><th>Public Works:</th>
-	<td>349-3410</td>
+	<td>349-3400</td>
 	<td>401 N. Morton St, Suite 130</td></tr>
 <tr><th>Risk Management:</th>
 	<td>349-3438</td>
@@ -90,5 +90,5 @@
 	<td>130 W. Grimes Ln</td></tr>
 <tr><th>Utilities:</th>
 	<td>339-1444</td>
-	<td>1969 S. Henderson</td></tr>
+	<td>600 E. Miller Drive</td></tr>
 </table>

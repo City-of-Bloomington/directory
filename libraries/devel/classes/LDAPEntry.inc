@@ -11,6 +11,7 @@
 		private static $connection;
 
 		private $ou;
+		private $dn;
 
 		private $uid;
 		private $userPassword;
@@ -21,7 +22,7 @@
 		private $displayName;
 
 		private $businessCategory;
-		private $departmentNumber;
+		private $department;
 		private $physicalDeliveryOfficeName;
 		private $title;
 
@@ -57,18 +58,22 @@
 
 			if ($username)
 			{
-				$result = ldap_search(LDAPEntry::$connection,LDAP_DN,LDAP_USERNAME_ATTRIBUTE."=$username");
+				$result = ldap_search(LDAPEntry::$connection,ADS_DN,ADS_USERNAME_ATTRIBUTE."=$username");
 				if (ldap_count_entries(LDAPEntry::$connection,$result))
 				{
 					$entries = ldap_get_entries(LDAPEntry::$connection, $result);
+					$entry = ldap_first_entry(LDAPEntry::$connection, $result);
+
+					$this->dn = ldap_get_dn(LDAPEntry::$connection,$entry);
 					$this->uid = $username;
+
 					if (isset($entries[0]['ou'])) { $this->ou = $entries[0]['ou'][0]; }
 					if (isset($entries[0]['givenname'])) { $this->givenName = $entries[0]['givenname'][0]; }
 					if (isset($entries[0]['sn'])) { $this->sn = $entries[0]['sn'][0]; }
 					if (isset($entries[0]['cn'])) { $this->cn = $entries[0]['cn'][0]; }
 					if (isset($entries[0]['displayname'])) { $this->displayName = $entries[0]['displayname'][0]; }
 					if (isset($entries[0]['businesscategory'])) { $this->businessCategory = $entries[0]['businesscategory'][0]; }
-					if (isset($entries[0]['departmentnumber'])) { $this->departmentNumber = $entries[0]['departmentnumber'][0]; }
+					if (isset($entries[0]['department'])) { $this->department = $entries[0]['department'][0]; }
 					if (isset($entries[0]['physicaldeliveryofficename'])) { $this->physicalDeliveryOfficeName = $entries[0]['physicaldeliveryofficename'][0]; }
 					if (isset($entries[0]['title'])) { $this->title = $entries[0]['title'][0]; }
 					if (isset($entries[0]['mail'])) { $this->mail = $entries[0]['mail'][0]; }
@@ -94,10 +99,10 @@
 		{
 			if (!LDAPEntry::$connection)
 			{
-				if (LDAPEntry::$connection = ldap_connect(LDAP_SERVER))
+				if (LDAPEntry::$connection = ldap_connect(ADS_SERVER))
 				{
 					ldap_set_option(LDAPEntry::$connection,LDAP_OPT_PROTOCOL_VERSION,3);
-					ldap_bind(LDAPEntry::$connection,LDAP_USERNAME_ATTRIBUTE."=".LDAP_ADMIN_USER.",o=".LDAP_DOMAIN,LDAP_ADMIN_PASS);
+					ldap_bind(LDAPEntry::$connection,ADS_ADMIN_USER,ADS_ADMIN_PASS);
 				}
 				else { throw new Exception(ldap_error(LDAPEntry::$connection)); }
 			}
@@ -105,7 +110,7 @@
 
 		public function save()
 		{
-			$dn = "uid={$this->uid},ou=people,o=".LDAP_DOMAIN;
+			$dn = $this->dn;
 			if (count($this->modifiedAttributes)) { ldap_mod_replace(LDAPEntry::$connection,$dn,$this->modifiedAttributes) or die(print_r($this->modifiedAttributes).ldap_error(LDAPEntry::$connection)); }
 			if (count($this->addedAttributes)) { ldap_mod_add(LDAPEntry::$connection,$dn,$this->addedAttributes) or die(print_r($this->addedAttributes).ldap_error(LDAPEntry::$connection)); }
 			if (count($this->deletedAttributes)) { ldap_mod_del(LDAPEntry::$connection,$dn,$this->deletedAttributes) or die(print_r($this->deletedAttributes).ldap_error(LDAPEntry::$connection)); }
@@ -150,7 +155,7 @@
 		public function getCommonName()			{ return $this->cn; }
 		public function getDisplayName()		{ return $this->displayName; }
 		public function getBusinessCategory()	{ return $this->businessCategory; }
-		public function getDepartment()			{ return $this->departmentNumber; }
+		public function getDepartment()			{ return $this->department; }
 		public function getOffice()				{ return $this->physicalDeliveryOfficeName; }
 		public function getTitle()				{ return $this->title; }
 		public function getEmail()				{ return $this->mail; }
@@ -173,7 +178,7 @@
 		public function setCommonName($string)			{ $this->changeProperty("cn",$this->sanitize($string)); }
 		public function setDisplayName($string)			{ $this->changeProperty("displayName",$this->sanitize($string)); }
 		public function setBusinessCategory($string)	{ $this->changeProperty("businessCategory",$this->sanitize($string)); }
-		public function setDepartment($string)			{ $this->changeProperty("departmentNumber",$this->sanitize($string)); }
+		public function setDepartment($string)			{ $this->changeProperty("department",$this->sanitize($string)); }
 		public function setOffice($string)				{ $this->changeProperty("physicalDeliveryOfficeName",$this->sanitize($string)); }
 		public function setTitle($string)				{ $this->changeProperty("title",$this->sanitize($string)); }
 		public function setEmail($string)				{ $this->changeProperty("mail",$this->sanitize($string)); }

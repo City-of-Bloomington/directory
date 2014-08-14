@@ -47,34 +47,37 @@
 			}
 		}
 
+		private function connectADLDAP() 
+		{
+			$connection_spec = array(
+				'base_dn'		=> ADS_DN,
+				'account_suffix'	=> ADS_ACCT_SUFFIX,
+				'admin_username'	=> ADS_ADMIN_USER,
+				'admin_password'	=> ADS_ADMIN_PASS,
+				'domain_controllers'	=> array(ADS_SERVER),
+				'ad_port'		=> 389,
+				'use_ssl'		=> 0
+			);	
+
+			try {
+				$adldap = new adLDAP($connection_spec);
+			}
+
+			catch (adLDAPException $e) {
+				echo $e;
+				exit();
+			}
+			return $adldap;
+		}
 
 		private function authenticateLDAP($password)
 		{
-			$connection = ldap_connect(LDAP_SERVER) or die("Couldn't connect to LDAP");
-			ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
-			ldap_bind($connection);
-
-			$result = ldap_search($connection,LDAP_DN,LDAP_USERNAME_ATTRIBUTE."={$this->getUsername()}");
-			if (ldap_count_entries($connection,$result))
-			{
-				$entries = ldap_get_entries($connection, $result);
-
-
-				if (preg_match("/^\{crypt\}(.+)/i",$entries[0][LDAP_PASSWORD_ATTRIBUTE][0],$matches))
-				{
-					$ldapPassword = $matches[1];
-					$salt = substr($ldapPassword,0,2);
-
-					$encryptedPassword = crypt($password,$salt);
-					if ($encryptedPassword == $ldapPassword) { return true; }
-					else
-					{
-						return false;
-					}
-				}
-				else { throw new Exception("passwordIsCorrupted"); }
-			}
-			else { throw new Exception("unknownUser"); }
+			$adldap = $this->connectADLDAP();
+			$username = $this->getUsername();
+			$result = $adldap->authenticate($username, $password);
+		
+			if ($result) { return true; }
+			else { return false; }
 		}
 
 		private function saveLDAPPassword()

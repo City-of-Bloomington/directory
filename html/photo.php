@@ -4,8 +4,8 @@
 
 	$_GET variables:	uid
 */
-	$user = new LDAPEntry($_GET['uid']);
+	$user = $adldap->user()->infoCollection($_GET['uid'], array('jpegphoto'));
 
 	Header('Content-type: image/jpeg');
-	echo $user->getPhoto();
+	echo $user->jpegphoto;
 ?>

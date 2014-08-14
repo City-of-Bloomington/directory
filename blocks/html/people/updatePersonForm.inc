@@ -7,7 +7,7 @@
 	$this->user
 */
 	# Get their photo, if they've got one
-	if ($this->user->getPhoto()) { $photo = "<img src=\"photo.php?uid={$this->user->getUID()}\" alt=\"{$this->user->getUID()}\" />"; }
+	if ($this->user->jpegphoto) { $photo = "<img src=\"photo.php?uid={$this->user->samaccountname}\" alt=\"{$this->user->samaccountname}\" />"; }
 	else { $photo = "<img src=\"images/nophoto.jpg\" alt=\"No Photo\" />"; }
 
 	$departments = array("Bloomington Transit",
@@ -29,7 +29,7 @@
 ?>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>" enctype="multipart/form-data">
 <fieldset><legend>Edit Details</legend>
-	<input name="uid" type="hidden" value="<?php echo $this->user->getUID(); ?>" />
+	<input name="uid" type="hidden" value="<?php echo $this->user->samaccountname; ?>" />
 	<table id="details">
 	<tr><td><table>
 			<tr><td><?php echo $photo; ?></td></tr>
@@ -38,19 +38,19 @@
 		</td>
 		<td><table>
 			<tr><td><label for="user-firstname">Firstname</label></td>
-				<td><input name="user[firstname]" id="user-firstname" value="<?php echo $this->user->getFirstname(); ?>" /></td></tr>
+				<td><input name="user[firstname]" id="user-firstname" value="<?php echo $this->user->givenname; ?>" /></td></tr>
 			<tr><td><label for="user-lastname">Lastname</label></td>
-				<td><input name="user[lastname]" id="user-lastname" value="<?php echo $this->user->getLastname(); ?>" /></td></tr>
+				<td><input name="user[surname]" id="user-lastname" value="<?php echo $this->user->sn; ?>" /></td></tr>
 			<tr><td><label for="user-displayName">Display Name</label></td>
-				<td><input name="user[displayName]" id="user-displayName" value="<?php echo $this->user->getDisplayName(); ?>" /></td></tr>
+				<td><input name="user[display_name]" id="user-displayName" value="<?php echo $this->user->displayname; ?>" /></td></tr>
 			<tr><td><label for="user-title">Title</label></td>
-				<td><input name="user[title]" id="user-title" value="<?php echo $this->user->getTitle(); ?>" /></td></tr>
+				<td><input name="user[title]" id="user-title" value="<?php echo $this->user->title; ?>" /></td></tr>
 			<tr><td><label for="user-businessCategory">Business Category</label></td>
-				<td><select name="user[businessCategory]" id="user-businessCategory">
+				<td><select name="user[category]" id="user-businessCategory">
 					<?php
 						foreach($businessCategories as $category)
 						{
-							if ($category == $this->user->getBusinessCategory()) { echo "<option selected=\"selected\">$category</option>"; }
+							if ($category == $this->user->businesscategory) { echo "<option selected=\"selected\">$category</option>"; }
 							else { echo "<option>$category</option>"; }
 						}
 					?>
@@ -62,7 +62,7 @@
 					<?php
 						foreach($departments as $department)
 						{
-							if ($this->user->getDepartment() == $department) { echo "<option selected=\"selected\">$department</option>"; }
+							if ($this->user->department == $department) { echo "<option selected=\"selected\">$department</option>"; }
 							else { echo "<option>$department</option>"; }
 						}
 					?>
@@ -70,21 +70,21 @@
 				</td>
 			</tr>
 			<tr><td><label for="user-phone">Phone</label></td>
-				<td><input name="user[phone]" id="user-phone" value="<?php echo $this->user->getPhone(); ?>" /></td></tr>
-			<tr><td><label for="user-preferredPhone">Preferred Phone</label></td>
-				<td><input name="user[preferredPhone]" id="user-preferredPhone" value="<?php echo $this->user->getPreferredPhone(); ?>" /></td></tr>
+				<td><input name="user[telephone]" id="user-phone" value="<?php echo $this->user->telephonenumber; ?>" /></td></tr>
+			<tr><td><label for="user-preferredPhone">Other Phone</label></td>
+				<td><input name="user[othertelephone]" id="user-preferredPhone" value="<?php echo $this->user->othertelephone; ?>" /></td></tr>
 			<tr><td><label for="user-webPhone">Web Phone</label></td>
-				<td><input name="user[webPhone]" id="user-webPhone" value="<?php echo $this->user->getWebPhone(); ?>" /></td></tr>
+				<td><input name="user[webphone]" id="user-webPhone" value="<?php echo $this->user->webphone; ?>" /></td></tr>
 			<tr><td><label for="user-fax">Fax</label></td>
-				<td><input name="user[fax]" id="user-fax" value="<?php echo $this->user->getFax(); ?>" /></td></tr>
+				<td><input name="user[fax]" id="user-fax" value="<?php echo $this->user->facsimiletelephonenumber; ?>" /></td></tr>
 			<tr><td><label for="user-mobile">Mobile</label></td>
-				<td><input name="user[mobile]" id="user-mobile" value="<?php echo View::escape($this->user->getMobile()); ?>" />
+				<td><input name="user[mobile]" id="user-mobile" value="<?php echo View::escape($this->user->mobile); ?>" />
 			<tr><td><label for="user-office">Delivery Office</label></td>
 				<td><select name="user[office]" id="user-office">
 					<?php
 						foreach($offices as $office)
 						{
-							if ($office == $this->user->getOffice()) { echo "<option selected=\"selected\">$office</option>"; }
+							if ($office == $this->user->physicaldeliveryofficename) { echo "<option selected=\"selected\">$office</option>"; }
 							else { echo "<option>$office</option>"; }
 						}
 						?>
@@ -92,13 +92,13 @@
 				</td>
 			</tr>
 			<tr><td><label for="user-email">Email</label></td>
-				<td><input name="user[email]" id="user-email" value="<?php echo $this->user->getEmail(); ?>" /></td></tr>
+				<td><input name="user[email]" id="user-email" value="<?php echo $this->user->mail; ?>" /></td></tr>
 			</table>
 		</td>
 	</tr>
 	</table>
 
 	<button type="submit" class="save">Save</button>
-	<button type="button" class="cancel" onclick="document.location.href='viewPerson.php?uid=<?php echo $this->user->getUID(); ?>';">Cancel</button>
+	<button type="button" class="cancel" onclick="document.location.href='viewPerson.php?uid=<?php echo $this->user->samaccountname; ?>';">Cancel</button>
 </fieldset>
 </form>

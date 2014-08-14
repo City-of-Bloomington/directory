@@ -15,7 +15,6 @@
 	$firstname = isset($_GET['firstname']) ? trim($_GET['firstname']) : "";
 	$extension = isset($_GET['extension']) ? trim($_GET['extension']) : "";
 
-
 	if ($lastname || $firstname || $extension)
 	{
 		# begin easter egg
@@ -28,34 +27,53 @@
 
 
 		# Build the LDAP query
-		if ($firstname || $lastname) { $query = "(&(|(givenName=$firstname*)(displayName=$firstname*))(|(sn=$lastname*)(sn=*-$lastname*)))"; }
-		elseif ($extension) { $query = "telephoneNumber=*$extension"; }
+		if ($firstname || $lastname) { $query = "(|(givenName=$firstname*)(displayName=$firstname*))(|(sn=$lastname*)(sn=*-$lastname*))"; }
+		elseif ($extension) { $query = "(telephoneNumber=*$extension)"; }
 
 
 		# Do the search
-		$results = ldap_search($LDAP_CONNECTION, LDAP_DN, $query);
-		$entries = ldap_get_entries($LDAP_CONNECTION, $results);
+	 	$results=$adldap->user()->find(false, $query);
 		$people = array();
 
+		$count = sizeof($results);
 		# If we only get one hit back, send them directly to that person
-		if ($entries['count'] == 1)
+		if ($count == 1)
 		{
-			Header("Location: viewPerson.php?uid={$entries[0]['uid'][0]}");
-			exit();
+			# Check to see if user is disabled
+			$user = $adldap->user()->infoCollection($results[0], array('cn'));
+			if (preg_match('/^[^\*]/', $user->cn)) { 
+				Header("Location: viewPerson.php?uid={$results[0]}");
+				exit();
+			}
+			
 		}
 		else
 		{
 			# Otherwise, show all the people we found
-			foreach($entries as $entry)
+			for($i = 0; $i < $count; $i++) 	
 			{
-				$uid = $entry['uid'][0];
+				$uid = $results[$i];
+				$user = $adldap->user()->infoCollection($uid, array('givenname', 'telephonenumber', 
+					'mail', 'displayname', 'sn', 'cn', 'title'));	
+				if (preg_match('/^\*/', $user->cn)) { continue; }
 				if ($uid)
 				{
-					$people[$uid] = array("givenname"=>$entry['givenname'][0], "sn"=>$entry['sn'][0]);
-					if (isset($entry['telephonenumber'][0])) { $people[$uid]['telephonenumber'] = $entry['telephonenumber'][0]; } else { $people[$uid]['telephonenumber'] = ""; }
-					if (isset($entry['mail'][0])) { $people[$uid]['mail'] = $entry['mail'][0]; } else { $people[$uid]['mail'] = ""; }
-					if (isset($entry['displayname'][0]) && $entry['displayname'][0]) { $people[$uid]['displayname'] = $entry['displayname'][0]; } else { $people[$uid]['displayname'] = "{$entry['givenname'][0]} {$entry['sn'][0]}"; }
-					if (isset($entry['title'][0]) && $entry['title'][0]) { $people[$uid]['title'] = $entry['title'][0]; } else { $people[$uid]['title'] = "{$entry['givenname'][0]} {$entry['sn'][0]}"; }
+					$people[$uid] = array("givenname"=>$user->givenname, "sn"=>$user->sn);
+					if ($user->telephonenumber) { 
+						$people[$uid]['telephonenumber'] = $user->telephonenumber; 
+					} else { $people[$uid]['telephonenumber'] = ""; }
+
+					if ($user->mail) { 
+						$people[$uid]['mail'] = $user->mail; 
+					} else { $people[$uid]['mail'] = ""; }
+
+					if ($user->displayname) { 
+						$people[$uid]['displayname'] = $user->displayname; 
+					} else { $people[$uid]['displayname'] = "{$user->givenname} {$user->sn}"; }
+
+					if ($user->title) { 
+						$people[$uid]['title'] = $user->title; 
+					} else { $people[$uid]['title'] = ""; }
 				}
 			}
 			ksort($people);

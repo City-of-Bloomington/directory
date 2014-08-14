@@ -16,9 +16,11 @@
  */
 	try
 	{
-		$user = new User($_POST['username']);
-
-		if ($user->authenticate($_POST['password'])) { $user->startNewSession(); }
+		if ($adldap->user()->authenticate($_POST['username'], $_POST['password'])) 
+		{
+			$user = new User($_POST['username']);
+			$user->startNewSession();
+		}
 		else { throw new Exception("wrongPassword"); }
 	}
 	catch (Exception $e)

@@ -5,46 +5,62 @@
 	$_GET variables:	category
 						department
 */
+if (empty($_GET['category'])) {
+	$_SESSION['errorMessages'][] = new Exception('missingCategory');
+	header('Location: '.BASE_URL);
+	exit();
+}
+
+	#Get OU of Department
+	$search_ou = array("$_GET[department]", "$_GET[category]", 'Departments');
+	$results = $adldap->folder()->listing($search_ou, adLDAP::ADLDAP_FOLDER, true, 'user');
+
 	#----------------------------------------------------------------------------------------------------------
 	# Get all the deliveryOffices in this department
 	#----------------------------------------------------------------------------------------------------------
-	$officeResults = ldap_search($LDAP_CONNECTION,LDAP_DN,"(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department]))",array("physicalDeliveryOfficeName"));
-	$officeEntries = ldap_get_entries($LDAP_CONNECTION,$officeResults);
 
-	$offices = array();
-	foreach($officeEntries as $office)
-	{
-		$name = trim($office['physicaldeliveryofficename'][0]);
-		if ($name && !array_key_exists($name,$offices)) { $offices[$name] = array(); }
-	}
-	ksort($offices);
+	array_shift($results);
+	$people = array(); $offices = array();
+	foreach($results as $obj) {
+	    $aduser = $obj['samaccountname'][0];
+	    $user = $adldap->user()->infoCollection($aduser, array("physicaldeliveryofficename", "samaccountname", "sn",
+		    "givenname", "telephonenumber", "mail", "title", "displayname",
+		    "othertelephone"));
 
-	#----------------------------------------------------------------------------------------------------------
-	# Get all the people in each office
-	#----------------------------------------------------------------------------------------------------------
-	foreach($offices as $office=>$array)
-	{
-		$query = "(&(businessCategory=$_GET[category])(departmentNumber=$_GET[department])(physicalDeliveryOfficeName=$office))";
-		$searchResults = ldap_search($LDAP_CONNECTION,LDAP_DN,$query);
-		$entries = ldap_get_entries($LDAP_CONNECTION, $searchResults);
-		$people = array();
+	    // Go to next user if the user is a template
+	    if (preg_match('/^\*/',$user->givenname)) { continue; }
 
-		foreach($entries as $entry)
-		{
-			$uid = trim($entry['uid'][0]);
-			if ($uid)
-			{
-				$people[$uid] = array("givenname"=>$entry['givenname'][0], "sn"=>$entry['sn'][0]);
-				$people[$uid]['telephonenumber'] = isset($entry['telephonenumber'][0]) ? $entry['telephonenumber'][0] : "";
-				$people[$uid]['mail'] = isset($entry['mail'][0]) ? $entry['mail'][0] : "";
-				$people[$uid]['displayname'] = isset($entry['displayname'][0]) ? $entry['displayname'][0] : "{$entry['givenname'][0]} {$entry['sn'][0]}";
-				$people[$uid]['title'] = isset($entry['title'][0]) ? $entry['title'][0] : "{$entry['givenname'][0]} {$entry['sn'][0]}";
-			}
+            if (!($user->physicaldeliveryofficename)) { continue; }
+	    $office = $user->physicaldeliveryofficename;
+
+	    if (isset($office)) {
+	        if (!array_key_exists($office,$offices)) { $offices[$office] = array(); }
+
+	        $uid = $user->samaccountname;
+		if ($uid) {
+	            $people[$uid]['givenname'] = $user->givenname;
+		    $people[$uid]['sn'] = $user->sn ? $user->sn : "";
+
+	            if ($user->telephonenumber) { $people[$uid]['telephonenumber'] = $user->telephonenumber; }
+	            elseif ($user->othertelephone) { $people[$uid]['telephonenumber'] = $user->othertelephone; }
+	            else { $people[$uid]['telephonenumber'] = "N/A"; }
+
+		    $people[$uid]['office'] = $office;
+                    $people[$uid]['mail'] = $user->mail ? $user->mail : "";
+                    $people[$uid]['displayname'] = $user->displayname ? $user->displayname: "{$user->givenname} {$user->sn}";
+                    $people[$uid]['title'] = $user->title ? $user->title : "";
+
 		}
-		ksort($people);
-		$offices[$office] = $people;
+	    }
 	}
 
+	ksort($people);
+	foreach($people as $key => $person) {
+	    $office = $person['office'];
+	    $offices[$office][$key] = $person;
+	}
+
+	ksort($offices);
 
 	$department = new Block('people/viewDepartment.inc');
 	$department->category = $_GET['category'];
