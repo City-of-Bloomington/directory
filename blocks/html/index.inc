@@ -32,7 +32,6 @@
 							<ul><li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Animal%20Shelter">Animal Shelter</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Facilities">Facilities</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Fleet%20Maintenance">Fleet Maintenance</a></li>
-								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Parking%20Enforcement">Parking Enforcement</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Sanitation">Sanitation</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Showers">Showers</a></li>
 								<li><a href="viewLocation.php?category=City%20Hall;department=Public%20Works;location=Street and Traffic">Street and Traffic</a></li>
@@ -56,6 +55,7 @@
 						<li><a href="viewDepartment.php?category=Police;department=Dispatch">Dispatch</a></li>
 						<li><a href="viewDepartment.php?category=Police;department=Records">Records</a></li>
 						<li><a href="viewDepartment.php?category=Police;department=Uniformed%20Officers">Uniformed Officers</a></li>
+						<li><a href="viewDepartment.php?category=Police;department=Parking%20Enforcement">Parking Enforcement</a></li>
 					</ul>
 				</li>
 
