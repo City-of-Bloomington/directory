@@ -53,7 +53,7 @@ header nav {
 }
 header nav form, header nav fieldset { display:inline; padding:0; margin:0; }
 header nav a { font-weight:bold; color:black; padding-right:1ex; margin-left:1ex; border-right:2px solid black;  }
-#utilityBar { float:right; width:50%; text-align:right; }
+#utilityBar { float:right; width:320px; text-align:right; }
 #utilityBar li { display:inline; margin-right:1em; color:white; }
 
 #panel-container { padding:8px; }
