@@ -1,0 +1,97 @@
+/**
+ * Basic HTML element styles
+ */
+body { font-family:sans-serif; font-size:12pt; }
+
+h1 { font-size:150%; font-weight:bold; }
+h2 { font-size:131%; font-weight:bold; margin:.5em 0; color:#036; }
+h3 { font-size:123.1%; font-weight:bold;  margin:.5em 0 .25em 0; }
+h4 { font-size:100%; font-weight:bold; }
+a { text-decoration:none; color:#00f; }
+p { margin:0 .5em .5em .5em; }
+
+table { margin:0 .5em .5em .5em; }
+th { color:#333; font-weight:bold; font-size:90%; padding:0.25em; }
+td { padding:.25em; }
+thead th { text-align:left; }
+tbody th { text-align:right; }
+
+ul { list-style-type:none; margin-left:4ex; padding:0; }
+li { margin:0; }
+
+fieldset { padding:.25em 0; }
+legend { font-weight:bold; margin:4px; }
+label { font-weight:bold; }
+input { border-radius:4px; border:1px initial; }
+input:required { background-color:#E7E49D; }
+
+img { margin:8px; }
+
+/**
+ * Base styles for buttons and button links
+ */
+button, .button {
+	border:1px solid black; border-radius:6px;
+	display:inline-block;
+	padding:0 10px;
+	font-weight:bold; color:black;
+	background: linear-gradient(to bottom, #f5f6f6 0%,#dbdce2 21%,#b8bac6 49%,#dddfe3 80%,#f5f6f6 100%);
+}
+
+/**
+ * Banner
+ */
+header { color:#fff; margin:0; background:#036 url('images/citylogo-white.gif') top left no-repeat; }
+header a { color:#fff; font-weight:bold; }
+header h1  { margin:0 4px 0 68px; font-size:174%; }
+header div { margin:0 4px 0 68px; }
+header nav {
+    color: #000;
+    padding:0; margin:30px 0 0 0;
+	background-color:#fff;
+	border-top:2px solid #000; border-bottom:2px solid #000;
+}
+header nav form, header nav fieldset { display:inline; padding:0; margin:0; }
+header nav a { font-weight:bold; color:black; padding-right:1ex; margin-left:1ex; border-right:2px solid black;  }
+#utilityBar { float:right; width:50%; text-align:right; }
+#utilityBar li { display:inline; margin-right:1em; color:white; }
+
+#panel-container { padding:8px; }
+
+/**
+ * Side Panel
+ */
+#panel-one nav {
+	border:2px solid #000; margin-bottom:0.5em;
+	border-radius:10px;
+	overflow:hidden;
+}
+#panel-one h2 {
+	background-color:#036; color:#fff;
+	border-bottom:2px solid #000;
+	margin:0; padding:.25em;
+}
+#panel-one ul { margin:.25em; padding:0; }
+#panel-one a { font-weight:bold; color:#000; }
+
+/**
+ * Main Content
+ */
+section > ul { font-weight:bold; }
+section ul ul { font-weight:normal; list-style-type:disc; }
+section ul li { -webkit-column-break-inside:avoid; page-break-inside:avoid; break-inside:avoid; }
+section ul ul ul { list-style-type:circle; }
+section ul table { margin-left:4ex; }
+
+#departments-list div { columns:2; -moz-columns:2; -webkit-columns:2; padding-top: 1em; }
+#departments-list div > ul { margin-top: 0; font-weight:bold; }
+#departments-numbers th { text-align:left; }
+#departments-numbers tr:nth-child(even) { background-color:#ddd; }
+#departments-numbers td { padding-left: 1em; }
+
+#errorMessages { background-color:#fcc; padding:4px; border-radius:10px; }
+#errorMessages h2 { }
+
+.pageNavigation ul { list-style-type:none; }
+.pageNavigation li { display:inline; margin-right:1em; }
+.pageNavigation .current { border:2px solid green; }
