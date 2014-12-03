@@ -12,4 +12,4 @@ fi
 
 rsync -rlv --exclude-from=./buildignore --delete ./ ./build/
 
-tar czvf $DIST/Blossom.tar.gz --transform=s/build/Blossom/ $BUILD
+tar czvf $DIST/directory.tar.gz --transform=s/build/directory/ $BUILD
