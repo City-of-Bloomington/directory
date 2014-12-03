@@ -1,5 +1,0 @@
-This framework is *almost* entirely written in-house by developers
-for the City of Bloomington, Indiana.
-
-It includes an Inflector class that has been adapted from the
-wonderful folks at the CakePHP project.  http://www.cakephp.org

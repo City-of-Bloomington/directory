@@ -1,14 +1,17 @@
-<div id="login">
-	<div class="titleBar">Login</div>
-	<form method="post" action="authenticate.php">
-	<fieldset><legend>Login</legend>
+<?php
+use Blossom\Classes\View;
+?>
+<form method="post" action="<?php echo BASE_URI; ?>/login/login">
+	<fieldset><legend><?php echo $this->_('login'); ?></legend>
+		<input name="return_url" type="hidden" value="<?php echo View::escape($this->return_url); ?>" />
 		<table>
-		<tr><td><label for="username">User:</label></td>
-			<td><input name="username" id="username" size="10" /></td></tr>
-		<tr><td><label for="password">Pass:</label></td>
-			<td><input type="password" name="password" id="password" size="10" /></td></tr>
+			<tr><th><label for="username"><?php echo $this->_('username'); ?></label></th>
+				<td><input name="username" id="username" /></td><td></td>
+			</tr>
+			<tr><th><label for="password"><?php echo $this->_('password'); ?></label></th>
+				<td><input type="password" name="password" id="password" /></td>
+			</tr>
 		</table>
-		<button type="submit" class="login">Login</button>
+		<button type="submit" class="login"><?php echo $this->_('login'); ?></button>
 	</fieldset>
-	</form>
-</div>
+</form>

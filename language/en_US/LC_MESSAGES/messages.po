@@ -1,0 +1,40 @@
+# Translation
+# Copyright (C) 2013-2014 City of Bloomington
+# This file is distributed under the same license as the Blossom package.
+#
+# Cliff Ingham, 2013-2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: Directory\n"
+"Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
+"PO-Revision-Date: 2014-12-02 11:42-0500\n"
+"Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
+"Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: en_US\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"POT-Creation-Date: \n"
+
+msgid "signed_in_as"
+msgstr "Signed in as %s"
+
+msgid "photo_type_requirements"
+msgstr "Photo must be one of these valid formats: %s"
+
+msgid "search_by_name"
+msgstr "Search by Name"
+
+msgid "search_by_name_help"
+msgstr ""
+"Enter the name of the person you wish to locate. You can enter a partial "
+"name."
+
+msgid "search_by_phone"
+msgstr "Search by Phone Number"
+
+msgid "search_by_phone_help"
+msgstr "You may also perform a reverse lookup on a four-digit extension"
