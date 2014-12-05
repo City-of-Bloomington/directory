@@ -36,6 +36,7 @@ class DepartmentGateway
         $result = ldap_list($this->connection, $dn, "(objectClass=organizationalUnit)");
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {
+            ldap_sort($this->connection, $result, 'name');
             $entries = ldap_get_entries($this->connection, $result);
             for ($i=0; $i<$count; $i++) {
                 if (!in_array($entries[$i]['name'][0], self::$hiddenDepartments)) {
@@ -116,6 +117,7 @@ class DepartmentGateway
         $people = [];
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {
+            ldap_sort($this->connection, $result, 'sn');
             $entries = ldap_get_entries($this->connection, $result);
             for ($i=0; $i<$count; $i++) {
                 // Ignore user account flagged with an asterisk
