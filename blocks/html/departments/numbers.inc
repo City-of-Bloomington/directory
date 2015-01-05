@@ -16,7 +16,7 @@ use Blossom\Classes\View;
 
         foreach ($departments as $d) {
             $name = View::escape($d->getName());
-            $address = View::escape($d->getAddress());
+            $address = "{$d->getAddress()}\n{$d->getCity()} {$d->getState()} {$d->getZip()}";
             $phones = $d->getPhones();
             if (!empty($phones['office'])) {
                 $phone = View::escape($phones['office']);
@@ -24,7 +24,7 @@ use Blossom\Classes\View;
             echo "
             <tr><th>$name</th>
                 <td>$phone</td>
-                <td>$address</td>
+                <td><address>$address</address></td>
             </tr>
             ";
         }

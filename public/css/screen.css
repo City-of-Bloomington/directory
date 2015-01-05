@@ -25,6 +25,8 @@ label { font-weight:bold; }
 input { border-radius:4px; border:1px initial; }
 input:required { background-color:#E7E49D; }
 
+address { white-space:pre-line; }
+
 img { margin:8px; }
 
 /**
