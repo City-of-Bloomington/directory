@@ -8,7 +8,8 @@
 use Blossom\Classes\View;
 
 if (count($this->people)) {
-    echo '<table>';
+    echo '<table class="output-tabular">';
+    echo '<thead><tr><th scope="col">Name</th><th scope="col">Title</th><th scope="col">Phone</th><th scope="col">Email</th></tr></thead><tbody>';
     foreach ($this->people as $p) {
         $url = BASE_URI.'/people/view?username='.$p->getUsername();
         $name = View::escape($p->getFullname());
@@ -18,10 +19,10 @@ if (count($this->people)) {
         echo "
         <tr><td><a href=\"$url\">$name</a></td>
             <td>$title</td>
-            <td>$phone</td>
+            <td class=\"ext-number\">$phone</td>
             <td><a href=\"mailto:{$p->getEmail()}\">{$p->getEmail()}</a></td>
         </tr>
         ";
     }
-    echo '</table>';
+    echo '</tbody></table>';
 }

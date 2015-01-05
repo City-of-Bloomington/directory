@@ -1,0 +1,22 @@
+$header-background-url: "images/header-bg-2.jpg";
+
+$body-background-url: "images/showers-blurred.jpg";
+$accent-color-1: #1e59ae;
+
+$font-link-color: #1e59ae;
+$font-body-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
+
+$city-logo-url: "images/Simple_City_Logo.svg"; //URL relative to location of screen.css
+$header-text-color: #1e59ae;
+
+$nav1-link-color: #1e59ae;
+
+
+
+@mixin clearfix {
+    &:after {
+        clear: both;
+        content: '';
+        display: table;
+    }
+}

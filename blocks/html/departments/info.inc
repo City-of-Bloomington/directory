@@ -8,17 +8,24 @@
 use Blossom\Classes\Block;
 use Blossom\Classes\View;
 ?>
-<nav>
+<nav class="breadcrumbs">
 <?php
+    $i = count($this->department->getPath());
     foreach ($this->department->getPath() as $name=>$dn) {
         $url = $name == 'Departments'
             ? BASE_URI
             : BASE_URI.'/departments/view?dn='.urlencode($dn);
         $name = View::escape($name);
-        echo "<a href=\"$url\">$name></a>";
+        $i--;
+        if( $i > 0) {
+            echo "<span><a href=\"$url\">$name</a></span>";
+        } else {
+            echo "<span>$name</span>";
+        }
     }
 ?>
 </nav>
+
 <section>
     <h1><?php echo View::escape($this->department->getName()); ?></h1>
     <?php
@@ -31,7 +38,7 @@ use Blossom\Classes\View;
         function renderChildren($departments, $block)
         {
             if (count($departments)) {
-                echo '<ul>';
+                echo '<ul class="list-departments">';
                 foreach ($departments as $d) {
                     $name = View::escape($d->getName());
                     $url = BASE_URI.'/departments/view?dn='.urlencode($d->getDn());

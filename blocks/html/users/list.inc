@@ -9,7 +9,7 @@ use Application\Models\User;
 use Blossom\Classes\View;
 ?>
 <section>
-	<h1><?php echo $this->_(['user','users',2]); ?></h1>
+	<h1 class="page-title"><?php echo $this->_(['user','users',2]); ?></h1>
 	<div>
 	<?php
         $helper = $this->template->getHelper('buttonLink');

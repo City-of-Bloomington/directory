@@ -11,29 +11,35 @@ global $DIRECTORY_CONFIG;
 ?>
 <section id="departments-list">
     <h1><?php echo $this->_(['department', 'departments', 2]); ?></h1>
-    <div>
     <?php
         $gateway = new DepartmentGateway();
         $departments = $gateway->getDepartments();
 
-        renderChildren($departments);
+//        renderChildren($departments);
 
-        function renderChildren($departments)
+        function renderChildren($departments, $nested = false)
         {
             if (count($departments)) {
-                echo '<ul>';
+                if ($nested === false):
+                    echo '<ul class="list-departments mod-index">';
+                else:
+                    echo '<ul class="list-departments">';
+                endif;
+
                 foreach ($departments as $d) {
                     $name = View::escape($d->getName());
                     $url = BASE_URI.'/departments/view?dn='.urlencode($d->getDn());
                     echo "<li><a href=\"$url\">$name</a>";
 
-                    renderChildren($d->getChildren());
+                    renderChildren($d->getChildren(), true);
 
                     echo "</li>";
                 }
                 echo '</ul>';
             }
         }
+
+        renderChildren($departments);
+
     ?>
-    </div>
 </section>

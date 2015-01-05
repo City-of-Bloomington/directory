@@ -9,8 +9,8 @@
 	<?php
 		$this->_include('partials/banner.inc');
 	?>
-	<div id="panel-container">
-		<div id="content-panel">
+	<div class="panel-row">
+		<div class="panel-container" id="panel-container">
 			<?php
 				include BLOSSOM.'/errorMessages.php';
 

@@ -9,7 +9,15 @@ use Blossom\Classes\View;
 ?>
 <section id="departments-numbers">
     <h1><?php echo $this->_('main_numbers'); ?></h1>
-    <table>
+    <table class="output-tabular">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Address</th>
+            </tr>
+        </thead>
+        <tbody>
     <?php
         $gateway = new DepartmentGateway();
         $departments = $gateway->getTelephoneNumbers();
@@ -23,11 +31,12 @@ use Blossom\Classes\View;
             }
             echo "
             <tr><th>$name</th>
-                <td>$phone</td>
+                <td class=\"mod-number\">$phone</td>
                 <td>$address</td>
             </tr>
             ";
         }
     ?>
+        </tbody>
     </table>
 </section>
