@@ -18,8 +18,8 @@ $inputHelper = $this->template->getHelper('Input');
         <fieldset class="form-fieldset"><legend><?php echo $this->_('search_by_name', 'messages'); ?></legend>
             <p><?php echo $this->_('search_by_name_help', 'messages'); ?></p>
 
-            <?php echo $inputHelper->textInput('lastname', $this->_('lastname'), $lastname); ?>
-            <?php echo $inputHelper->textInput('firstname', $this->_('firstname'), $firstname); ?>
+            <?php echo $inputHelper->text('lastname', $this->_('lastname'), $lastname); ?>
+            <?php echo $inputHelper->text('firstname', $this->_('firstname'), $firstname); ?>
 
             <div class="input-buttons">
                 <button type="submit"><i class="fa fa-search"></i> <?php echo $this->_('search'); ?></button>
@@ -27,7 +27,7 @@ $inputHelper = $this->template->getHelper('Input');
         </fieldset>
         <fieldset class="form-fieldset"><legend><?php echo $this->_('search_by_phone', 'messages'); ?></legend>
             <p><?php echo $this->_('search_by_phone_help', 'messages'); ?></p>
-            <?php echo $inputHelper->textInput('extension', 'Extension', $extension); ?>
+            <?php echo $inputHelper->text('extension', 'Extension', $extension); ?>
 
             <div class="input-buttons">
                 <button type="submit" class="search"><i class="fa fa-search"></i> <?php echo $this->_('search'); ?></button>
