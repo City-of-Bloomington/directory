@@ -62,6 +62,9 @@ input:required {
 img {
   margin: 8px; }
 
+address {
+  white-space: pre-line; }
+
 /**
  * Base styles for buttons and button links
  */

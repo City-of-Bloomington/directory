@@ -24,7 +24,16 @@ use Blossom\Classes\View;
         <h2><?php echo View::escape($this->person->getTitle()); ?></h2>
         <div><?php echo View::escape($this->person->getDepartment()); ?></div>
         <div><?php echo View::escape($this->person->getLocation()); ?></div>
-        <div><?php echo View::escape($this->person->getAddress()); ?></div>
+        <div>
+            <address>
+                <?php
+                echo View::escape($this->person->getAddress())."\n";
+                echo View::escape($this->person->getCity());
+                echo View::escape($this->person->getState());
+                echo View::escape($this->person->getZip());
+                ?>
+            </address>
+        </div>
         <div>
             <?php
                 $email = View::escape($this->person->getEmail());

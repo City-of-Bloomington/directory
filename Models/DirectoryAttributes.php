@@ -30,7 +30,10 @@ trait DirectoryAttributes
     public function getTitle()      { return $this->get('title');      }
     public function getDepartment() { return $this->get('department'); }
     public function getLocation()   { return $this->get('physicaldeliveryofficename'); }
-    public function getAddress()    { return $this->get('street'); }
+    public function getAddress()    { return $this->get('street');     }
+    public function getCity()       { return $this->get('l');          }
+    public function getState()      { return $this->get('state');      }
+    public function getZip()        { return $this->get('postalcode'); }
 
 
     public function getPhones()
