@@ -31,7 +31,7 @@ use Blossom\Classes\View;
             }
             echo "
             <tr><th>$name</th>
-                <td class="mod-number">$phone</td>
+                <td class=\"mod-number\">$phone</td>
                 <td><address>$address</address></td>
             </tr>
             ";
