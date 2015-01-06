@@ -384,7 +384,7 @@ button, .button {
             @include clearfix();
         }
         &-row {
-            padding: 2.7em 0 0 0;
+            padding: 2.7em 0 .4em 0;
         }
         &-link {
             background: rgba(255, 255, 255, .5);
@@ -403,6 +403,8 @@ button, .button {
         &-searchForm {
             float: right;
             > fieldset {
+                padding: 0; // Override a style set by reset
+
                 > input {
                     font-size: 1em;
                     padding: .25em;
