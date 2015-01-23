@@ -1,11 +1,13 @@
 <?php
 /**
- * @copyright 2012-2013 City of Bloomington, Indiana
+ * @copyright 2012-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
+
 use Blossom\Classes\Controller;
+use Blossom\Classes\Employee;
 use Blossom\Classes\Template;
 use Blossom\Classes\Block;
 use Application\Models\User;
@@ -38,21 +40,35 @@ class LoginController extends Controller
 		\phpCAS::forceAuthentication();
 		// at this step, the user has been authenticated by the CAS server
 		// and the user's login name can be read with phpCAS::getUser().
+		$username = \phpCAS::getUser();
 
 		// They may be authenticated according to CAS,
 		// but that doesn't mean they have person record
 		// and even if they have a person record, they may not
 		// have a user account for that person record.
 		try {
-			$_SESSION['USER'] = new User(\phpCAS::getUser());
+			$_SESSION['USER'] = new User($username);
 			header("Location: {$this->return_url}");
 			exit();
 		}
 		catch (\Exception $e) {
-			$_SESSION['errorMessages'][] = $e;
+            // If they have a CAS authentication, go ahead and log them into the
+            // site as Staff.  We don't need to save the user accounts in the database
+            try {
+                $_SESSION['USER'] = new User();
+                $_SESSION['USER']->setUsername($username);
+                $_SESSION['USER']->setRole('Staff');
+                $_SESSION['USER']->setAuthenticationMethod('Employee');
+                $_SESSION['USER']->populateFromExternalIdentity(new Employee($username));
+                header("Location: {$this->return_url}");
+                exit();
+            }
+            catch (\Exception $e) {
+                $_SESSION['errorMessages'][] = $e;
+            }
 		}
 
-		$this->template->blocks[] = new Block('loginForm.inc',array('return_url'=>$this->return_url));
+		$this->template->blocks[] = new Block('loginForm.inc', ['return_url'=>$this->return_url]);
 	}
 
 	/**
