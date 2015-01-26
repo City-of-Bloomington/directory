@@ -381,7 +381,7 @@ a.button:hover {
             box-sizing: border-box;
             margin: 0 auto;
             padding-top: .5em;
-            width: 42em;
+            width: 46em;
 
             &:before {
 //                margin-top: 1.25em;
@@ -392,7 +392,7 @@ a.button:hover {
         &-container {
             box-sizing: border-box;
             margin: 0 auto;
-            width: 42em;
+            width: 46em;
             @include clearfix();
         }
         &-row {
