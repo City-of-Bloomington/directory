@@ -6,6 +6,8 @@
  */
 namespace Application\Models;
 
+use Blossom\Classes\Database;
+
 class Person
 {
     use DirectoryAttributes;
@@ -126,4 +128,11 @@ class Person
         }
     }
 
+    /**
+     * @return EmergencyContact
+     */
+    public function getEmergencyContacts()
+    {
+        return new EmergencyContact($this->getUsername());
+    }
 }

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Blossom\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
 "POT-Creation-Date: 2013-09-20 16:33-0400\n"
-"PO-Revision-Date: 2014-12-02 14:53-0500\n"
+"PO-Revision-Date: 2015-01-26 10:30-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
 "MIME-Version: 1.0\n"
@@ -88,6 +88,12 @@ msgid_plural "emails"
 msgstr[0] "Email"
 msgstr[1] "Email Addresses"
 
+msgid "phone"
+msgstr "Phone"
+
+msgid "tty"
+msgstr "TTY"
+
 msgid "office"
 msgstr "Office"
 
@@ -141,3 +147,9 @@ msgstr "Upload Photo"
 
 msgid "upload"
 msgstr "Upload"
+
+msgid "emergencyContacts"
+msgstr "Emergency Contacts"
+
+msgid "emergencyContacts_update"
+msgstr "Edit Emergency Contacts"

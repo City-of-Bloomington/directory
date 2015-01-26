@@ -1,12 +1,13 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
 
 use Application\Models\DepartmentGateway;
+use Application\Models\User;
 use Blossom\Classes\Block;
 use Blossom\Classes\Controller;
 
@@ -22,6 +23,9 @@ class PeopleController extends Controller
         $person = $gateway->getPerson($_GET['username']);
 
         $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
+        if (User::isAllowed('people', 'updateEmergencyContacts')) {
+            $this->template->blocks[] = new Block('emergencyContacts/info.inc', ['person'=>$person]);
+        }
     }
 
     public function search()
@@ -78,5 +82,27 @@ class PeopleController extends Controller
         $_SESSION['errorMessages'][] = new \Exception('people/unknownPerson');
         header('Location: '.BASE_URL);
         exit();
+    }
+
+    public function updateEmergencyContacts()
+    {
+        $gateway = new DepartmentGateway();
+        $person  = $gateway->getPerson($_REQUEST['username']);
+        $contact = $person->getEmergencyContacts();
+
+        if (!empty($_POST['username'])) {
+            try {
+                $contact->handleUpdate($_POST);
+                $contact->save();
+                header('Location: '.BASE_URI.'/people/view?username='.$person->getUsername());
+                exit();
+            }
+            catch (\Exception $e) {
+                $_SESSION['errorMessages'][] = $e;
+            }
+        }
+
+        $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
+        $this->template->blocks[] = new Block('emergencyContacts/updateForm.inc', ['person'=>$person]);
     }
 }

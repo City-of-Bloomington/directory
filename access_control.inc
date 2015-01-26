@@ -1,12 +1,17 @@
 <?php
 /**
- * @copyright 2012-2014 City of Bloomington, Indiana
+ * @copyright 2012-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
+namespace Application\Models;
+
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
+use Zend\Permissions\Acl\Role\RoleInterface;
 use Zend\Permissions\Acl\Resource\GenericResource as Resource;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
+use Zend\Permissions\Acl\Assertion\AssertionInterface;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
@@ -35,8 +40,18 @@ $ZEND_ACL->allow(null,
 				['index', 'view', 'photo', 'search']);
 
 // Allow Staff to do stuff
-//$ZEND_ACL->allow('Staff', ['people'], ['uploadPhoto']);
-
+// Staff need to be able to update their own Emergency Contact Information
+class OwnInfoAssertion implements AssertionInterface
+{
+    public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
+    {
+        return (   isset($_REQUEST['username'])
+                && isset($_SESSION['USER'])
+                && $_SESSION['USER']->getUsername()==$_REQUEST['username']
+        );
+    }
+}
+$ZEND_ACL->allow('Staff', 'people', 'updateEmergencyContacts', new OwnInfoAssertion());
 
 // Administrator is allowed access to everything
 $ZEND_ACL->allow('Administrator');
