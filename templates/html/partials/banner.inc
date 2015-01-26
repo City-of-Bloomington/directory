@@ -11,7 +11,7 @@ use Blossom\Classes\Url;
                 <a href="<?php echo BASE_URL; ?>">City of Bloomington, Mark Kruzan, Mayor</a>
             </div>
         </div>
-        <div id="utilityBar" class="header-utilityBar">
+        <div id="utilityBar" class="site-utilityBar">
             <?php
                 $a = '<a href="%s">%s</a>';
                 if (isset($_SESSION['USER'])) {
@@ -41,9 +41,10 @@ use Blossom\Classes\Url;
             ?>
         </div>
         <div class="site-utilityBar">
-            <div class="ext-launcher" id="siteSettingsLauncher" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gear"></i> Settings</div>
-            <div class="ext-links closed" id="siteSettingsDropdown">
-                <?php
+            <?php if(User::isAllowed('users'))
+                {
+                    echo '<div class="ext-launcher" id="siteSettingsLauncher" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gear"></i> Settings</div>';
+                    echo '<div class="ext-links closed" id="siteSettingsDropdown">';
                     $routes = [
                         'users'      => 'user'
                     ];
@@ -53,8 +54,9 @@ use Blossom\Classes\Url;
                             echo sprintf($a, BASE_URI.'/'.$plural, $this->_([$singular, $plural, 2]));
                         }
                     }
-                ?>
-            </div>
+                    echo '</div>';
+                }
+            ?>
         </div>
     </div>
     <?php

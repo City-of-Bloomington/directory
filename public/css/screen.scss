@@ -1,6 +1,7 @@
 @import 'sass-modules/_vars-mixins';
 
-@import 'sass-modules/_content-section';
+@import 'sass-modules/layout/_content-section';
+@import 'sass-modules/layout/_site';
 
 /**
  * Basic HTML element styles
@@ -524,28 +525,7 @@ a.button:hover {
     }
 
     .person {
-        &-profile {
-            @include clearfix();
-        }
-		&-photoContainer {
-			float: left;
-			text-align: right;
-			width: 12.5em; /* 200px by default */
-
-            > img {
-                margin: 0;
-				max-width: (180em/16);
-            }
-		}
-        &-details {
-            float: left;
-            margin: 0 0 0 1.5em;
-			max-width: 28em;
-            @include clearfix();
-
-            > div {
-                margin: .25em 0;
-            }
+		@mixin table() {
             > table {
                 margin: 1em 0 0 0;
                 > tbody {
@@ -559,10 +539,36 @@ a.button:hover {
                     }
                 }
             }
+		}
+        &-profile {
+            @include clearfix();
+        }
+		&-photoContainer {
+			float: left;
+			text-align: right;
+			width: 12.5em; /* 200px by default */
+			min-height: 1em;
+
+            > img {
+                margin: 0;
+				max-width: (180em/16);
+            }
+		}
+        &-details {
+            float: left;
+            margin: 0 0 0 1.5em;
+			max-width: 28em;
+			@include table();
+            @include clearfix();
+
+            > div {
+                margin: .25em 0;
+            }
         }
 		&-emergencyProfile {
 			margin: 1.5em 0 0 1.5em;
 			padding: 0 0 0 200px;
+			@include table();
 		}
     }
 }
