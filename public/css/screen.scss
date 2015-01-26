@@ -404,7 +404,7 @@ a.button:hover {
             display: block;
             float: left;
             margin: 0 .5em 0 0;
-            padding: .5em 1.5em;
+            padding: .5em .75em;
             transition: background-color .25s ease-in-out;
 
             &:hover {
@@ -530,16 +530,17 @@ a.button:hover {
 		&-photoContainer {
 			float: left;
 			text-align: right;
-			width: 200px;
+			width: 12.5em; /* 200px by default */
 
             > img {
                 margin: 0;
-				max-width: 180px;
+				max-width: (180em/16);
             }
 		}
         &-details {
             float: left;
             margin: 0 0 0 1.5em;
+			max-width: 28em;
             @include clearfix();
 
             > div {
@@ -583,6 +584,9 @@ a.button:hover {
         }
         &-form {
         }
+		&-link {
+            padding: .5em 1.5em;
+		}
     }
     .panel {
         &-row {
@@ -615,4 +619,9 @@ a.button:hover {
             }
         }
     }
+	.person {
+		&-details {
+			max-width: 42em;
+		}
+	}
 }
