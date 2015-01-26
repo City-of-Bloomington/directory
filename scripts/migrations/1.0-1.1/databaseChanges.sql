@@ -15,3 +15,7 @@ create table emergencyContacts (
     phone_3 varchar(32),
     tty_1   varchar(32)
 );
+
+load data local infile '/tmp/contacts.csv' into table emergencyContacts
+fields terminated by '|'
+(username, employeeNum, department, workSite);
