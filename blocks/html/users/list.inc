@@ -6,6 +6,7 @@
  * @param Zend\Db\Sql\Select $users
  */
 use Application\Models\User;
+use Application\Templates\Helpers\ButtonLink;
 use Blossom\Classes\View;
 ?>
 <section>
@@ -38,11 +39,13 @@ use Blossom\Classes\View;
 						BASE_URI.'/users/update?user_id='.$user->getId(),
 						$this->_('user_edit'),
 						'edit'
+						#ButtonLink::SIZE_ICON
 					);
 					$deleteButton = $helper->buttonLink(
 						BASE_URI.'/users/delete?user_id='.$user->getId(),
 						$this->_('user_delete'),
 						'delete'
+						#ButtonLink::SIZE_ICON
 					);
 				}
 

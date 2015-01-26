@@ -69,6 +69,18 @@ a.button:hover {
 	cursor: default;
 	text-decoration: none;
 }
+.hidden-label       { font-size:0; height:1px; overflow:hidden; }
+.fa-times       { color:red;   }
+.fa-pencil      { color:blue;  }
+.fa-edit        { color:blue;  }
+.fa-plus        { color:green; }
+.fa-ok          { color:green; }
+.fa-save        { color:green; }
+.fa-map-marker  { color:blue;  }
+.fa-list-ul     { color:blue;  }
+.fa-print       { color:blue;  }
+.fa-upload      { color:black; }
+.fa-download    { color:black; }
 
 /**
  * Banner

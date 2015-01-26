@@ -19,6 +19,6 @@ use Application\Models\Person;
         </p>
         <input name="username" type="hidden" value="<?php echo $this->person->getUsername(); ?>" />
         <input name="photo" type="file" />
-        <button type="submit"><?php echo $this->_('upload'); ?></button>
+        <button type="submit"><i class="fa fa-upload"></i> <?php echo $this->_('upload'); ?></button>
     </fieldset>
 </form>
