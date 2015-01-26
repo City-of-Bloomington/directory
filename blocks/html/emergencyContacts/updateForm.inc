@@ -12,6 +12,7 @@ $contact = $this->person->getEmergencyContacts();
 ?>
 <section class="person-emergencyProfile">
     <h2><?php echo $this->_('emergencyContacts_update'); ?></h2>
+    <p> <?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <form method="post" action="<?php echo BASE_URI; ?>/people/updateEmergencyContacts">
         <fieldset><legend><?php echo $this->_('emergencyContacts'); ?></legend>
             <input name="emergencyContact_id" type="hidden" value="<?php echo $contact->getId(); ?>" />

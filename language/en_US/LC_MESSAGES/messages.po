@@ -1,13 +1,13 @@
 # Translation
-# Copyright (C) 2013-2014 City of Bloomington
+# Copyright (C) 2013-2015 City of Bloomington
 # This file is distributed under the same license as the Blossom package.
 #
-# Cliff Ingham, 2013-2014.
+# Cliff Ingham, 2013-2015.
 msgid ""
 msgstr ""
 "Project-Id-Version: Directory\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
-"PO-Revision-Date: 2014-12-02 11:42-0500\n"
+"PO-Revision-Date: 2015-01-26 16:20-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
 "MIME-Version: 1.0\n"
@@ -38,3 +38,10 @@ msgstr "Search by Phone Number"
 
 msgid "search_by_phone_help"
 msgstr "You may also perform a reverse lookup on a four-digit extension"
+
+msgid "emergencyContacts_help"
+msgstr ""
+"Enter contact information for how you would like to be contact, in the event "
+"of an alert.  Alerts will attempt to send out notifications in the order "
+"listed below.  If you do not have a valid entry for an entry, the alert "
+"system will continue down the list."

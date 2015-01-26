@@ -45,7 +45,7 @@ use Blossom\Classes\View;
         <table>
             <?php
                 foreach ($this->person->getPhones() as $label=>$number) {
-                    echo "<th>$label</th><td>$number</td></tr>";
+                    echo "<tr><th>$label</th><td>$number</td></tr>";
                 }
             ?>
         </table>
