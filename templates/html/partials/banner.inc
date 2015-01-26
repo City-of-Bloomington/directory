@@ -1,4 +1,5 @@
 <?php
+use Application\Models\User;
 use Blossom\Classes\View;
 use Blossom\Classes\Url;
 ?>
@@ -12,19 +13,48 @@ use Blossom\Classes\Url;
         </div>
         <div id="utilityBar" class="header-utilityBar">
             <?php
-                $link = '<a href="%s">%s</a>';
-
+                $a = '<a href="%s">%s</a>';
                 if (isset($_SESSION['USER'])) {
-                    echo sprintf($link, BASE_URI.'/login/logout', $this->_('logout'));
+                    $this->addToAsset('scripts', JQUERY.'/jquery.min.js');
+                    $this->addToAsset('scripts', BASE_URI.'/js/dropdown.js');
+                    $this->addToAsset('scripts', BASE_URI.'/js/usermenu.js');
 
-                    $name = View::escape($_SESSION['USER']->getFullname());
-                    echo '<li>'.sprintf($this->_('signed_in_as', 'messages'), $name).'</li>';
+                    echo "
+                    <div id=\"userDropdownLauncher\" class=\"ext-launcher\"
+                         aria-haspopup=\"true\" aria-expanded=\"false\">
+                        <i class=\"fa fa-chevron-down\"></i>
+                    ";
+                    echo View::escape($_SESSION['USER']->getFullname());
+                    echo "
+                    </div>
+                    <div class=\"ext-links closed\" aria-hidden=\"true\" id=\"userDropdown\">
+                    ";
+                        echo sprintf($a, BASE_URI.'/login/logout', $this->_('logout'));
+                    echo "
+                    </div>
+                    ";
                 }
                 else {
-                    $return_url = Url::current_url();
-                    echo sprintf($link, BASE_URI.'/login?return_url='.$return_url, $this->_('login'));
+                    $return_url = View::escape($_SERVER['REQUEST_URI']);
+                    echo sprintf($a, BASE_URI.'/login?return_url='.$return_url, $this->_('login'));
                 }
             ?>
+        </div>
+        <div class="site-utilityBar">
+            <div class="ext-launcher" id="siteSettingsLauncher" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gear"></i> Settings</div>
+            <div class="ext-links closed" id="siteSettingsDropdown">
+                <?php
+                    $routes = [
+                        'users'      => 'user'
+                    ];
+                    foreach ($routes as $plural=>$singular) {
+                        $requiredAction = 'index';
+                        if (User::isAllowed($plural, $requiredAction)) {
+                            echo sprintf($a, BASE_URI.'/'.$plural, $this->_([$singular, $plural, 2]));
+                        }
+                    }
+                ?>
+            </div>
         </div>
     </div>
     <?php

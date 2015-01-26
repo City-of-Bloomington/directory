@@ -9,6 +9,11 @@ define('BASE_URL','http://localhost/application');
 define('BASE_URI','/application');
 
 /**
+ * Javascript libraries
+ */
+define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
+
+/**
  * Used when there's an error on the site.  The Framework will
  * print out a nice error message, encouraging users to report any problems
  * See: Blossom\Classes\Error
