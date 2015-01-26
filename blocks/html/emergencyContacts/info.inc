@@ -35,9 +35,10 @@ $contact = $this->person->getEmergencyContacts();
             $value = View::escape($contact->$get());
 
             $label = $this->_(substr($f, 0, -2));
+            $num   = substr($f, -1);
 
             echo "
-            <tr><th>$label</th>
+            <tr><th>$label $num</th>
                 <td>$value</td>
             </tr>
             ";
