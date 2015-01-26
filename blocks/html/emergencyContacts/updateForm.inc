@@ -10,8 +10,8 @@ use Blossom\Classes\View;
 
 $contact = $this->person->getEmergencyContacts();
 ?>
-<section>
-    <h1><?php echo $this->_('emergencyContacts_update'); ?></h1>
+<section class="person-emergencyProfile">
+    <h2><?php echo $this->_('emergencyContacts_update'); ?></h2>
     <form method="post" action="<?php echo BASE_URI; ?>/people/updateEmergencyContacts">
         <fieldset><legend><?php echo $this->_('emergencyContacts'); ?></legend>
             <input name="emergencyContact_id" type="hidden" value="<?php echo $contact->getId(); ?>" />

@@ -1,0 +1,15 @@
+section {
+    > header {
+        vertical-align: middle;
+
+        > h1, h2, h3, h4, h5, h6 {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        > .tools {
+            display: inline-block;
+            margin: 0 0 0 2em;
+            vertical-align: middle;
+        }
+    }
+}

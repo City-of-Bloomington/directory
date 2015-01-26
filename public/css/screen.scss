@@ -1,5 +1,7 @@
 @import 'sass-modules/_vars-mixins';
 
+@import 'sass-modules/_content-section';
+
 /**
  * Basic HTML element styles
  */
@@ -45,18 +47,26 @@ address { white-space:pre-line; }
  * Base styles for buttons and button links
  */
 button, .button {
-	border:1px solid #888;
+	border:1px solid #b8b8b8;
     border-radius:.4em;
     color:#333;
     display:inline-block;
 	padding: .25em 1em;
     font-size: (14em/16);
 	font-weight:normal;
-	background: linear-gradient(to bottom, #e2e2f0 21%,#dddfe3 80%);
+	background: linear-gradient(to bottom, #f2f2f9 21%,#CDD1D9 80%);
     vertical-align: middle;
     > .fa {
         font-size: (15em/15);
     }
+	&:hover {
+		background: linear-gradient(to bottom, #f8f8fd 21%, #d5dfe4 80%);
+//		border: 1px solid #d0d0d0;
+	}
+}
+a.button:hover {
+	cursor: default;
+	text-decoration: none;
 }
 
 /**
@@ -340,15 +350,16 @@ button, .button {
 
 .person {
     &-profile {
+    }
+	&-photoContainer {
         > img {
             border: 8px solid #fff;
             box-shadow: 0 0 10px 0 rgba(0,0,0,.4);
             outline: 1px solid #c0c0c0;
             position: relative;
             z-index: 0;
-
         }
-    }
+	}
     &-details {
         > h1 {
             margin-bottom: .2em;
@@ -357,6 +368,7 @@ button, .button {
             margin-bottom: 1em;
         }
     }
+
 }
 
 @media screen and (min-width: 46em) {
@@ -513,11 +525,18 @@ button, .button {
 
     .person {
         &-profile {
-            > img {
-                float: left;
-                margin: 0;
-            }
+            @include clearfix();
         }
+		&-photoContainer {
+			float: left;
+			text-align: right;
+			width: 200px;
+
+            > img {
+                margin: 0;
+				max-width: 180px;
+            }
+		}
         &-details {
             float: left;
             margin: 0 0 0 1.5em;
@@ -540,6 +559,10 @@ button, .button {
                 }
             }
         }
+		&-emergencyProfile {
+			margin: 1.5em 0 0 1.5em;
+			padding: 0 0 0 200px;
+		}
     }
 }
 

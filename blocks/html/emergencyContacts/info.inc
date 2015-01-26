@@ -12,20 +12,22 @@ use Blossom\Classes\View;
 
 $contact = $this->person->getEmergencyContacts();
 ?>
-<section>
-    <h1><?php
-            echo $this->_('emergencyContacts');
-
-            if (User::isAllowed('people', 'updateEmergencyContacts')) {
-                $helper = $this->template->getHelper('buttonLink');
-                echo $helper->buttonLink(
-                    BASE_URI."/people/updateEmergencyContacts?username={$this->person->getUsername()}",
-                    $this->_('emergencyContacts_update'),
-                    'edit'
-                );
-            }
-        ?>
-    </h1>
+<section class="person-emergencyProfile">
+    <header>
+        <h2><?php echo $this->_('emergencyContacts'); ?></h2>
+        <div class="tools">
+            <?php
+                if (User::isAllowed('people', 'updateEmergencyContacts')) {
+                    $helper = $this->template->getHelper('buttonLink');
+                    echo $helper->buttonLink(
+                        BASE_URI."/people/updateEmergencyContacts?username={$this->person->getUsername()}",
+                        $this->_('emergencyContacts_update'),
+                        'edit'
+                    );
+                }
+            ?>
+        </div>
+    </header>
     <table>
     <?php
         foreach (EmergencyContact::$contactFields as $f) {

@@ -9,16 +9,18 @@ use Application\Models\User;
 use Blossom\Classes\View;
 ?>
 <section class="person-profile">
-    <?php
-        # Get their photo, if they've got one
-        $photo = $this->person->hasPhoto()
-            ? "<img src=\"{$this->person->getPhotoUri()}\" />"
-            : "";
-        #$photo = $this->person->hasLdapPhoto()
-        #    ? "<img src=\"".BASE_URI."/people/photo?username={$this->person->getUsername()}\" align=\"left\" />"
-        #    : "<img src=\"".BASE_URI."/images/nophoto.jpg\"  align=\"left\" />";
-        echo $photo;
-    ?>
+    <div class="person-photoContainer">
+        <?php
+            # Get their photo, if they've got one
+            $photo = $this->person->hasPhoto()
+                ? "<img src=\"{$this->person->getPhotoUri()}\" />"
+                : "";
+            #$photo = $this->person->hasLdapPhoto()
+            #    ? "<img src=\"".BASE_URI."/people/photo?username={$this->person->getUsername()}\" align=\"left\" />"
+            #    : "<img src=\"".BASE_URI."/images/nophoto.jpg\"  align=\"left\" />";
+            echo $photo;
+        ?>
+    </div>
     <div class="person-details">
         <h1><?php echo View::escape($this->person->getFullname()); ?></h1>
         <h2><?php echo View::escape($this->person->getTitle()); ?></h2>
