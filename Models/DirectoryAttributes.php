@@ -23,7 +23,7 @@ trait DirectoryAttributes
     public function getName()       { return $this->get('name'); }
     public function getDn()         { return $this->get('distinguishedname'); }
 
-    public function getUsername()   { return $this->get('cn');         }
+    public function getUsername()   { return $this->get('samaccountname');         }
     public function getFirstname()  { return $this->get('givenname');  }
     public function getLastname()   { return $this->get('sn');         }
     public function getEmail()      { return $this->get('mail');       }

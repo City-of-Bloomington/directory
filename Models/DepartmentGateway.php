@@ -79,7 +79,7 @@ class DepartmentGateway
         }
         elseif (!empty($fields['query'])) {
             $q = $fields['query'];
-            $filter = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(cn=$q*))";
+            $filter = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
 
         $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'];
@@ -134,7 +134,7 @@ class DepartmentGateway
         $result = ldap_search(
             $this->connection,
             'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'],
-            "(&(objectClass=person)(cn=$username))"
+            "(&(objectClass=person)(sAMAccountName=$username))"
         );
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {
@@ -148,7 +148,7 @@ class DepartmentGateway
         $result = ldap_search(
             $this->connection,
             'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'],
-            "(&(objectClass=person)(cn=$username))",
+            "(&(objectClass=person)(sAMAccountName=$username))",
             ['jpegphoto']
         );
         $count = ldap_count_entries($this->connection, $result);
