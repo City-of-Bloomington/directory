@@ -28,7 +28,7 @@ $contact = $this->person->getEmergencyContacts();
             ?>
         </div>
     </header>
-    <p> <?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
+    <p class="text-help"><?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <?php
         $rows = '';
         foreach (EmergencyContact::$contactFields as $f) {
