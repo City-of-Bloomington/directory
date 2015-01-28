@@ -135,7 +135,7 @@ class EmergencyContact extends ActiveRecord
     }
 
     public function isValidPhone($string) {
-        return strlen($string)==10;
+        return preg_match('|^\d{10}$|', $string) ? true : false;
     }
 
     /**

@@ -35,6 +35,11 @@ $contact = $this->person->getEmergencyContacts();
             $get = 'get'.ucfirst($f);
             $value = View::escape($contact->$get());
 
+            // Format phone numbers
+            if ($value && substr($f, 0, 1)!='e') {
+                $value = '('.substr($value, 0, 3).') '.substr($value, 3, 3).'-'.substr($value, 6);
+            }
+            
             $label = $this->_(substr($f, 0, -2));
             $num   = substr($f, -1);
 
