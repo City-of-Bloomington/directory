@@ -11,7 +11,8 @@ define('BASE_URI','/application');
 /**
  * Javascript libraries
  */
-define('JQUERY', BASE_URI.'/js/vendor/jquery-2.1.1');
+define('JQUERY',         BASE_URI.'/js/vendor/jquery-2.1.1');
+define('INTL_TEL_INPUT', BASE_URI.'/js/vendor/intl-tel-input');
 
 /**
  * Used when there's an error on the site.  The Framework will

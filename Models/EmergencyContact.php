@@ -15,8 +15,8 @@ class EmergencyContact extends ActiveRecord
 
     public static $contactFields = [
         'email_1', 'email_2', 'email_3',
-        'phone_1', 'phone_2', 'phone_3',
         'sms_1', 'sms_2',
+        'phone_1', 'phone_2', 'phone_3',
         'tty_1'
     ];
 
@@ -70,6 +70,16 @@ class EmergencyContact extends ActiveRecord
         if (!$this->getUsername()) {
             throw new \Exception('missingRequiredFields');
         }
+
+        foreach (self::$contactFields as $f) {
+            $get     = 'get'.ucfirst($f);
+            $type    = substr($f, 0, 1)=='e' ? 'Email' : 'Phone';
+            $isValid = "isValid$type";
+
+            if ($this->$get() && !$this->$isValid($this->$get())) {
+                throw new \Exception("emergencyContacts/invalid$type");
+            }
+        }
     }
 
     public function save() { parent::save(); }
@@ -97,12 +107,12 @@ class EmergencyContact extends ActiveRecord
     public function setEmail_1 ($s) { parent::set('email_1',  $s); }
     public function setEmail_2 ($s) { parent::set('email_2',  $s); }
     public function setEmail_3 ($s) { parent::set('email_3',  $s); }
-    public function setSms_1   ($s) { parent::set('sms_1',    $s); }
-    public function setSms_2   ($s) { parent::set('sms_2',    $s); }
-    public function setPhone_1 ($s) { parent::set('phone_1',  $s); }
-    public function setPhone_2 ($s) { parent::set('phone_2',  $s); }
-    public function setPhone_3 ($s) { parent::set('phone_3',  $s); }
-    public function setTty_1   ($s) { parent::set('tty_1',    $s); }
+    public function setSms_1   ($s) { parent::set('sms_1',    $this->cleanPhone($s)); }
+    public function setSms_2   ($s) { parent::set('sms_2',    $this->cleanPhone($s)); }
+    public function setPhone_1 ($s) { parent::set('phone_1',  $this->cleanPhone($s)); }
+    public function setPhone_2 ($s) { parent::set('phone_2',  $this->cleanPhone($s)); }
+    public function setPhone_3 ($s) { parent::set('phone_3',  $this->cleanPhone($s)); }
+    public function setTty_1   ($s) { parent::set('tty_1',    $this->cleanPhone($s)); }
     public function setEmployeeId ($i) { parent::set('employeeId',  $i); }
     public function setEmployeeNum($i) { parent::set('employeeNum', $i); }
     public function setDepartment ($s) { parent::set('department',  $s); }
@@ -114,5 +124,24 @@ class EmergencyContact extends ActiveRecord
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
         }
+    }
+
+    //----------------------------------------------------------------
+    // Custom functions
+    //----------------------------------------------------------------
+    public function isValidEmail($string) {
+        $regex = "|^[a-zA-Z0-9.!#$%&'*+/=?^_`{\|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$|";
+        return preg_match($regex, $string) ? true : false;
+    }
+
+    public function isValidPhone($string) {
+        return strlen($string)==10;
+    }
+
+    /**
+     * @return int
+     */
+    public function cleanPhone($string) {
+        return preg_replace('/[^0-9]/', '', $string);
     }
 }

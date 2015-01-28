@@ -40,6 +40,8 @@ fieldset { padding:.25em 0; }
 legend { font-weight:bold; margin:4px; }
 label { font-weight:bold; }
 input:required { background-color:#E7E49D; }
+input:invalid  { background-color:#fcc; }
+
 
 img { margin:8px; }
 address { white-space:pre-line; }
@@ -362,7 +364,8 @@ a.button:hover {
 }
 
 .person {
-    &-profile {
+    &-profile, &-emergencyProfile {
+        th { font-weight:bold; }
     }
 	&-photoContainer {
         > img {
@@ -381,7 +384,6 @@ a.button:hover {
             margin-bottom: 1em;
         }
     }
-
 }
 
 @media screen and (min-width: 46em) {

@@ -28,8 +28,9 @@ $contact = $this->person->getEmergencyContacts();
             ?>
         </div>
     </header>
-    <table>
+    <p> <?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <?php
+        $rows = '';
         foreach (EmergencyContact::$contactFields as $f) {
             $get = 'get'.ucfirst($f);
             $value = View::escape($contact->$get());
@@ -37,12 +38,14 @@ $contact = $this->person->getEmergencyContacts();
             $label = $this->_(substr($f, 0, -2));
             $num   = substr($f, -1);
 
-            echo "
-            <tr><th>$label $num</th>
-                <td>$value</td>
-            </tr>
-            ";
+            if ($value) {
+                $rows.= "
+                <tr><th>$label $num</th>
+                    <td>$value</td>
+                </tr>
+                ";
+            }
         }
+        if ($rows) { echo "<table>$rows</table>"; }
     ?>
-    </table>
 </section>
