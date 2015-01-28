@@ -79,10 +79,11 @@ class Person
         return file_exists(APPLICATION_HOME."/public/photos/{$this->getUsername()}.jpg");
     }
 
-    public function getPhotoUri()
-    {
-        return BASE_URI."/photos/{$this->getUsername()}.jpg";
-    }
+    /**
+     * @return string
+     */
+    public function getPhotoUrl() { return BASE_URL."/photos/{$this->getUsername()}.jpg"; }
+    public function getPhotoUri() { return BASE_URI."/photos/{$this->getUsername()}.jpg"; }
 
     /**
      * Returns whether the Ldap entry has a photo for this person

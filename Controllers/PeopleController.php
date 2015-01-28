@@ -23,7 +23,10 @@ class PeopleController extends Controller
         $person = $gateway->getPerson($_GET['username']);
 
         $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
-        if (User::isAllowed('people', 'updateEmergencyContacts')) {
+
+        if ($this->template->outputFormat == 'html'
+            && User::isAllowed('people', 'updateEmergencyContacts')) {
+
             $this->template->blocks[] = new Block('emergencyContacts/info.inc', ['person'=>$person]);
         }
     }
@@ -102,7 +105,7 @@ class PeopleController extends Controller
             }
         }
 
-        $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
-        $this->template->blocks[] = new Block('emergencyContacts/updateForm.inc', ['person'=>$person]);
+        $this->template->blocks[] = new Block('people/info.inc',                  ['person' => $person]);
+        $this->template->blocks[] = new Block('emergencyContacts/updateForm.inc', ['contact'=> $contact]);
     }
 }

@@ -8,6 +8,13 @@ namespace Application\Models;
 
 trait DirectoryAttributes
 {
+    public static $fields = [
+        'name', 'dn', 'username',
+        'firstname','lastname',
+        'title','department','location',
+        'email', 'phones',
+        'address','city','state','zip'
+    ];
     protected $ldap_entry;
 
     /**
