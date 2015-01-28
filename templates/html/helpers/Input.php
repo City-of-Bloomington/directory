@@ -12,14 +12,19 @@ use Blossom\Classes\Helper;
 
 class Input extends Helper
 {
-    public function text($id, $label, $value = '', $inputClass = '')
+    public function text($id, $label, $value = '', $type = 'text', array $inputAttributesArray = [])
     {
-        $classText = $inputClass ? " class=\"$inputClass\"" : '';
+        $extraAttributes = '';
+        foreach ($inputAttributesArray as $attribute => $attrValue)
+        {
+            $extraAttributes .= " $attribute=\"$attrValue\"";
+        }
+        
         echo "
-        <dl class=\"input-field\">
-            <dt><label for=\"$id\">$label</label></dt>
-            <dd><input type=\"text\" id=\"$id\" name=\"$id\" value=\"$value\"$classText /></dd>
-        </dl>
+            <dl class=\"input-field\">
+                <dt><label for=\"$id\">$label</label></dt>
+                <dd><input id=\"$id\" name=\"$id\" value=\"$value\" type=\"$type\" $extraAttributes /></dd>
+            </dl>
         ";
     }
 }
