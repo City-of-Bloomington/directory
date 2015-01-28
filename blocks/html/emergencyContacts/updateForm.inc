@@ -12,7 +12,7 @@ $contact = $this->person->getEmergencyContacts();
 ?>
 <section class="person-emergencyProfile">
     <h2><?php echo $this->_('emergencyContacts_update'); ?></h2>
-    <p> <?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
+    <p class="text-help"><?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <form method="post" action="<?php echo BASE_URI; ?>/people/updateEmergencyContacts">
         <fieldset><legend><?php echo $this->_('emergencyContacts'); ?></legend>
             <input name="emergencyContact_id" type="hidden" value="<?php echo $contact->getId(); ?>" />
@@ -25,13 +25,8 @@ $contact = $this->person->getEmergencyContacts();
 
                     $label = $this->_(substr($f, 0, -2));
                     $num = substr($f, -1);
-                    echo "
-                    <dl class=\"input-field mod-text\">
-                        <dt><label for=\"$f\">$label $num</label></dt>
-                        <dd><input name=\"$f\" id=\"$f\" value=\"$value\" /></dd>
-                    </dl>
-                    ";
-
+                    $inputHelper = $this->template->getHelper('Input');
+                    echo $inputHelper->text($f, $label.' '.$num, $value);
                 }
 
                 $helper = $this->template->getHelper('saveAndCancelButtons');
