@@ -1,50 +1,11 @@
 @import 'sass-modules/_vars-mixins';
 
+@import 'sass-modules/text';
+@import 'sass-modules/input/_buttons';
+@import 'sass-modules/input/_field';
 @import 'sass-modules/layout/_content-section';
+@import 'sass-modules/layout/_html-elements';
 @import 'sass-modules/layout/_site';
-
-/**
- * Basic HTML element styles
- */
-body {
-    background: #fff;
-    font-family: $font-body-family;
-    font-size: 1em;
-}
-
-h1 {
-    color: #777;
-    font-size: 2rem;
-    font-weight: 300;
-    margin: 0 0 1em;
-}
-h2 {
-    color: #555;
-    font-size:131%;
-    font-weight:normal;
-    margin:.5em 0;
-}
-h3 { font-size:123.1%; font-weight:bold;  margin:.5em 0 .25em 0; }
-h4 { font-size:100%; font-weight:bold; }
-a { text-decoration:none; color: $font-link-color; }
-a:hover { text-decoration: underline; }
-p {
-    line-height: 1.3em;
-    margin: 0 0 1em 0;
-}
-
-ul { list-style-type:none; margin-left:4ex; padding:0; }
-li { margin:0; }
-
-fieldset { padding:.25em 0; }
-legend { font-weight:bold; margin:4px; }
-label { font-weight:bold; }
-input:required { background-color:#E7E49D; }
-input:invalid  { background-color:#fcc; }
-
-
-img { margin:8px; }
-address { white-space:pre-line; }
 
 /**
  * Base styles for buttons and button links
@@ -113,7 +74,7 @@ a.button:hover {
         padding: .5em 0;
 
         > h1 {
-            font-size:1.5em;
+            font-size: 1.5em;
             font-weight: normal;
             margin: .5em 0 .25em 0;
             text-transform: capitalize;
@@ -136,6 +97,9 @@ a.button:hover {
     &-container {
     }
     &-row {
+		@media print {
+			display: none;
+		}
     }
 }
 
@@ -310,59 +274,6 @@ a.button:hover {
 }
 
 
-
-/*dl*/.input {
-    &-field {
-        padding: .5em 0;
-
-        > dt {
-            font-size: .75em;
-            font-weight: normal;
-            margin: 0 0 .25em 0;
-
-            > label {
-                font-weight: normal;
-            }
-        }
-        > dd {
-            margin: 0;
-            padding: 0;
-
-            > input[type="text"] {
-                font-size: 1em;
-            }
-        }
-        &.mod-radio {
-            > dd {
-                margin-bottom: .25em;
-                padding: 0 0 0 1.6em;
-                vertical-align: middle;
-
-                > label {
-                    margin: 0;
-                    vertical-align: middle;
-
-                    > input[type="radio"] {
-                        font-size: 1em;
-                        margin: 0 .45em 0 -1.4em;
-                        padding: 0;
-                        vertical-align: middle;
-
-                        + span {
-                            margin: 0;
-                            padding: 0;
-                            vertical-align: middle;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    &-buttons {
-        margin: 1em 0;
-    }
-}
-
 .person {
     &-profile, &-emergencyProfile {
         th { font-weight:bold; }
@@ -386,7 +297,7 @@ a.button:hover {
     }
 }
 
-@media screen and (min-width: 46em) {
+@media all and (min-width: 46em) {
     /*header*/.header {
         &-row {
             position: relative;
@@ -430,6 +341,7 @@ a.button:hover {
         &-searchForm {
             float: right;
             > fieldset {
+				margin: 0;
                 padding: 0; // Override a style set by reset
 
                 > input {
@@ -472,43 +384,6 @@ a.button:hover {
             position: relative;
             width: 46em;
             z-index: 2;
-        }
-    }
-
-    /*dl*/.input {
-        &-field {
-            border-top: 1px solid #c0c0c0;
-            border-bottom: 1px solid #c0c0c0;
-            margin: -1px 0 0 0;
-            transition: background .25s linear;
-
-            &:after {
-                clear: both;
-                content: '';
-                display: table;
-            }
-            &:hover {
-                background: #d0f0ff;
-            }
-            > dt {
-                float: left;
-                font-size: 1em;
-                margin: 0;
-                padding: .25em 0 0 0;
-                width: 8em;
-            }
-            > dd {
-                margin-left: 9em;
-
-                input[type="text"] {
-                    font-size: 1em;
-                    padding: .2em;
-                    width: 15em;
-                }
-            }
-        }
-        &-buttons {
-            margin: 1em 0 1em 9em;
         }
     }
 
@@ -587,7 +462,7 @@ a.button:hover {
     }
 }
 
-@media screen and (min-width: 62em) {
+@media all and (min-width: 62em) {
     /*header*/.header {
         &-row {
         }
@@ -613,15 +488,6 @@ a.button:hover {
         }
         &-container {
             width: 60em;
-        }
-    }
-
-    /*dl*/.input {
-        &-field {
-            &.mod-text {
-                > dd {
-                }
-            }
         }
     }
 

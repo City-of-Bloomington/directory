@@ -10,8 +10,11 @@ $city-logo-url: "images/Simple_City_Logo.svg"; //URL relative to location of scr
 $header-text-color: #1e59ae;
 
 $nav1-link-color: #1e59ae;
+$link-color: #1e59ae;
 
 
+$window-med: 46em;
+$window-lg: 70em;
 
 @mixin clearfix {
     &:after {
