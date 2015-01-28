@@ -7,6 +7,3 @@
 [submodule "libraries/phpCAS"]
 	path = libraries/phpCAS
 	url = https://github.com/Jasig/phpCAS.git
-[submodule "public/js/vendor/intl-tel-input"]
-	path = public/js/vendor/intl-tel-input
-	url = https://github.com/Bluefieldscom/intl-tel-input.git
