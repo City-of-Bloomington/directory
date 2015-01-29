@@ -2,9 +2,9 @@
 /**
 * Provides markup for button links
 *
-* @copyright 2014 City of Bloomington, Indiana
+* @copyright 2014-2015 City of Bloomington, Indiana
 * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
-* @author Cliff Ingham <inghamn@bloomington.in.gov>
+* @author Dan Hiester <hiesterd@bloomington.in.gov>
 */
 namespace Application\Templates\Helpers;
 
@@ -12,19 +12,20 @@ use Blossom\Classes\Helper;
 
 class Input extends Helper
 {
-    public function text($id, $label, $value = '', $type = 'text', array $inputAttributesArray = [])
+
+    public function text($id, $label, $value = '', $inputAttributesArray = [], $type = 'text')
     {
         $extraAttributes = '';
         foreach ($inputAttributesArray as $attribute => $attrValue)
         {
-            $extraAttributes .= " $attribute=\"$attrValue\"";
+            $extraAttributes .= "$attribute=\"$attrValue\" ";
         }
-        
-        echo "
-            <dl class=\"input-field\">
-                <dt><label for=\"$id\">$label</label></dt>
-                <dd><input id=\"$id\" name=\"$id\" value=\"$value\" type=\"$type\" $extraAttributes /></dd>
+        echo <<<EOT
+
+            <dl class="input-field">
+                <dt><label for="$id">$label</label></dt>
+                <dd><input id="$id" name="$id" value="$value" type="$type" $extraAttributes/></dd>
             </dl>
-        ";
+EOT;
     }
 }
