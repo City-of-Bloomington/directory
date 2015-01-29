@@ -14,7 +14,7 @@ $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/intlTelInpu
 $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
 ?>
 <section class="person-emergencyProfile">
-    <h2><?php echo $this->_('emergencyContacts'); ?></h2>
+    <h1><?php echo $this->_('emergencyContacts_update'); ?></h1>
     <p class="text-help"><?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <form method="post" action="<?php echo BASE_URI; ?>/people/updateEmergencyContacts">
         <?php

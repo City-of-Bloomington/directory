@@ -21,6 +21,7 @@ use Blossom\Classes\View;
                 $name
             </div>
             <div class=\"ext-links closed\" aria-hidden=\"true\" id=\"userDropdown\">
+                <a href=\"".BASE_URI."/people/updateEmergencyContacts?username={$_SESSION['USER']->getUsername()}\"><i class=\"fa fa-pencil-square-o\"></i> {$this->_('emergencyContacts_update')}</a>
                 <a href=\"".BASE_URI."/login/logout\"><i class=\"fa fa-sign-out\"></i> {$this->_('logout')}</a>
             </div>
             ";
