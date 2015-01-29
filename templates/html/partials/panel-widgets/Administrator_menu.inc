@@ -14,7 +14,7 @@ if (User::isAllowed('users')) {
     foreach ($routes as $plural=>$singular) {
         $requiredAction = 'index';
         if (User::isAllowed($plural, $requiredAction)) {
-            $links.= "<a href=\"".BASE_URI."/$plural\">{$this->_([$singular, $plural, 2])}</a>";
+            $links.= "<a href=\"".BASE_URI."/$plural\"><i class=\"fa fa-users\"></i> {$this->_([$singular, $plural, 2])}</a>";
         }
     }
 }

@@ -21,13 +21,13 @@ use Blossom\Classes\View;
                 $name
             </div>
             <div class=\"ext-links closed\" aria-hidden=\"true\" id=\"userDropdown\">
-                <a href=\"".BASE_URI."/login/logout\">{$this->_('logout')}</a>
+                <a href=\"".BASE_URI."/login/logout\"><i class=\"fa fa-sign-out\"></i> {$this->_('logout')}</a>
             </div>
             ";
         }
         else {
             $return_url = View::escape($_SERVER['REQUEST_URI']);
-            echo "<a href=\"".BASE_URI."/login?return_url=$return_url\">{$this->_('login')}</a>";
+            echo "<a href=\"".BASE_URI."/login?return_url=$return_url\"><i class=\"fa fa-sign-in\"></i> {$this->_('login')}</a>";
         }
     ?>
 </div>
