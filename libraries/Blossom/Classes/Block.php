@@ -61,7 +61,7 @@ class Block extends View
 			$file = BLOSSOM.$block;
 		}
 		else {
-			throw new \Exception('unknownBlock/'.$this->file);
+			throw new \Exception('unknownBlock/'.$block);
 		}
 
 		ob_start();

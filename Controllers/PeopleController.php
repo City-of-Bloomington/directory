@@ -43,7 +43,7 @@ class PeopleController extends Controller
             // End easter egg
             $gateway = new DepartmentGateway();
             $people = $gateway->search($_GET);
-            if (count($people) == 1) {
+            if (count($people) == 1 && $this->template->outputFormat == 'html') {
                 $username = $people[0]->getUsername();
                 header('Location: '.BASE_URL."/people/view?username=$username");
                 exit();
@@ -52,7 +52,9 @@ class PeopleController extends Controller
                 $this->template->blocks[] = new Block('people/list.inc', ['people'=>$people]);
             }
         }
-        $this->template->blocks[] = new Block('people/searchForm.inc');
+        if ($this->template->outputFormat == 'html') {
+            $this->template->blocks[] = new Block('people/searchForm.inc');
+        }
     }
 
     public function photo()
