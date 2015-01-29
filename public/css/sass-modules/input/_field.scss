@@ -2,7 +2,7 @@
     padding: .5em 0;
 
     > dt {
-        font-size: .75em;
+        font-size: (12em/16);
         font-weight: normal;
         margin: 0 0 .25em 0;
 
@@ -70,8 +70,9 @@
     }
 
     @media all and (min-width: $window-med) {
-        border-top: 1px solid #c0c0c0;
-        border-bottom: 1px solid #c0c0c0;
+        $border-color: #e6e6e6;
+        border-top: 1px solid $border-color;
+        border-bottom: 1px solid $border-color;
         margin: -1px 0 0 0;
         transition: background .25s linear;
 
@@ -84,21 +85,39 @@
             background: #d0f0ff;
         }
         > dt {
+            color: #666;
             float: left;
-            font-size: 1em;
+            font-size: (14em/16);
             margin: 0;
-            padding: .3em 0 0 0;
+            padding: .6em 0 0 0;
             width: 8em;
         }
         > dd {
             margin-left: 9em;
 
-            input[type="text"] {
+            input[type="text"],
+            input[type="date"],
+            input[type="tel"],
+            input[type="email"] {
+                $transition: border-color .35s ease-in-out, background-color .5s ease-in-out;
+                background-color: #ffffff;
+                border: 1px solid #e0e0e0;
+                font-family: $font-body-family;
                 font-size: 1em;
                 padding: .2em;
+                transition: $transition;
                 width: 15em;
+
                 &.datePicker { width:inherit; }
                 &.timePicker { width:inherit; }
+
+                &:focus {
+                    background-color: #ffffff;
+                    border-color: #a0a0a0;
+                }
+            }
+            > .intl-tel-input > input[type="tel"] {
+                padding-left: 44px;
             }
         }
 
