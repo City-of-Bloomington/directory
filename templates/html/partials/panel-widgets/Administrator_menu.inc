@@ -9,7 +9,8 @@ use Application\Models\User;
 $links = '';
 if (User::isAllowed('users')) {
     $routes = [
-        'users' => 'user'
+        'users'  => 'user',
+        'emergencyContacts' => 'emergencyContact'
     ];
     foreach ($routes as $plural=>$singular) {
         $requiredAction = 'index';

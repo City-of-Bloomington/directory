@@ -1,6 +1,8 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * Wrapper class for an LDAP entry
+ *
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -134,6 +136,6 @@ class Person
      */
     public function getEmergencyContacts()
     {
-        return new EmergencyContact($this->getUsername());
+        return new EmergencyContact($this);
     }
 }

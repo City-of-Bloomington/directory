@@ -5,16 +5,16 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
-use Application\Models\EmergencyContact;
 use Application\Models\User;
 
+use Blossom\Classes\Block;
 use Blossom\Classes\View;
 
 $contact = $this->person->getEmergencyContacts();
 ?>
 <section class="person-emergencyProfile">
     <header>
-        <h2><?php echo $this->_('emergencyContacts'); ?></h2>
+        <h2><?php echo $this->_(['emergencyContact', 'emergencyContacts', 1]); ?></h2>
         <div class="tools">
             <?php
                 if (User::isAllowed('people', 'updateEmergencyContacts')) {
@@ -30,27 +30,7 @@ $contact = $this->person->getEmergencyContacts();
     </header>
     <p class="text-help"><?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <?php
-        $rows = '';
-        foreach (EmergencyContact::$contactFields as $f) {
-            $get = 'get'.ucfirst($f);
-            $value = View::escape($contact->$get());
-
-            // Format phone numbers
-            if ($value && substr($f, 0, 1)!='e') {
-                $value = '('.substr($value, 0, 3).') '.substr($value, 3, 3).'-'.substr($value, 6);
-            }
-            
-            $label = $this->_(substr($f, 0, -2));
-            $num   = substr($f, -1);
-
-            if ($value) {
-                $rows.= "
-                <tr><th>$label $num</th>
-                    <td>$value</td>
-                </tr>
-                ";
-            }
-        }
-        if ($rows) { echo "<table>$rows</table>"; }
+        $block = new Block('emergencyContacts/partials/contactInfoTable.inc', ['contact'=>$contact]);
+        echo $block->render('html', $this->template);
     ?>
 </section>

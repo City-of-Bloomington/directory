@@ -13,11 +13,23 @@ class EmergencyContact extends ActiveRecord
 {
     protected $tablename = 'emergencyContacts';
 
+    private $person;
+
+    /**
+     * Maps contact fields to the names used for Everbridge
+     * The $key is the internal fieldname in the database
+     * The #value is the name of the field for Everbridge.
+     */
     public static $contactFields = [
-        'email_1', 'email_2', 'email_3',
-        'sms_1', 'sms_2',
-        'phone_1', 'phone_2', 'phone_3',
-        'tty_1'
+        'email_1' => 'Email Address 1',
+        'email_2' => 'Email Address 2',
+        'email_3' => 'Email Address 3',
+        'sms_1'   => 'SMS 1',
+        'sms_2'   => 'SMS 2',
+        'phone_1' => 'Phone 1',
+        'phone_2' => 'Phone 2',
+        'phone_3' => 'Phone 3',
+        'tty_1'   => 'TTY 1'
     ];
 
     /**
@@ -30,7 +42,7 @@ class EmergencyContact extends ActiveRecord
      * This will load all fields in the table as properties of this class.
      * You may want to replace this with, or add your own extra, custom loading
      *
-     * @param int|string|array $id (ID, email, username)
+     * @param Mixed $id (ID, email, username, Person)
      */
     public function __construct($id=null)
     {
@@ -46,6 +58,12 @@ class EmergencyContact extends ActiveRecord
                 else {
                     $sql = 'select * from emergencyContacts where username=?';
                 }
+
+                if ($id instanceof Person) {
+                    $this->person = $id;
+                    $id = $id->getUsername();
+                }
+
                 $result = $zend_db->createStatement($sql)->execute([$id]);
                 if (count($result)) {
                     $this->exchangeArray($result->current());
@@ -71,7 +89,7 @@ class EmergencyContact extends ActiveRecord
             throw new \Exception('missingRequiredFields');
         }
 
-        foreach (self::$contactFields as $f) {
+        foreach (array_keys(self::$contactFields) as $f) {
             $get     = 'get'.ucfirst($f);
             $type    = substr($f, 0, 1)=='e' ? 'Email' : 'Phone';
             $isValid = "isValid$type";
@@ -120,7 +138,7 @@ class EmergencyContact extends ActiveRecord
 
     public function handleUpdate($post)
     {
-        foreach (self::$contactFields as $f) {
+        foreach (array_keys(self::$contactFields) as $f) {
             $set = 'set'.ucfirst($f);
             $this->$set($post[$f]);
         }
@@ -129,19 +147,33 @@ class EmergencyContact extends ActiveRecord
     //----------------------------------------------------------------
     // Custom functions
     //----------------------------------------------------------------
-    public function isValidEmail($string) {
+    public function isValidEmail($string)
+    {
         $regex = "|^[a-zA-Z0-9.!#$%&'*+/=?^_`{\|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$|";
         return preg_match($regex, $string) ? true : false;
     }
 
-    public function isValidPhone($string) {
+    public function isValidPhone($string)
+    {
         return preg_match('|^\d{10}$|', $string) ? true : false;
     }
 
     /**
      * @return int
      */
-    public function cleanPhone($string) {
+    public function cleanPhone($string)
+    {
         return preg_replace('/[^0-9]/', '', $string);
+    }
+
+    /**
+     * @return Person
+     */
+    public function getPerson(DepartmentGateway $gateway)
+    {
+        if (!$this->person) {
+            $this->person = $gateway->getPerson($this->getUsername());
+        }
+        return $this->person;
     }
 }

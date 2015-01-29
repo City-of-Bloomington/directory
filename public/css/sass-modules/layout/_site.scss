@@ -40,21 +40,21 @@
                 right: 0;
                 left: inherit;
             transition: opacity .25s;
-            width: 12em;
+            display:inline-table;
+            white-space:nowrap;
 
             &.open {
                 opacity: 1;
             }
-            
+
             &.closed {
                 top: -10000px;
                 left: -10000px;
             }
-                
+
             a {
                 display: block;
                 padding: .5em 1em;
-                margin: 0;
                 transition: background .25s, color .25s;
 
                 &:hover {

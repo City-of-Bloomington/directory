@@ -28,6 +28,7 @@ $ZEND_ACL->addResource(new Resource('users'));
 $ZEND_ACL->addResource(new Resource('login'));
 
 $ZEND_ACL->addResource(new Resource('departments'));
+$ZEND_ACL->addResource(new Resource('emergencyContacts'));
 
 /**
  * Assign permissions to the resources
