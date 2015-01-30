@@ -18,6 +18,7 @@
         input[type="date"],
         input[type="tel"],
         input[type="email"] {
+            box-sizing: border-box;
             border: 1px solid #e0e0e0;
             font-family: $font-body-family;
             font-size: 1em;
@@ -29,6 +30,9 @@
                 background-color: #ffffff;
                 border-color: #a0a0a0;
             }
+        }
+        > .intl-tel-input > input[type="tel"] {
+            padding-left: 44px;
         }
     }
     &.mod-radio {
@@ -116,9 +120,6 @@
 
                 &.datePicker { width:inherit; }
                 &.timePicker { width:inherit; }
-            }
-            > .intl-tel-input > input[type="tel"] {
-                padding-left: 44px;
             }
         }
 

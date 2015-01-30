@@ -1,9 +1,18 @@
-<head>
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URI; ?>/css/reset.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URI; ?>/css/layouts/<?php echo $this->layout; ?>.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URI; ?>/css/screen.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo BASE_URI; ?>/css/Font-Awesome/css/font-awesome.min.css" />
-	<link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700,600' rel='stylesheet' type='text/css'>
-	<title><?php echo isset($this->title) ? self::escape($this->title) : APPLICATION_NAME; ?></title>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-</head>
+<?php
+use Blossom\Classes\View;
+?>
+<header>
+    <div class="container">
+        <div class="site-title">
+            <h1><a href="<?php echo BASE_URL; ?>/"><?php echo View::escape(APPLICATION_NAME); ?></a></h1>
+            <div class="site-location" id="location_name">
+                <a href="<?php echo BASE_URL; ?>">City of Bloomington, Mark Kruzan, Mayor</a>
+            </div>
+        </div>
+        <?php
+            include APPLICATION_HOME.'/templates/html/partials/panel-widgets/User_menu.inc';
+            include APPLICATION_HOME.'/templates/html/partials/panel-widgets/Administrator_menu.inc';
+        ?>
+    </div>
+    <?php $this->_include('partials/nav1.inc'); ?>
+</header>

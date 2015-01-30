@@ -2,8 +2,8 @@
 use Application\Models\User;
 ?>
 
-<div class="nav1-row">
-    <nav class="nav1-container">
+<div class="nav1">
+    <nav class="container">
 		<?php
 			$a = '<a href="%s" class="nav1-link">%s</a>';
 			echo sprintf($a, BASE_URI, $this->_(['department', 'departments', 2]));

@@ -3,8 +3,12 @@
 @import 'sass-modules/text';
 @import 'sass-modules/input/_buttons';
 @import 'sass-modules/input/_field';
+@import 'sass-modules/output/_tabular';
 @import 'sass-modules/layout/_content-section';
+@import 'sass-modules/layout/_header';
 @import 'sass-modules/layout/_html-elements';
+@import 'sass-modules/layout/_main';
+@import 'sass-modules/layout/_nav1';
 @import 'sass-modules/layout/_site';
 
 /**
@@ -44,64 +48,6 @@ a.button:hover {
 .fa-print       { color:blue;  }
 .fa-upload      { color:black; }
 .fa-download    { color:black; }
-
-/**
- * Banner
- */
-.header {
-    &-row {
-        border-top: .4em solid #1e59ae;
-    }
-    &-container {
-        margin: 0 auto 0;
-        color: $header-text-color;
-        position: relative;
-        @include clearfix();
-
-        &:before {
-            background: url($city-logo-url);
-            background-size: 100% 100%;
-            content: '';
-            display: block;
-            float: left;
-            height: 4em;
-            margin: .75em .75em .75em 0;
-            width: 4em;
-        }
-    }
-    &-title {
-        float: left;
-        padding: .5em 0;
-
-        > h1 {
-            font-size: 1.5em;
-            font-weight: normal;
-            margin: .5em 0 .25em 0;
-            text-transform: capitalize;
-
-            > a {
-                color: $header-text-color;
-            }
-        }
-    }
-    &-location {
-        > a {
-            color: $header-text-color;
-        }
-    }
-    &-utilityBar {
-        float: right;
-    }
-}
-.nav1-{
-    &-container {
-    }
-    &-row {
-		@media print {
-			display: none;
-		}
-    }
-}
 
 .breadcrumbs {
     font-size: (13em/16);
@@ -149,61 +95,6 @@ a.button:hover {
 .pageNavigation .current { border:2px solid green; }
 
 
-/**
- * Tabular Data
- */
-.output-tabular {
-    overflow: hidden;
-    width: 100%;
-
-    @mixin data-cell() {
-        padding: .75em 1.5em .75em .5em;
-    }
-    $first-cell-padding-left: 1.5em;
-    > thead {
-        > tr {
-            > th {
-                background: #204984;
-                color: #EDF0F5;
-                font-size: .85em;
-                font-weight: normal;
-                height: 2em;
-                vertical-align: bottom;
-                @include data-cell();
-
-                &:first-child {
-                    padding-left: $first-cell-padding-left;
-                }
-            }
-            &.column-status {
-                text-align: right;
-            }
-        }
-    }
-    > tbody {
-        > tr {
-            > th, td {
-                background: #EDF0F5;
-                border-top: 1px solid #c0c0c0;
-                transition: background-color .2s linear;
-                vertical-align: top;
-                @include data-cell();
-
-                &:first-child {
-                    padding-left: $first-cell-padding-left;
-                }
-                &.ext-number {
-                    white-space: nowrap;
-                }
-            }
-        }
-        > tr:hover {
-            th, td {
-                background: #fff;
-            }
-        }
-    }
-}
 
 .list-departments {
     box-sizing: border-box;
@@ -298,95 +189,6 @@ a.button:hover {
 }
 
 @media all and (min-width: 46em) {
-    /*header*/.header {
-        &-row {
-            position: relative;
-            z-index: 2;
-        }
-        &-container {
-            box-sizing: border-box;
-            margin: 0 auto;
-            padding-top: .5em;
-            width: 46em;
-
-            &:before {
-//                margin-top: 1.25em;
-            }
-        }
-    }
-    .nav1 {
-        &-container {
-            box-sizing: border-box;
-            margin: 0 auto;
-            width: 46em;
-            @include clearfix();
-        }
-        &-row {
-            padding: 2.7em 0 .4em 0;
-        }
-        &-link {
-            background: rgba(255, 255, 255, .5);
-            color: $nav1-link-color;
-            display: block;
-            float: left;
-            margin: 0 .5em 0 0;
-            padding: .5em .75em;
-            transition: background-color .25s ease-in-out;
-
-            &:hover {
-                background: rgba(255,255,255, .8);
-                text-decoration: none;
-            }
-        }
-        &-searchForm {
-            float: right;
-            > fieldset {
-				margin: 0;
-                padding: 0; // Override a style set by reset
-
-                > input {
-                    font-size: 1em;
-                    padding: .25em;
-                }
-            }
-        }
-    }
-    .panel {
-        &-row {
-            background: -moz-linear-gradient(top, #e4eff8 0%, #ffffff 200px); /* FF3.6+ */
-//            background: -webkit-linear-gradient(top,  #e4eff8 0%,#ffffff 200px); /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, #e4eff8 0%,#ffffff 200px); /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, #e4eff8 0%,#ffffff 200px); /* IE10+ */
-            background: linear-gradient(to bottom,  #e4eff8 20em,#ffffff 30em); /* W3C */
-            padding: 0;
-            position: relative;
-
-            &:before {
-                background: url('images/header-bg-2.jpg');
-                background-size: 100% auto;
-                content: '';
-                display: block;
-                height: 18.75em;
-                position: absolute;
-                    top: -5em;
-                    left: 0;
-                    right: 0;
-                z-index: 1;
-            }
-        }
-        &-container {
-            background: #fff;
-            border-top: .4em solid #1e59ae;
-            box-sizing: border-box;
-            margin: 0 auto;
-            min-height: 40em;
-            padding: 2em;
-            position: relative;
-            width: 46em;
-            z-index: 2;
-        }
-    }
-
     .list-departments {
         &.mod-index {
             -webkit-columns: 2 18em;
@@ -467,34 +269,6 @@ a.button:hover {
 }
 
 @media all and (min-width: 62em) {
-    /*header*/.header {
-        &-row {
-        }
-        &-container {
-            width: 60em;
-        }
-    }
-    .nav1 {
-        &-container {
-            width: 60em;
-        }
-        &-row {
-            background-size: 100% auto;
-        }
-        &-form {
-        }
-		&-link {
-            padding: .5em 1.5em;
-		}
-    }
-    .panel {
-        &-row {
-        }
-        &-container {
-            width: 60em;
-        }
-    }
-
     .form-search {
         > fieldset {
             box-sizing: border-box;
