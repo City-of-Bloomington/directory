@@ -70,10 +70,8 @@
     }
 
     @media all and (min-width: $window-med) {
-        $border-color: #e6e6e6;
-        border-top: 1px solid $border-color;
-        border-bottom: 1px solid $border-color;
-        margin: -1px 0 0 0;
+        background: #f4f4f4;
+        margin: 2px 0;
         transition: background .25s linear;
 
         &:after {
@@ -82,18 +80,18 @@
             display: table;
         }
         &:hover {
-            background: #d0f0ff;
+            background: #fafafa;
         }
         > dt {
             color: #666;
             float: left;
-            font-size: (14em/16);
+            font-size: (13em/16);
             margin: 0;
-            padding: .6em 0 0 0;
+            padding: 1em 0 0 1em;
             width: 8em;
         }
         > dd {
-            margin-left: 9em;
+            margin-left: 8em;
 
             input[type="text"],
             input[type="date"],
@@ -103,10 +101,10 @@
                 background-color: #ffffff;
                 border: 1px solid #e0e0e0;
                 font-family: $font-body-family;
-                font-size: 1em;
-                padding: .2em;
+                font-size: (14em/16);
+                padding: .5em;
                 transition: $transition;
-                width: 15em;
+                width: 20em;
 
                 &.datePicker { width:inherit; }
                 &.timePicker { width:inherit; }

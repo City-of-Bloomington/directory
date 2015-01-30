@@ -107,7 +107,7 @@ class PeopleController extends Controller
             }
         }
 
-        $this->template->blocks[] = new Block('people/info.inc',                  ['person' => $person]);
+//        $this->template->blocks[] = new Block('people/info.inc',                  ['person' => $person]);
         $this->template->blocks[] = new Block('emergencyContacts/updateForm.inc', ['contact'=> $contact]);
     }
 }

@@ -13,7 +13,7 @@ $this->template->addToAsset('stylesheets', INTL_TEL_INPUT.'/build/css/intlTelInp
 $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/intlTelInput.min.js');
 $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
 ?>
-<section class="person-emergencyProfile">
+<section class="person-emergencyProfile-edit">
     <h1><?php echo $this->_('emergencyContacts_update'); ?></h1>
     <p class="text-help"><?php echo $this->_('emergencyContacts_help', 'messages'); ?></p>
     <form method="post" action="<?php echo BASE_URI; ?>/people/updateEmergencyContacts">
