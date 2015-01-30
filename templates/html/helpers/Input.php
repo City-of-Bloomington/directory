@@ -13,9 +13,10 @@ use Blossom\Classes\Helper;
 class Input extends Helper
 {
 
-    public function text($id, $label, $value = '', $inputAttributesArray = [], $type = 'text')
+    public function text($id, $label, $value = '', $type = 'text', $required = false, $inputAttributesArray = [])
     {
         $extraAttributes = '';
+        $required == false ? '' : '<abbr title="Required field" class="required">*</abbr> ';
         foreach ($inputAttributesArray as $attribute => $attrValue)
         {
             $extraAttributes .= "$attribute=\"$attrValue\" ";
@@ -23,7 +24,7 @@ class Input extends Helper
         echo <<<EOT
 
             <dl class="input-field">
-                <dt><label for="$id">$label</label></dt>
+                <dt><label for="$id">{$required}$label</label></dt>
                 <dd><input id="$id" name="$id" value="$value" type="$type" $extraAttributes/></dd>
             </dl>
 EOT;
