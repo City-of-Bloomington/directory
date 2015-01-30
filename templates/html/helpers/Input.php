@@ -16,7 +16,7 @@ class Input extends Helper
     public function text($id, $label, $value = '', $type = 'text', $required = false, $inputAttributesArray = [])
     {
         $extraAttributes = '';
-        $required == false ? '' : '<abbr title="Required field" class="required">*</abbr> ';
+        $required = $required === false ? '' : '<abbr title="Required field" class="text-required">*</abbr> ';
         foreach ($inputAttributesArray as $attribute => $attrValue)
         {
             $extraAttributes .= "$attribute=\"$attrValue\" ";

@@ -14,8 +14,21 @@
         margin: 0;
         padding: 0;
 
-        > input[type="text"] {
+        input[type="text"],
+        input[type="date"],
+        input[type="tel"],
+        input[type="email"] {
+            border: 1px solid #e0e0e0;
+            font-family: $font-body-family;
             font-size: 1em;
+            padding: .5em;
+            transition: border-color .35s ease-in-out, background-color .5s ease-in-out;
+            width: 100%;
+
+            &:focus {
+                background-color: #ffffff;
+                border-color: #a0a0a0;
+            }
         }
     }
     &.mod-radio {
@@ -28,6 +41,7 @@
                 margin: 0;
                 vertical-align: middle;
 
+                
                 > input[type="radio"] {
                     font-size: 1em;
                     margin: 0 .45em 0 -1.4em;
@@ -97,22 +111,11 @@
             input[type="date"],
             input[type="tel"],
             input[type="email"] {
-                $transition: border-color .35s ease-in-out, background-color .5s ease-in-out;
-                background-color: #ffffff;
-                border: 1px solid #e0e0e0;
-                font-family: $font-body-family;
                 font-size: (14em/16);
-                padding: .5em;
-                transition: $transition;
                 width: 20em;
 
                 &.datePicker { width:inherit; }
                 &.timePicker { width:inherit; }
-
-                &:focus {
-                    background-color: #ffffff;
-                    border-color: #a0a0a0;
-                }
             }
             > .intl-tel-input > input[type="tel"] {
                 padding-left: 44px;

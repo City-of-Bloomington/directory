@@ -25,4 +25,10 @@ if (count($this->people)) {
         ";
     }
     echo '</tbody></table>';
+} else {
+    $query = !empty($_GET['query']) ? View::escape($_GET['query']) : null;
+    echo "
+        <h1>No results found</h1>
+        <p class=\"text-help\">Please double-check your spelling and try your search again. If that doesn&lsquo;t work, try browsing through the city&lsquo;s <a href=\"".BASE_URI."\">Directory of Departments</a>.</p>
+    ";
 }
