@@ -495,18 +495,19 @@ a.button:hover {
         }
     }
 
-    .form {
-        &-fieldset {
+    .form-search {
+        > fieldset {
             box-sizing: border-box;
+			display: block;
             float: left;
             margin: 0 0 3em 0;
-            padding: 0 1em;
             width: 50%;
-
-            > legend {
-                font-size: 1.3em;
-                font-weight: normal;
-            }
+			&:first-child {
+				padding: 0 .5em 0 0;
+			}
+			&:last-child {
+				padding: 0 0 0 .5em;
+			}
         }
     }
 	.person {

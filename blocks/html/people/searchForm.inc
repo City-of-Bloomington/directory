@@ -15,7 +15,7 @@ $inputHelper = $this->template->getHelper('Input');
 <section>
     <h1><?php echo $this->_('search'); ?></h1>
     <form class="form-search" method="get" action="<?php echo BASE_URI; ?>/people/search">
-        <fieldset class="form-fieldset"><legend><?php echo $this->_('search_by_name', 'messages'); ?></legend>
+        <fieldset><legend><?php echo $this->_('search_by_name', 'messages'); ?></legend>
             <p><?php echo $this->_('search_by_name_help', 'messages'); ?></p>
 
             <?php echo $inputHelper->text('lastname', $this->_('lastname'), $lastname); ?>
@@ -25,7 +25,7 @@ $inputHelper = $this->template->getHelper('Input');
                 <button type="submit"><i class="fa fa-search"></i> <?php echo $this->_('search'); ?></button>
             </div>
         </fieldset>
-        <fieldset class="form-fieldset"><legend><?php echo $this->_('search_by_phone', 'messages'); ?></legend>
+        <fieldset><legend><?php echo $this->_('search_by_phone', 'messages'); ?></legend>
             <p><?php echo $this->_('search_by_phone_help', 'messages'); ?></p>
             <?php echo $inputHelper->text('extension', 'Extension', $extension); ?>
 
