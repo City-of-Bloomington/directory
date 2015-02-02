@@ -53,6 +53,7 @@ class Person
         if (!$tempFile) {
             throw new \Exception('media/uploadFailed');
         }
+        clearstatcache();
         $size = filesize($tempFile);
 
         // Find out the mime type for this file
@@ -68,9 +69,11 @@ class Person
             mkdir  ($directory, 0777, true);
         }
         move_uploaded_file($tempFile, $newFile);
-        chmod($newFile, 0666);
 
         // Check and make sure the file was saved
+        clearstatcache();
+        $ns = filesize($newFile);
+        echo "size: $size|ns: $ns\n";
         if (!is_file($newFile) || filesize($newFile)!=$size) {
             throw new \Exception('media/badServerPermissions');
         }
