@@ -157,7 +157,7 @@ foreach ($this->contacts as $contact) {
         $row['Last Name'  ] = $person->getLastname();
         $row['Country'    ] = 'US';
         $row['Record Type'] = 'City of Bloomington Employee';
-        $row['Groups'     ] = '*|'.$contact->getDepartment();
+        $row['Groups'     ] = '*|CoB '.$contact->getDepartment();
 
         foreach (EmergencyContact::$contactFields as $key=>$everBridgeName) {
             $get = 'get'.ucfirst($key);
