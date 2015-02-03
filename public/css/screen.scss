@@ -188,7 +188,7 @@ a.button:hover {
     }
 }
 
-@media all and (min-width: 46em) {
+@media all and (min-width: $window-med) {
     .list-departments {
         &.mod-index {
             -webkit-columns: 2 18em;
@@ -268,7 +268,7 @@ a.button:hover {
     }
 }
 
-@media all and (min-width: 62em) {
+@media all and (min-width: $window-lg) {
     .form-search {
         > fieldset {
             box-sizing: border-box;
