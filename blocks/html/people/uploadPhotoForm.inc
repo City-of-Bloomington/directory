@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
@@ -17,7 +17,7 @@ use Application\Models\Person;
             );
         ?>
         </p>
-        <input name="username" type="hidden" value="<?php echo $this->person->getUsername(); ?>" />
+        <input name="username" type="hidden" value="<?php echo $this->person->username; ?>" />
         <input name="photo" type="file" />
         <button type="submit"><i class="fa fa-upload"></i> <?php echo $this->_('upload'); ?></button>
     </fieldset>

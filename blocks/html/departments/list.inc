@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -15,20 +15,16 @@ global $DIRECTORY_CONFIG;
         $gateway = new DepartmentGateway();
         $departments = $gateway->getDepartments();
 
-//        renderChildren($departments);
-
         function renderChildren($departments, $nested = false)
         {
             if (count($departments)) {
-                if ($nested === false):
-                    echo '<ul class="list-departments mod-index">';
-                else:
-                    echo '<ul class="list-departments">';
-                endif;
+                echo $nested === false
+                    ? '<ul class="list-departments mod-index">'
+                    : '<ul class="list-departments">';
 
                 foreach ($departments as $d) {
-                    $name = View::escape($d->getName());
-                    $url = BASE_URI.'/departments/view?dn='.urlencode($d->getDn());
+                    $name = View::escape($d->name);
+                    $url = BASE_URI.'/departments/view?dn='.urlencode($d->dn);
                     echo "<li><a href=\"$url\">$name</a>";
 
                     renderChildren($d->getChildren(), true);
@@ -38,8 +34,6 @@ global $DIRECTORY_CONFIG;
                 echo '</ul>';
             }
         }
-
         renderChildren($departments);
-
     ?>
 </section>

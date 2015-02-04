@@ -61,7 +61,7 @@ class EmergencyContact extends ActiveRecord
 
                 if ($id instanceof Person) {
                     $this->person = $id;
-                    $id = $id->getUsername();
+                    $id = $id->username;
                 }
 
                 $result = $zend_db->createStatement($sql)->execute([$id]);

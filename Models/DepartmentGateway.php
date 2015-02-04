@@ -182,4 +182,9 @@ class DepartmentGateway
         return $departments;
     }
 
+    public function update($dn, array $modified=null, array $deleted=null)
+    {
+        if ($modified) { ldap_mod_replace($this->connection, $dn, $modified); }
+        if ($deleted ) { ldap_mod_del    ($this->connection, $dn, $deleted ); }
+    }
 }

@@ -23,15 +23,22 @@ class Person
 
     public function __construct($ldap_entry, DepartmentGateway $gateway)
     {
-        $this->gateway    = $gateway;
-        $this->ldap_entry = $ldap_entry;
+        $this->gateway = $gateway;
+        $this->entry   = $ldap_entry;
+    }
+
+    public function handleUpdate($post)
+    {
+        foreach (self::$phoneNumberFields as $field) {
+            $this->$field = $post[$field];
+        }
     }
 
     public function getFullname()
     {
-        return $this->get('displayname')
-            ?  $this->get('displayname')
-            : "{$this->getFirstname()} {$this->getLastname()}";
+        return $this->displayname
+            ?  $this->displayname
+            : "{$this->firstname} {$this->lastname}";
     }
 
     /**
@@ -39,8 +46,8 @@ class Person
      */
     public function getAddress()
     {
-        $address = $this->get('street');
-        return $address ? $address : $this->getDepartmentObject()->getAddress();
+        $address = $this->address;
+        return $address ? $address : $this->getDepartmentObject()->address;
     }
 
     /**
@@ -63,7 +70,7 @@ class Person
         }
 
         // Move the file where it's supposed to go
-        $newFile   = APPLICATION_HOME."/data/photos/{$this->getUsername()}.jpg";
+        $newFile   = APPLICATION_HOME."/data/photos/{$this->username}.jpg";
         $directory = dirname($newFile);
         if (!is_dir($directory)) {
             mkdir  ($directory, 0777, true);
@@ -81,14 +88,14 @@ class Person
 
     public function hasPhoto()
     {
-        return file_exists(APPLICATION_HOME."/public/photos/{$this->getUsername()}.jpg");
+        return file_exists(APPLICATION_HOME."/public/photos/{$this->username}.jpg");
     }
 
     /**
      * @return string
      */
-    public function getPhotoUrl() { return BASE_URL."/photos/{$this->getUsername()}.jpg"; }
-    public function getPhotoUri() { return BASE_URI."/photos/{$this->getUsername()}.jpg"; }
+    public function getPhotoUrl() { return BASE_URL."/photos/{$this->username}.jpg"; }
+    public function getPhotoUri() { return BASE_URI."/photos/{$this->username}.jpg"; }
 
     /**
      * Returns whether the Ldap entry has a photo for this person
@@ -97,7 +104,7 @@ class Person
      */
     public function hasLdapPhoto()
     {
-        return !empty($this->ldap_entry['jpegphoto']);
+        return !empty($this->entry['jpegphoto']);
     }
 
     /**
@@ -107,7 +114,7 @@ class Person
      */
     public function getLdapPhoto()
     {
-        return $this->ldap_entry['jpegphoto'][0];
+        return $this->entry['jpegphoto'][0];
     }
 
     /**
@@ -129,7 +136,7 @@ class Person
      */
     public function getDepartmentObject()
     {
-        if (preg_match('/CN=[^,]+,(.+$)/', $this->getDn(), $matches)) {
+        if (preg_match('/CN=[^,]+,(.+$)/', $this->dn, $matches)) {
             return $this->gateway->getDepartment($matches[1]);
         }
     }

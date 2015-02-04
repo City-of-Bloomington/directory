@@ -20,7 +20,7 @@ $contact = $this->person->getEmergencyContacts();
                 if (User::isAllowed('people', 'updateEmergencyContacts')) {
                     $helper = $this->template->getHelper('buttonLink');
                     echo $helper->buttonLink(
-                        BASE_URI."/people/updateEmergencyContacts?username={$this->person->getUsername()}",
+                        BASE_URI."/people/updateEmergencyContacts?username={$this->person->username}",
                         $this->_('emergencyContacts_update'),
                         'edit'
                     );

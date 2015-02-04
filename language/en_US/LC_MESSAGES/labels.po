@@ -91,6 +91,9 @@ msgstr "Authentication"
 msgid "role"
 msgstr "Role"
 
+msgid "title"
+msgstr "Title"
+
 msgid "email"
 msgid_plural "emails"
 msgstr[0] "Email"

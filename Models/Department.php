@@ -15,14 +15,14 @@ class Department
 
     public function __construct($ldap_entry, DepartmentGateway $gateway)
     {
-        $this->gateway    = $gateway;
-        $this->ldap_entry = $ldap_entry;
+        $this->gateway = $gateway;
+        $this->entry   = $ldap_entry;
     }
 
     public function getChildren()
     {
         if (!$this->children) {
-            $departments = $this->gateway->getDepartments($this->getDn());
+            $departments = $this->gateway->getDepartments($this->dn);
             if (count($departments)) {
                 foreach ($departments as $d) {
                     $this->children[] = $d;
@@ -39,7 +39,7 @@ class Department
 
     public function getPeople()
     {
-        return $this->gateway->getPeople($this->getDn());
+        return $this->gateway->getPeople($this->dn);
     }
 
     /**
@@ -51,7 +51,7 @@ class Department
     {
         $breadcrumbs = [];
 
-        $dn = $this->getDn();
+        $dn = $this->dn;
         while (preg_match('/OU=([^,]+),(.+$)/', $dn, $matches)) {
             $breadcrumbs[$matches[1]] = $matches[0];
             $dn = $matches[2];

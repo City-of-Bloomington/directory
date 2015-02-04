@@ -13,14 +13,19 @@ use Blossom\Classes\Controller;
 
 class PeopleController extends Controller
 {
+    private function loadPerson($username)
+    {
+        $gateway = new DepartmentGateway();
+        return $gateway->getPerson($username);
+    }
+
     public function index()
     {
     }
 
     public function view()
     {
-        $gateway = new DepartmentGateway();
-        $person = $gateway->getPerson($_GET['username']);
+        $person = $this->loadPerson($_GET['username']);
 
         $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
 
@@ -29,6 +34,25 @@ class PeopleController extends Controller
 
             $this->template->blocks[] = new Block('emergencyContacts/info.inc', ['person'=>$person]);
         }
+    }
+
+    public function update()
+    {
+        $person = $this->loadPerson($_REQUEST['username']);
+
+        if (isset($_POST['username'])) {
+            try {
+                $person->handleUpdate($_POST);
+                $person->save();
+                header('Location: '.BASE_URL.'/people/view?username='.$person->username);
+                exit();
+            }
+            catch (\Exception $e) {
+                $_SESSION['errorMessages'][] = $e;
+            }
+        }
+
+        $this->template->blocks[] = new Block('people/updateForm.inc', ['person'=>$person]);
     }
 
     public function search()
