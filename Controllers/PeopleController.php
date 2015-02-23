@@ -68,7 +68,7 @@ class PeopleController extends Controller
             $gateway = new DepartmentGateway();
             $people = $gateway->search($_GET);
             if (count($people) == 1 && $this->template->outputFormat == 'html') {
-                $username = $people[0]->getUsername();
+                $username = $people[0]->username;
                 header('Location: '.BASE_URL."/people/view?username=$username");
                 exit();
             }
@@ -104,7 +104,7 @@ class PeopleController extends Controller
                         $_SESSION['errorMessages'][] = $e;
                     }
                 }
-                header('Location: '.BASE_URL."/people/view?username={$person->getUsername()}");
+                header('Location: '.BASE_URL."/people/view?username={$person->username}");
                 exit();
             }
         }
@@ -123,7 +123,7 @@ class PeopleController extends Controller
             try {
                 $contact->handleUpdate($_POST);
                 $contact->save();
-                header('Location: '.BASE_URI.'/people/view?username='.$person->getUsername());
+                header('Location: '.BASE_URI.'/people/view?username='.$person->username);
                 exit();
             }
             catch (\Exception $e) {
@@ -131,7 +131,6 @@ class PeopleController extends Controller
             }
         }
 
-//        $this->template->blocks[] = new Block('people/info.inc',                  ['person' => $person]);
         $this->template->blocks[] = new Block('emergencyContacts/updateForm.inc', ['contact'=> $contact]);
     }
 }

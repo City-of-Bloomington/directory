@@ -12,7 +12,7 @@ $gateway = new DepartmentGateway();
 
 $people = $gateway->getPeople();
 foreach ($people as $p) {
-    $username = $p->getUsername();
+    $username = $p->username;
     echo "$username\n";
     $data = $gateway->getPhoto($username);
     if ($data) {

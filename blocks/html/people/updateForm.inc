@@ -17,7 +17,7 @@ use Blossom\Classes\View;
                 ? "<img src=\"{$this->person->getPhotoUri()}\" />"
                 : "";
             #$photo = $this->person->hasLdapPhoto()
-            #    ? "<img src=\"".BASE_URI."/people/photo?username={$this->person->getUsername()}\" align=\"left\" />"
+            #    ? "<img src=\"".BASE_URI."/people/photo?username={$this->person->username}\" align=\"left\" />"
             #    : "<img src=\"".BASE_URI."/images/nophoto.jpg\"  align=\"left\" />";
             echo $photo;
         ?>
