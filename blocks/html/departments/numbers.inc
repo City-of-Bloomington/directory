@@ -23,12 +23,9 @@ use Blossom\Classes\View;
         $departments = $gateway->getTelephoneNumbers();
 
         foreach ($departments as $d) {
-            $name = View::escape($d->getName());
-            $address = "{$d->getAddress()}\n{$d->getCity()} {$d->getState()} {$d->getZip()}";
-            $phones = $d->getPhones();
-            if (!empty($phones['office'])) {
-                $phone = View::escape($phones['office']);
-            }
+            $name = View::escape($d->name);
+            $address = "{$d->address}\n{$d->city} {$d->state} {$d->zip}";
+            $phone = $d->office;
             echo "
             <tr><th>$name</th>
                 <td class=\"mod-number\">$phone</td>
