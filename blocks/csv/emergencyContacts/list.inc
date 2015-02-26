@@ -153,8 +153,8 @@ foreach ($this->contacts as $contact) {
     if ($person) {
         $row = array_fill_keys($everbridgeFields, '');
         $row['External ID'] = 'cob'.$contact->getEmployeeNum();
-        $row['First Name' ] = $person->getFirstname();
-        $row['Last Name'  ] = $person->getLastname();
+        $row['First Name' ] = str_replace(',', '', $person->firstname);
+        $row['Last Name'  ] = str_replace(',', '', $person->lastname);
         $row['Country'    ] = 'US';
         $row['Record Type'] = 'City of Bloomington Employee';
         $row['Groups'     ] = '*|CoB '.$contact->getDepartment();
