@@ -29,8 +29,13 @@ use Blossom\Classes\View;
 <section>
     <h1><?php echo View::escape($this->department->name); ?></h1>
     <?php
-        $block = new Block('people/list.inc', ['people'=>$this->department->getPeople()]);
-        echo $block->render('html', $this->template);
+        $block = new Block('people/list.inc');
+        
+        $people = $this->department->getPeople();
+        if (count($people)) {
+            $block->people = $people;
+            echo $block->render('html', $this->template);
+        }
 
         $c = $this->department->getChildren();
         renderChildren($c, $block);
