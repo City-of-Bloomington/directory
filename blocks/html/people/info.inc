@@ -7,6 +7,7 @@
  */
 use Application\Models\User;
 use Application\Models\Person;
+use Blossom\Classes\Block;
 use Blossom\Classes\View;
 ?>
 <section class="person-profile">
@@ -39,34 +40,10 @@ use Blossom\Classes\View;
          <h2><?php echo View::escape($this->person->title); ?></h2>
         <div><?php echo View::escape($this->person->department); ?></div>
         <div><?php echo View::escape($this->person->location); ?></div>
-        <div>
-            <address>
-            <?php
-                echo View::escape($this->person->address)."\n";
-                echo View::escape($this->person->city);
-                echo View::escape($this->person->state);
-                echo View::escape($this->person->zip);
-            ?>
-            </address>
-        </div>
-        <div>
-            <?php
-                $email = View::escape($this->person->email);
-                echo "<a href=\"mailto:$email\">$email</a>";
-            ?>
-        </div>
-        <table>
-            <?php
-                foreach (Person::$phoneNumberFields as $label) {
-                    $number = $this->person->$label;
-                    if ($number) {
-                        echo "<tr><th>$label</th><td>$number</td></tr>";
-                    }
-                }
-            ?>
-        </table>
-
         <?php
+            $block = new Block('directoryAttributes/contactInfo.inc', ['entry'=>$this->person]);
+            echo $block->render('html', $this->template);
+
             if (User::isAllowed('people', 'uploadPhoto')) {
                 include APPLICATION_HOME.'/blocks/html/people/uploadPhotoForm.inc';
             }
