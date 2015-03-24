@@ -8,9 +8,8 @@
 use Application\Models\Person;
 
 $person = [];
-foreach (Person::$fields as $f) {
-    $get = 'get'.ucfirst($f);
-    $person[$f] = $this->person->$get();
+foreach (Person::$fields as $f=>$ldapName) {
+    $person[$f] = $this->person->$f;
     if ($this->person->hasPhoto()) {
         $person['photo'] = $this->person->getPhotoUrl();
     }
