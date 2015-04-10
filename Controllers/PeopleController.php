@@ -10,14 +10,24 @@ use Application\Models\DepartmentGateway;
 use Application\Models\User;
 use Blossom\Classes\Block;
 use Blossom\Classes\Controller;
+use Blossom\Classes\Template;
 
 class PeopleController extends Controller
 {
-    private function loadPerson($username)
+    private $gateway;
+
+    public function __construct(Template &$template)
     {
-        $gateway = new DepartmentGateway();
-        return $gateway->getPerson($username);
+        parent::__construct($template);
+        $this->gateway = new DepartmentGateway();
     }
+
+    private function handle404()
+    {
+        header('HTTP/1.0 404 Not Found');
+        $_SESSION['errorMessages'][] = new \Exception('people/unknownPerson');
+    }
+
 
     public function index()
     {
@@ -25,7 +35,8 @@ class PeopleController extends Controller
 
     public function view()
     {
-        $person = $this->loadPerson($_GET['username']);
+        $person = $this->gateway->getPerson($_GET['username']);
+        if (!$person) { $this->handle404(); return; }
 
         $this->template->blocks[] = new Block('people/info.inc', ['person'=>$person]);
 
@@ -38,7 +49,8 @@ class PeopleController extends Controller
 
     public function update()
     {
-        $person = $this->loadPerson($_REQUEST['username']);
+        $person = $this->gateway->getPerson($_REQUEST['username']);
+        if (!$person) { $this->handle404(); return; }
 
         if (isset($_POST['username'])) {
             try {
@@ -83,18 +95,18 @@ class PeopleController extends Controller
 
     public function photo()
     {
-        $gateway = new DepartmentGateway();
-        $person = $gateway->getPerson($_GET['username']);
+        $person = $this->gateway->getPerson($_GET['username']);
+        if (!$person) { $this->handle404(); return; }
+
         header('Content-type: image/jpeg');
-        echo $gateway->getPhoto($_GET['username']);
+        echo $this->gateway->getPhoto($_GET['username']);
         exit();
     }
 
     public function uploadPhoto()
     {
         if (!empty($_POST['username'])) {
-            $gateway = new DepartmentGateway();
-            $person = $gateway->getPerson($_POST['username']);
+            $person = $this->gateway->getPerson($_POST['username']);
             if ($person) {
                 if (isset($_FILES['photo']) && is_uploaded_file($_FILES['photo']['tmp_name'])) {
                     try {
@@ -108,15 +120,15 @@ class PeopleController extends Controller
                 exit();
             }
         }
-        $_SESSION['errorMessages'][] = new \Exception('people/unknownPerson');
-        header('Location: '.BASE_URL);
+        $this->handle404();
         exit();
     }
 
     public function updateEmergencyContacts()
     {
-        $gateway = new DepartmentGateway();
-        $person  = $gateway->getPerson($_REQUEST['username']);
+        $person  = $this->gateway->getPerson($_REQUEST['username']);
+        if (!$person) { $this->handle404(); return; }
+
         $contact = $person->getEmergencyContacts();
 
         if (!empty($_POST['username'])) {

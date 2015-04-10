@@ -14,4 +14,4 @@ foreach (Person::$fields as $f=>$ldapName) {
         $person['photo'] = $this->person->getPhotoUrl();
     }
 }
-echo json_encode($person);
+echo json_encode($person, JSON_PRETTY_PRINT);
