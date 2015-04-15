@@ -9,7 +9,7 @@ use Blossom\Classes\View;
 ?>
 <section id="departments-numbers">
     <h1><?php echo $this->_('main_numbers'); ?></h1>
-    <table class="output-tabular">
+    <table>
         <thead>
             <tr>
                 <th scope="col">Name</th>

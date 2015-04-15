@@ -250,7 +250,6 @@ a.button:hover {
             float: left;
             margin: 0 0 0 1.5em;
 			max-width: 28em;
-			@include table();
             @include clearfix();
 
             > div {
@@ -260,7 +259,6 @@ a.button:hover {
 		&-emergencyProfile {
 			margin: 1.5em 0 0 1.5em;
 			padding: 0 0 0 200px;
-			@include table();
 			&-edit {
 				margin: 0 auto;
 				width: 40em;
