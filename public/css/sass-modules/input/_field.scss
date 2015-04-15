@@ -1,23 +1,16 @@
-/*dl*/.input-field {
+form dl {
     padding: .5em 0;
 
     > dt {
         font-size: (12em/16);
         font-weight: normal;
         margin: 0 0 .25em 0;
-
-        > label {
-            font-weight: normal;
-        }
     }
     > dd {
         margin: 0;
         padding: 0;
 
-        input[type="text"],
-        input[type="date"],
-        input[type="tel"],
-        input[type="email"] {
+        input {
             box-sizing: border-box;
             border: 1px solid #e0e0e0;
             font-family: $font-body-family;
@@ -33,57 +26,6 @@
         }
         > .intl-tel-input > input[type="tel"] {
             padding-left: 44px;
-        }
-    }
-    &.mod-radio {
-        > dd {
-            margin-bottom: .25em;
-            padding: 0 0 0 1.6em;
-            vertical-align: middle;
-
-            > label {
-                margin: 0;
-                vertical-align: middle;
-
-                
-                > input[type="radio"] {
-                    font-size: 1em;
-                    margin: 0 .45em 0 -1.4em;
-                    padding: 0;
-                    vertical-align: middle;
-
-                    + span {
-                        margin: 0;
-                        padding: 0;
-                        vertical-align: middle;
-                    }
-                }
-            }
-        }
-    }
-    &.mod-checkbox {
-        > dd {
-            margin-bottom: .25em;
-            padding: 0 0 0 1.6em;
-            vertical-align: middle;
-
-            > label {
-                margin: 0;
-                vertical-align: middle;
-
-                > input[type="checkbox"] {
-                    font-size: 1em;
-                    margin: 0 .45em 0 -1.4em;
-                    padding: 0;
-                    vertical-align: middle;
-
-                    + span {
-                        margin: 0;
-                        padding: 0;
-                        vertical-align: middle;
-                    }
-                }
-            }
         }
     }
 
@@ -111,21 +53,12 @@
         > dd {
             margin-left: 8em;
 
-            input[type="text"],
-            input[type="date"],
-            input[type="tel"],
-            input[type="email"] {
+            input {
                 font-size: (14em/16);
                 width: 20em;
 
                 &.datePicker { width:inherit; }
                 &.timePicker { width:inherit; }
-            }
-        }
-
-        &.mod-radio, &.mod-checkbox {
-            > dt {
-                padding-top: .2em;
             }
         }
     }

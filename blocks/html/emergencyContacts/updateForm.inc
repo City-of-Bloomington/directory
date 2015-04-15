@@ -37,8 +37,7 @@ $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
                     $value = View::escape($this->contact->$get());
 
                     echo "
-                    <dl class=\"input-field mod-text\">
-                        <dt><label  for=\"$id\">$label $i</label></dt>
+                    <dl><dt><label  for=\"$id\">$label $i</label></dt>
                         <dd><input name=\"$id\" id=\"$id\" type=\"$type\" $minLength value=\"$value\" /></dd>
                     </dl>
                     ";
