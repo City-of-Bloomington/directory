@@ -10,7 +10,6 @@
 @import 'sass-modules/layout/_html-elements';
 @import 'sass-modules/layout/_main';
 @import 'sass-modules/layout/_nav1';
-@import 'sass-modules/layout/_site';
 
 /**
  * Base styles for buttons and button links
@@ -217,21 +216,6 @@ a.button:hover {
     }
 
     .person {
-		@mixin table() {
-            > table {
-                margin: 1em 0 0 0;
-                > tbody {
-                    > tr {
-                        > th {
-                            padding: .25em .5em .25em 0;
-                        }
-                        > td {
-                            padding: .25em .5em .25em 0;
-                        }
-                    }
-                }
-            }
-		}
         &-profile {
             @include clearfix();
         }
