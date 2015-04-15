@@ -5,7 +5,7 @@ use Application\Models\User;
 <div class="nav1">
     <nav class="container">
 		<?php
-			$a = '<a href="%s" class="nav1-link">%s</a>';
+			$a = '<a href="%s">%s</a>';
 			echo sprintf($a, BASE_URI, $this->_(['department', 'departments', 2]));
 			echo sprintf($a, BASE_URI.'/departments/numbers', $this->_('main_numbers'));
 			echo sprintf($a, BASE_URI.'/people/search', $this->_('search_advanced'));
