@@ -9,7 +9,7 @@ use Blossom\Classes\View;
 
 if (count($this->people)) {
     echo "
-    <table class=\"output-tabular\">
+    <table>
         <thead>
             <tr><th scope=\"col\">{$this->_('name')}</th>
                 <th scope=\"col\">{$this->_('title')}</th>

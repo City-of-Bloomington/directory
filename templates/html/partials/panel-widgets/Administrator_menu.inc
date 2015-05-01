@@ -21,13 +21,13 @@ if (User::isAllowed('users')) {
 }
 ?>
 <?php if ($links): ?>
-<div class="site-utilityBar">
-    <div class="ext-launcher" id="siteSettingsLauncher" aria-haspopup="true" aria-expanded="false">
+<nav>
+    <div class="menuLauncher">
         <i class="fa fa-gear"></i>
         <?php echo $this->_('administration'); ?>
     </div>
-    <div class="ext-links closed" id="siteSettingsDropdown">
+    <div class="menuLinks closed">
         <?php echo $links; ?>
     </div>
-</div>
+</nav>
 <?php endif; ?>

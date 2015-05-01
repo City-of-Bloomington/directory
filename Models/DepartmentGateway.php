@@ -33,7 +33,7 @@ class DepartmentGateway
 
         $departments = [];
 
-        $result = ldap_list($this->connection, $dn, "(objectClass=organizationalUnit)");
+        $result = ldap_list($this->connection, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::$fields));
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {
             ldap_sort($this->connection, $result, 'name');
@@ -49,7 +49,7 @@ class DepartmentGateway
 
     public function getDepartment($dn)
     {
-        $result = ldap_read($this->connection, $dn, "objectClass=organizationalUnit");
+        $result = ldap_read($this->connection, $dn, "objectClass=organizationalUnit", array_values(DirectoryAttributes::$fields));
         if (   ldap_count_entries($this->connection, $result)) {
             $e = ldap_get_entries($this->connection, $result);
             return new Department($e[0], $this);
@@ -83,7 +83,7 @@ class DepartmentGateway
         }
 
         $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'];
-        $result = ldap_search($this->connection, $dn, $filter);
+        $result = ldap_search($this->connection, $dn, $filter, array_values(DirectoryAttributes::$fields));
 
         return $this->hydratePersonObjects($result);
     }
@@ -99,13 +99,13 @@ class DepartmentGateway
      */
     public function getPeople($dn=null)
     {
-        if ($dn) {
-            $result = ldap_list($this->connection, $dn, "objectClass=user");
-        }
-        else {
-            $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'];
-            $result = ldap_search($this->connection, $dn, "objectClass=user");
-        }
+        if (!$dn) { $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN']; }
+        $result = ldap_search(
+            $this->connection,
+            $dn,
+            "objectClass=user",
+            array_values(DirectoryAttributes::$fields)
+        );
         return $this->hydratePersonObjects($result);
     }
 
@@ -134,7 +134,8 @@ class DepartmentGateway
         $result = ldap_search(
             $this->connection,
             'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'],
-            "(&(objectClass=person)(sAMAccountName=$username))"
+            "(&(objectClass=person)(sAMAccountName=$username))",
+            array_values(DirectoryAttributes::$fields)
         );
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {
@@ -169,7 +170,10 @@ class DepartmentGateway
         if (!$dn) { $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN']; }
 
         $result = ldap_search(
-            $this->connection, $dn, '(&(objectClass=organizationalUnit)(telephoneNumber=*))'
+            $this->connection,
+            $dn,
+            '(&(objectClass=organizationalUnit)(telephoneNumber=*))',
+            array_values(DirectoryAttributes::$fields)
         );
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {

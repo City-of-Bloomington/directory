@@ -8,6 +8,11 @@
 use Application\Models\User;
 use Application\Models\Person;
 use Blossom\Classes\View;
+
+$this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/lib/libphonenumber/build/utils.js');
+$this->template->addToAsset('stylesheets', INTL_TEL_INPUT.'/build/css/intlTelInput.css');
+$this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/intlTelInput.min.js');
+$this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
 ?>
 <section class="person-profile">
     <div class="person-photoContainer">
@@ -50,9 +55,8 @@ use Blossom\Classes\View;
                     foreach (Person::$phoneNumberFields as $label) {
                         $number = View::escape($this->person->$label);
                         echo "
-                        <dl class=\"input-field mod-text\">
-                            <dt><label  for=\"$label\">$label</label></dt>
-                            <dd><input name=\"$label\" id=\"$label\" value=\"$number\" /></dd>
+                        <dl><dt><label  for=\"$label\">$label</label></dt>
+                            <dd><input name=\"$label\" id=\"$label\" value=\"$number\" type=\"tel\" /></dd>
                         </dl>
                         ";
                     }

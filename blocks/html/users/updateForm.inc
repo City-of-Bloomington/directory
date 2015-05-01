@@ -22,62 +22,56 @@ $title = $this->user->getId() ? $this->_('user_edit') : $this->_('user_add');
         <fieldset><legend><?php echo $this->_('person_info'); ?></legend>
             <input name="user_id" type="hidden" value="<?php echo $this->user->getId(); ?>" />
 
-            <table>
-                <tr><td><label for="firstname"><?php echo $this->_('firstname'); ?></label></td>
-                    <td><input name="firstname" id="firstname" value="<?php echo $firstname; ?>"
-                            required="required" inputmode="latin-name" />
-                    </td>
-                </tr>
+            <dl><dt><label  for="firstname"><?php echo $this->_('firstname'); ?></label></dt>
+                <dd><input name="firstname" id="firstname" value="<?php echo $firstname; ?>"
+                        required="required" inputmode="latin-name" type="text" />
+                </dd>
+            </dl>
 
-                <tr><td><label for="lastname"><?php echo $this->_('lastname'); ?></label></td>
-                    <td><input name="lastname" id="lastname" value="<?php echo $lastname; ?>"
-                            required="required" inputmode="latin-name" />
-                    </td>
-                </tr>
+            <dl><dt><label  for="lastname"><?php echo $this->_('lastname'); ?></label></dt>
+                <dd><input name="lastname" id="lastname" value="<?php echo $lastname; ?>"
+                        required="required" inputmode="latin-name" type="text" />
+                </dd>
+            </dl>
 
-                <tr><td><label for="email"><?php echo $this->_(['email', 'emails', 1]); ?></label></td>
-                    <td><input name="email" id="email" type="email" value="<?php echo $email; ?>" /></td>
-                </tr>
-            </table>
+            <dl><dt><label  for="email"><?php echo $this->_(['email', 'emails', 1]); ?></label></dt>
+                <dd><input name="email" id="email" type="email" value="<?php echo $email; ?>" /></dd>
+            </dl>
         </fieldset>
 		<fieldset><legend><?php echo $this->_('user_info'); ?></legend>
-			<table>
-				<tr><td><label for="authenticationMethod"><?php echo $this->_('authenticationMethod'); ?></label></td>
-					<td><select name="authenticationMethod" id="authenticationMethod" required="required">
-						<?php
-							foreach (User::getAuthenticationMethods() as $method) {
-								$selected = $this->user->getAuthenticationMethod()==$method
-									? 'selected="selected"'
-									: '';
-								echo "<option $selected>$method</option>";
-							}
-						?>
-						</select>
-					</td>
-				</tr>
-				<tr><td><label for="username"><?php echo $this->_('username'); ?></label></td>
-					<td><input name="username" id="username" value="<?php echo $username; ?>"
-                            required="required" />
-					</td>
-				</tr>
-				<tr><td><label for="password"><?php echo $this->_('password'); ?></label></td>
-					<td><input name="password" id="password" type="password" /></td>
-				</tr>
-				<tr><td><label for="role"><?php echo $this->_('role'); ?></label></td>
-					<td><select name="role" id="role"><option></option>
-						<?php
-							global $ZEND_ACL;
-							foreach (array_reverse($ZEND_ACL->getRoles()) as $role) {
-								$selected = $this->user->getRole()==$role
-									? 'selected="selected"'
-									: '';
-								echo "<option $selected>$role</option>";
-							}
-						?>
-						</select>
-					</td>
-				</tr>
-			</table>
+            <dl><dt><label for="authenticationMethod"><?php echo $this->_('authenticationMethod'); ?></label></dt>
+                <dd><select name="authenticationMethod" id="authenticationMethod" required="required">
+                    <?php
+                        foreach (User::getAuthenticationMethods() as $method) {
+                            $selected = $this->user->getAuthenticationMethod()==$method
+                                ? 'selected="selected"'
+                                : '';
+                            echo "<option $selected>$method</option>";
+                        }
+                    ?>
+                    </select>
+                </dd>
+            </dl>
+            <dl><dt><label  for="username"><?php echo $this->_('username'); ?></label></dt>
+                <dd><input name="username" id="username" value="<?php echo $username; ?>" type="text" required="required" /></dd>
+            </dl>
+            <dl><dt><label  for="password"><?php echo $this->_('password'); ?></label></dt>
+                <dd><input name="password" id="password" type="password" /></dd>
+            </dl>
+            <dl><dt><label for="role"><?php echo $this->_('role'); ?></label></dt>
+                <dd><select name="role" id="role"><option></option>
+                    <?php
+                        global $ZEND_ACL;
+                        foreach (array_reverse($ZEND_ACL->getRoles()) as $role) {
+                            $selected = $this->user->getRole()==$role
+                                ? 'selected="selected"'
+                                : '';
+                            echo "<option $selected>$role</option>";
+                        }
+                    ?>
+                    </select>
+                </dd>
+            </dl>
 			<?php
 				$helper = $this->template->getHelper('saveAndCancelButtons');
 				echo $helper->saveAndCancelButtons(BASE_URI.'/users');

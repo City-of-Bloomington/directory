@@ -21,12 +21,12 @@ use Blossom\Classes\View;
 	</div>
 	<table>
 		<thead>
-			<tr><th></th>
-				<th><?php echo $this->_('username'); ?></th>
-				<th><?php echo $this->_('name'); ?></th>
-				<th><?php echo $this->_('authenticationMethod'); ?></th>
-				<th><?php echo $this->_('role'); ?></th>
-				<th></th>
+			<tr><th scope="col"></th>
+				<th scope="col"><?php echo $this->_('username'); ?></th>
+				<th scope="col"><?php echo $this->_('name'); ?></th>
+				<th scope="col"><?php echo $this->_('authenticationMethod'); ?></th>
+				<th scope="col"><?php echo $this->_('role'); ?></th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody>

@@ -30,7 +30,9 @@ trait DirectoryAttributes
     public static $fields = [
         'name'        => 'name',
         'dn'          => 'distinguishedname',
+        'ou'          => 'ou',
         'username'    => 'samaccountname',
+        'cn'          => 'cn',
         'firstname'   => 'givenname',
         'lastname'    => 'sn',
         'displayname' => 'displayname',
@@ -56,7 +58,7 @@ trait DirectoryAttributes
     /**
      * The raw LDAP entry
      */
-    protected $entry;
+    public $entry;
 
     protected $deleted  = [];
     protected $modified = [];
@@ -93,7 +95,7 @@ trait DirectoryAttributes
             }
         }
         else {
-            throw new \Exception('unknownAttribute');
+            throw new \Exception("unknownAttribute: $field");
         }
         return '';
     }

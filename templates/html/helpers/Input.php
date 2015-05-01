@@ -17,14 +17,12 @@ class Input extends Helper
     {
         $extraAttributes = '';
         $required = $required === false ? '' : '<abbr title="Required field" class="text-required">*</abbr> ';
-        foreach ($inputAttributesArray as $attribute => $attrValue)
-        {
+
+        foreach ($inputAttributesArray as $attribute => $attrValue) {
             $extraAttributes .= "$attribute=\"$attrValue\" ";
         }
         echo <<<EOT
-
-            <dl class="input-field">
-                <dt><label for="$id">{$required}$label</label></dt>
+            <dl><dt><label for="$id">{$required}$label</label></dt>
                 <dd><input id="$id" name="$id" value="$value" type="$type" $extraAttributes/></dd>
             </dl>
 EOT;
