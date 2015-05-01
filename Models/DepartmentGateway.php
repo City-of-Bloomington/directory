@@ -22,7 +22,6 @@ class DepartmentGateway
         $this->connection = Ldap::getConnection($this->config);
 
         if (!$this->connection) {
-            print_r($this->config);
             throw new \Exception('ldap/failedConnection');
         }
     }

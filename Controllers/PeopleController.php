@@ -77,8 +77,7 @@ class PeopleController extends Controller
                 exit();
             }
             // End easter egg
-            $gateway = new DepartmentGateway();
-            $people = $gateway->search($_GET);
+            $people = $this->gateway->search($_GET);
             if (count($people) == 1 && $this->template->outputFormat == 'html') {
                 $username = $people[0]->username;
                 header('Location: '.BASE_URL."/people/view?username=$username");
