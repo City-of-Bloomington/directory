@@ -37,9 +37,32 @@ class Department
         return count($this->getChildren()) ? true : false;
     }
 
-    public function getPeople()
+
+    /**
+     * Returns people in this department
+     *
+     * If $people is passed in, $people is used as the data source, instead of LDAP.
+     *
+     * So, if you've already queried LDAP for a set of people, you can
+     * filter your existing result set to this department.  Just pass your existing
+     * result set to this function.
+     *
+     * @param array $people An array of Person objects
+     * @return array An array of Person objects
+     */
+    public function getPeople(&$people=null)
     {
-        return $this->gateway->getPeople($this->dn);
+        $c = count($people);
+        if (count($people)) {
+            $out = [];
+            foreach ($people as $person) {
+                if ($person->entry['department'][0] == $this->entry['ou'][0]) { $out[] = $person; }
+            }
+            return $out;
+        }
+        else {
+            return $this->gateway->getPeople($this->dn);
+        }
     }
 
     /**

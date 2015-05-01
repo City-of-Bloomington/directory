@@ -5,6 +5,7 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Department $this->department
  */
+use Application\Models\DepartmentGateway;
 use Blossom\Classes\Block;
 use Blossom\Classes\View;
 ?>
@@ -31,20 +32,27 @@ use Blossom\Classes\View;
     <?php
         $block = new Block('directoryAttributes/contactInfo.inc', ['entry'=>$this->department]);
         echo $block->render('html', $this->template);
-        
+
         $block = new Block('people/list.inc');
 
-        $people = $this->department->getPeople();
+        # Grab all the people inside this department, including sub-departments
+        $staff = $this->department->getPeople();
+        $c = count($staff);
+
+        # Are there any people in just this top-level department?
+        $people = $this->department->getPeople($staff);
         if (count($people)) {
             $block->people = $people;
             echo $block->render('html', $this->template);
         }
 
         $c = $this->department->getChildren();
-        renderChildren($c, $block);
+        renderChildren($c, $block, $staff);
 
-        function renderChildren($departments, $block)
+        function renderChildren($departments, $block, &$staff)
         {
+            $c = count($staff);
+
             if (count($departments)) {
                 echo '<ul class="list-departments">';
                 foreach ($departments as $d) {
@@ -52,13 +60,13 @@ use Blossom\Classes\View;
                     $url = BASE_URI.'/departments/view?dn='.urlencode($d->dn);
                     echo "<li><a href=\"$url\">$name</a>";
 
-                    $people = $d->getPeople();
+                    $people = $d->getPeople($staff);
                     if (count($people)) {
                         $block->people = $people;
                         echo $block->render('html', $block->template);
                     }
 
-                    renderChildren($d->getChildren(), $block);
+                    renderChildren($d->getChildren(), $block, $staff);
 
                     echo "</li>";
                 }
