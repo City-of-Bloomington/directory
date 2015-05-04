@@ -55,8 +55,14 @@ class Department
         $c = count($people);
         if (count($people)) {
             $out = [];
-            foreach ($people as $person) {
-                if ($person->entry['department'][0] == $this->entry['ou'][0]) { $out[] = $person; }
+            if ($this->entry['ou'][0] != 'Departments') {
+                foreach ($people as $person) {
+                    $d = explode(',', $person->entry['dn']);
+                    $dn = substr($d[1], 3);
+
+                    $ou = $this->entry['ou'][0];
+                    if ($dn == $ou) { $out[] = $person; }
+                }
             }
             return $out;
         }
