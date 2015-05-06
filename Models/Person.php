@@ -14,16 +14,13 @@ class Person
 {
     use DirectoryAttributes;
 
-    private $gateway;
-
     /**
      * Whitelist of accepted file types
      */
     public static $validPhotoFormats = ['jpg'];
 
-    public function __construct($ldap_entry, DepartmentGateway $gateway)
+    public function __construct($ldap_entry)
     {
-        $this->gateway = $gateway;
         $this->entry   = $ldap_entry;
     }
 
@@ -136,9 +133,8 @@ class Person
      */
     public function getDepartmentObject()
     {
-        if (preg_match('/CN=[^,]+,(.+$)/', $this->dn, $matches)) {
-            return $this->gateway->getDepartment($matches[1]);
-        }
+        $dn = explode(',', $this->entry['dn']);
+        return DepartmentGateway::getDepartment($dn[1]);
     }
 
     /**

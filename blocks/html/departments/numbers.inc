@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -19,8 +19,7 @@ use Blossom\Classes\View;
         </thead>
         <tbody>
     <?php
-        $gateway = new DepartmentGateway();
-        $departments = $gateway->getTelephoneNumbers();
+        $departments = DepartmentGateway::getTelephoneNumbers();
 
         foreach ($departments as $d) {
             $name = View::escape($d->name);

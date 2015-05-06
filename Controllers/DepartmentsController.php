@@ -19,10 +19,14 @@ class DepartmentsController extends Controller
 
     public function view()
     {
-        $gateway = new DepartmentGateway();
-        $department = $gateway->getDepartment($_GET['dn']);
-
-        $this->template->blocks[] = new Block('departments/info.inc', ['department'=>$department]);
+        try {
+            $department = DepartmentGateway::getDepartment($_GET['dn']);
+            $this->template->blocks[] = new Block('departments/info.inc', ['department'=>$department]);
+        }
+        catch (\Exception $e) {
+            header('HTTP/1.1 404 Not Found', true, 404);
+            $_SESSION['errorMessages'][] = $e;
+        }
     }
 
     public function numbers()

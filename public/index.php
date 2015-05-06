@@ -1,12 +1,16 @@
 <?php
 /**
- * @copyright 2012-2013 City of Bloomington, Indiana
+ * @copyright 2012-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-include '../configuration.inc';
+namespace Application\Controllers;
+
+use Application\Models\DepartmentGateway;
 use Blossom\Classes\Template;
 use Blossom\Classes\Block;
+
+include '../configuration.inc';
 
 // Check for routes
 if (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {
@@ -23,7 +27,7 @@ $template = !empty($_REQUEST['format'])
 if (isset($resource) && isset($action) && $ZEND_ACL->hasResource($resource)) {
 	$USER_ROLE = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
 	if ($ZEND_ACL->isAllowed($USER_ROLE, $resource, $action)) {
-		$controller = 'Application\Controllers\\'.ucfirst($resource).'Controller';
+		$controller = __namespace__.'\\'.ucfirst($resource).'Controller';
 		$c = new $controller($template);
 		$c->$action();
 	}
@@ -33,8 +37,17 @@ if (isset($resource) && isset($action) && $ZEND_ACL->hasResource($resource)) {
 	}
 }
 else {
-	header('HTTP/1.1 404 Not Found', true, 404);
-	$template->blocks[] = new Block('404.inc');
+    // Treat the url as if it's a path to a department
+    if (preg_match('|'.BASE_URI.'([^\?]+)|', $_SERVER['REQUEST_URI'], $matches)
+            && !empty($matches[1])) {
+        $_GET['dn'] = urldecode(DepartmentGateway::getDnForPath($matches[1]));
+        $c = new DepartmentsController($template);
+        $c->view();
+    }
+    else {
+        header('HTTP/1.1 404 Not Found', true, 404);
+        $template->blocks[] = new Block('404.inc');
+    }
 }
 
 echo $template->render();

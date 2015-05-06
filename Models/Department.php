@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2015 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
@@ -10,19 +10,26 @@ class Department
 {
     use DirectoryAttributes;
 
-    private $gateway;
     private $children = [];
 
-    public function __construct($ldap_entry, DepartmentGateway $gateway)
+    public function __construct($ldap_entry)
     {
-        $this->gateway = $gateway;
         $this->entry   = $ldap_entry;
     }
 
+    /**
+     * @return string
+     */
+    public function getUrl() { return BASE_URL.DepartmentGateway::getPathForDn($this->entry['dn']); }
+    public function getUri() { return BASE_URI.DepartmentGateway::getPathForDn($this->entry['dn']); }
+
+    /**
+     * @return array
+     */
     public function getChildren()
     {
         if (!$this->children) {
-            $departments = $this->gateway->getDepartments($this->dn);
+            $departments = DepartmentGateway::getDepartments($this->dn);
             if (count($departments)) {
                 foreach ($departments as $d) {
                     $this->children[] = $d;
@@ -32,6 +39,9 @@ class Department
         return $this->children;
     }
 
+    /**
+     * @return bool
+     */
     public function hasChildren()
     {
         return count($this->getChildren()) ? true : false;
@@ -67,7 +77,7 @@ class Department
             return $out;
         }
         else {
-            return $this->gateway->getPeople($this->dn);
+            return DepartmentGateway::getPeople($this->dn);
         }
     }
 
@@ -76,7 +86,7 @@ class Department
      *
      * @return array[name => dn]
      */
-    public function getPath()
+    public function getBreadcrumbs()
     {
         $breadcrumbs = [];
 

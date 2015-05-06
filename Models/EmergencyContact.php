@@ -169,10 +169,10 @@ class EmergencyContact extends ActiveRecord
     /**
      * @return Person
      */
-    public function getPerson(DepartmentGateway $gateway)
+    public function getPerson()
     {
         if (!$this->person) {
-            $this->person = $gateway->getPerson($this->getUsername());
+            $this->person = DepartmentGateway::getPerson($this->getUsername());
         }
         return $this->person;
     }

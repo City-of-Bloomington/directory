@@ -12,8 +12,7 @@ global $DIRECTORY_CONFIG;
 <section id="departments-list">
     <h1><?php echo $this->_(['department', 'departments', 2]); ?></h1>
     <?php
-        $gateway = new DepartmentGateway();
-        $departments = $gateway->getDepartments();
+        $departments = DepartmentGateway::getDepartments();
 
         function renderChildren($departments, $nested = false)
         {
@@ -24,8 +23,7 @@ global $DIRECTORY_CONFIG;
 
                 foreach ($departments as $d) {
                     $name = View::escape($d->name);
-                    $url = BASE_URI.'/departments/view?dn='.urlencode($d->dn);
-                    echo "<li><a href=\"$url\">$name</a>";
+                    echo "<li><a href=\"{$d->getUri()}\">$name</a>";
 
                     renderChildren($d->getChildren(), true);
 

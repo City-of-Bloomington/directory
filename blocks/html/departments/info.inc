@@ -11,11 +11,11 @@ use Blossom\Classes\View;
 ?>
 <nav class="breadcrumbs">
 <?php
-    $i = count($this->department->getPath());
-    foreach ($this->department->getPath() as $name=>$dn) {
+    $i = count($this->department->getBreadcrumbs());
+    foreach   ($this->department->getBreadcrumbs() as $name=>$dn) {
         $url = $name == 'Departments'
             ? BASE_URI
-            : BASE_URI.'/departments/view?dn='.urlencode($dn);
+            : BASE_URI.'/departments'.DepartmentGateway::getPathForDn($dn);
         $name = View::escape($name);
         $i--;
         if( $i > 0) {
@@ -57,8 +57,7 @@ use Blossom\Classes\View;
                 echo '<ul class="list-departments">';
                 foreach ($departments as $d) {
                     $name = View::escape($d->name);
-                    $url = BASE_URI.'/departments/view?dn='.urlencode($d->dn);
-                    echo "<li><a href=\"$url\">$name</a>";
+                    echo "<li><a href=\"{$d->getUri()}\">$name</a>";
 
                     $people = $d->getPeople($staff);
                     if (count($people)) {

@@ -6,7 +6,6 @@
  * @param Zend\Db\Results $this->contacts
  */
 use Application\Models\EmergencyContact;
-use Application\Models\DepartmentGateway;
 
 header('Content-Disposition: attachment; filename="contacts.csv"');
 
@@ -146,10 +145,8 @@ $everbridgeFields = [
 ];
 echo implode(',', $everbridgeFields)."\n";
 
-$gateway = new DepartmentGateway();
-
 foreach ($this->contacts as $contact) {
-    $person = $contact->getPerson($gateway);
+    $person = $contact->getPerson();
     if ($person) {
         $row = array_fill_keys($everbridgeFields, '');
         $row['External ID'] = 'cob'.$contact->getEmployeeNum();

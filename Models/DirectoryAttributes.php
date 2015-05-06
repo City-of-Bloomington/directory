@@ -66,7 +66,7 @@ trait DirectoryAttributes
     public function save()
     {
         if ($this->modified || $this->deleted) {
-            $this->gateway->update($this->dn, $this->modified, $this->deleted);
+            DepartmentGateway::update($this->dn, $this->modified, $this->deleted);
         }
     }
 

@@ -10,59 +10,108 @@ use Blossom\Classes\Ldap;
 
 class DepartmentGateway
 {
-    private $config;
-    private $connection;
+    private static $config;
+    private static $connection;
     private static $hiddenDepartments = ['Other Users'];
+    private static $department_dn;
 
-    public function __construct()
+    /**
+     * Returns the config array
+     *
+     * The array is created in /data/site_config.inc
+     *
+     * @return array
+     */
+    public static function getConfig()
     {
         global $DIRECTORY_CONFIG;
-
-        $this->config = $DIRECTORY_CONFIG['Employee'];
-        $this->connection = Ldap::getConnection($this->config);
-
-        if (!$this->connection) {
-            throw new \Exception('ldap/failedConnection');
+        if (!self::$config) {
+            self::$config = $DIRECTORY_CONFIG['Employee'];
         }
+        return self::$config;
     }
 
-    public function getDepartments($dn='')
+    /**
+     * Returns the LDAP connection
+     *
+     * @return resource
+     */
+    public static function getConnection()
     {
-        if (!$dn) { $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN']; }
+        if (!self::$connection) {
+             self::$connection = Ldap::getConnection(self::getConfig());
+
+            if (!self::$connection) {
+                throw new \Exception('ldap/failedConnection');
+            }
+        }
+        return self::$connection;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getDepartmentDn()
+    {
+        $c = self::getConfig();
+        return 'OU=Departments,'.$c['DIRECTORY_BASE_DN'];
+    }
+
+    /**
+     * @param string $dn
+     * @return array An array of Department objects
+     */
+    public static function getDepartments($dn='')
+    {
+        $ldap = self::getConnection();
+
+        if (!$dn) { $dn = self::getDepartmentDn(); }
 
         $departments = [];
 
-        $result = ldap_list($this->connection, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::$fields));
-        $count = ldap_count_entries($this->connection, $result);
+        $result = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::$fields));
+        $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            ldap_sort($this->connection, $result, 'name');
-            $entries = ldap_get_entries($this->connection, $result);
+            ldap_sort($ldap, $result, 'name');
+            $entries = ldap_get_entries($ldap, $result);
             for ($i=0; $i<$count; $i++) {
                 if (!in_array($entries[$i]['name'][0], self::$hiddenDepartments)) {
-                    $departments[] = new Department($entries[$i], $this);
+                    $departments[] = new Department($entries[$i]);
                 }
             }
         }
         return $departments;
     }
 
-    public function getDepartment($dn)
+    /**
+     * @param string $dn
+     * @return Department
+     */
+    public static function getDepartment($dn)
     {
-        $result = ldap_read($this->connection, $dn, "objectClass=organizationalUnit", array_values(DirectoryAttributes::$fields));
-        if (   ldap_count_entries($this->connection, $result)) {
-            $e = ldap_get_entries($this->connection, $result);
-            return new Department($e[0], $this);
+        $ldap = self::getConnection();
+
+        $result = @ldap_search(
+            $ldap,
+            $dn,
+            "(objectClass=organizationalUnit)",
+            array_values(DirectoryAttributes::$fields)
+        );
+        if ($result
+            && ldap_count_entries($ldap, $result)) {
+            $e = ldap_get_entries($ldap, $result);
+            return new Department($e[0]);
         }
         else {
             throw new \Exception('ldap/unknownDepartment');
         }
-
     }
 
     /**
+     * @param array $fields An array of key=>values to search on
      * @return array An array of Person objects
      */
-    public function search($fields)
+    public static function search($fields)
     {
         # Build the LDAP query
         if (!empty($fields['firstname']) || !empty($fields['lastname'])) {
@@ -81,10 +130,15 @@ class DepartmentGateway
             $filter = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
 
-        $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'];
-        $result = ldap_search($this->connection, $dn, $filter, array_values(DirectoryAttributes::$fields));
+        $ldap = self::getConnection();
+        $result = ldap_search(
+            $ldap,
+            self::getDepartmentDn(),
+            $filter,
+            array_values(DirectoryAttributes::$fields)
+        );
 
-        return $this->hydratePersonObjects($result);
+        return self::hydratePersonObjects($result);
     }
 
     /**
@@ -96,98 +150,165 @@ class DepartmentGateway
      * @param string $dn
      * @return array An array of Person objects
      */
-    public function getPeople($dn=null)
+    public static function getPeople($dn=null)
     {
-        if (!$dn) { $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN']; }
+        if (!$dn) { $dn = self::getDepartmentDn(); }
+
+        $ldap = self::getConnection();
         $result = ldap_search(
-            $this->connection,
+            $ldap,
             $dn,
-            "objectClass=user",
+            "(objectClass=user)",
             array_values(DirectoryAttributes::$fields)
         );
-        return $this->hydratePersonObjects($result);
+        return self::hydratePersonObjects($result);
     }
 
     /**
+     * @param resource LDAP Result Set
      * @return array An array of Person objects
      */
-    private function hydratePersonObjects($result)
+    private static function hydratePersonObjects($result)
     {
+        $ldap = self::getConnection();
+
         $people = [];
-        $count = ldap_count_entries($this->connection, $result);
+        $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            ldap_sort($this->connection, $result, 'sn');
-            $entries = ldap_get_entries($this->connection, $result);
+            ldap_sort($ldap, $result, 'sn');
+            $entries = ldap_get_entries($ldap, $result);
             for ($i=0; $i<$count; $i++) {
                 // Ignore user account flagged with an asterisk
                 if (strpos($entries[$i]['cn'][0], '*') === false) {
-                    $people[] = new Person($entries[$i], $this);
+                    $people[] = new Person($entries[$i]);
                 }
             }
         }
         return $people;
     }
 
-    public function getPerson($username)
+    /**
+     * @param string $username
+     * @return Person
+     */
+    public static function getPerson($username)
     {
+        $ldap = self::getConnection();
         $result = ldap_search(
-            $this->connection,
-            'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'],
+            $ldap,
+            self::getDepartmentDn(),
             "(&(objectClass=person)(sAMAccountName=$username))",
             array_values(DirectoryAttributes::$fields)
         );
-        $count = ldap_count_entries($this->connection, $result);
+        $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            $entries = ldap_get_entries($this->connection, $result);
-            return new Person($entries[0], $this);
+            $entries = ldap_get_entries($ldap, $result);
+            return new Person($entries[0]);
         }
     }
 
-    public function getPhoto($username)
+    /**
+     * @param string $username
+     * @return data Binary image data
+     */
+    public static function getPhoto($username)
     {
+        $ldap = self::getConnection();
         $result = ldap_search(
-            $this->connection,
-            'OU=Departments,'.$this->config['DIRECTORY_BASE_DN'],
+            $ldap,
+            self::getDepartmentDn(),
             "(&(objectClass=person)(sAMAccountName=$username))",
             ['jpegphoto']
         );
-        $count = ldap_count_entries($this->connection, $result);
+        $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            $e = ldap_first_entry($this->connection, $result);
-            $attributes = ldap_get_attributes($this->connection, $e);
+            $e = ldap_first_entry($ldap, $result);
+            $attributes = ldap_get_attributes($ldap, $e);
             if (!empty($attributes['jpegPhoto'][0])) {
-                $data = ldap_get_values_len($this->connection, $e, 'jpegphoto');
+                $data = ldap_get_values_len($ldap, $e, 'jpegphoto');
                 return $data[0];
             }
         }
     }
 
-    public function getTelephoneNumbers($dn='')
+    /**
+     * @param string $dn
+     * @return array
+     */
+    public static function getTelephoneNumbers($dn='')
     {
         $departments = [];
 
-        if (!$dn) { $dn = 'OU=Departments,'.$this->config['DIRECTORY_BASE_DN']; }
+        if (!$dn) { $dn = self::getDepartmentDn(); }
 
+        $ldap = self::getConnection();
         $result = ldap_search(
-            $this->connection,
+            $ldap,
             $dn,
             '(&(objectClass=organizationalUnit)(telephoneNumber=*))',
             array_values(DirectoryAttributes::$fields)
         );
-        $count = ldap_count_entries($this->connection, $result);
+        $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            ldap_sort($this->connection, $result, 'name');
-            $entries = ldap_get_entries($this->connection, $result);
+            ldap_sort($ldap, $result, 'name');
+            $entries = ldap_get_entries($ldap, $result);
             for ($i=0; $i<$count; $i++) {
-                $departments[] = new Department($entries[$i], $this);
+                $departments[] = new Department($entries[$i]);
             }
         }
         return $departments;
     }
 
-    public function update($dn, array $modified=null, array $deleted=null)
+    /**
+     * @param string $dn
+     * @param array $modified
+     * @param array $deleted
+     */
+    public static function update($dn, array $modified=null, array $deleted=null)
     {
-        if ($modified) { ldap_mod_replace($this->connection, $dn, $modified); }
-        if ($deleted ) { ldap_mod_del    ($this->connection, $dn, $deleted ); }
+        $ldap = self::getConnection();
+        if ($modified) { ldap_mod_replace($ldap, $dn, $modified); }
+        if ($deleted ) { ldap_mod_del    ($ldap, $dn, $deleted ); }
+    }
+
+    /**
+     * Creates a DN string for a given path
+     *
+     * This function only prepares a well-formed string
+     * using the given path.  It may not actually be a DN
+     * that exists in the directory.
+     *
+     * @param string $path
+     * @return string
+     */
+    public static function getDnForPath($path)
+    {
+        if ($path[0] === '/') { $path = substr($path, 1); }
+
+        $dn = self::getDepartmentDn();
+
+        $matches = explode('/', $path);
+        foreach ($matches as $ou) { $dn = "OU=$ou,$dn"; }
+        return $dn;
+    }
+
+    /**
+     * @param string $dn
+     * @return string
+     */
+    public static function getPathForDn($dn)
+    {
+        preg_match_all("|OU=([^,]+),|", $dn, $matches);
+        if (count($matches[1]) > 1) {
+            // Matches will also include the OU=Departments,
+            // which we don't want to be part of the path.
+            array_pop($matches[1]);
+
+            $path = '';
+            foreach ($matches[1] as $name) {
+                $path = "/$name$path";
+            }
+            return $path;
+        }
     }
 }
