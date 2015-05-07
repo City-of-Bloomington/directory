@@ -15,7 +15,7 @@ use Blossom\Classes\View;
     foreach   ($this->department->getBreadcrumbs() as $name=>$dn) {
         $url = $name == 'Departments'
             ? BASE_URI
-            : BASE_URI.'/departments'.DepartmentGateway::getPathForDn($dn);
+            : BASE_URI.DepartmentGateway::getPathForDn($dn);
         $name = View::escape($name);
         $i--;
         if( $i > 0) {
