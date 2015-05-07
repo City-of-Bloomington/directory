@@ -37,7 +37,6 @@ use Blossom\Classes\View;
 
         # Grab all the people inside this department, including sub-departments
         $staff = $this->department->getPeople();
-        $c = count($staff);
 
         # Are there any people in just this top-level department?
         $people = $this->department->getPeople($staff);
@@ -51,8 +50,6 @@ use Blossom\Classes\View;
 
         function renderChildren($departments, $block, &$staff)
         {
-            $c = count($staff);
-
             if (count($departments)) {
                 echo '<ul class="list-departments">';
                 foreach ($departments as $d) {

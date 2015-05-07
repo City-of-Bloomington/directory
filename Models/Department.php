@@ -97,4 +97,49 @@ class Department
         }
         return array_reverse($breadcrumbs);
     }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return DepartmentGateway::getPathForDn($this->entry['dn']);
+    }
+
+    /**
+     * Returns all data for this department
+     *
+     * The data returned should be ready for encoding into JSON or XML
+     *
+     * @return array
+     */
+    public function getData(&$staff=null)
+    {
+        if (!$staff) {
+            # Grab all the people inside this department, including sub-departments
+            $staff = $this->getPeople();
+        }
+
+        $out = [];
+        foreach (array_keys(self::$fields) as $f) { $out[$f] = $this->$f; }
+        $out['path']   = $this->getPath();
+
+
+        # Are there any people in just this department?
+        $people = $this->getPeople($staff);
+        if (count($people)) {
+            $out['people'] = [];
+            foreach ($people as $p) {
+                $out['people'][] = $p->getData();
+            }
+        }
+
+        $children = $this->getChildren();
+        if (count($children)) {
+            foreach ($children as $d) {
+                $out['departments'][] = $d->getData();
+            }
+        }
+        return $out;
+   }
 }

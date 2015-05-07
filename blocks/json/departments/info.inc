@@ -5,10 +5,4 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Department $this->department
  */
-use Application\Models\Department;
-
-$department = [];
-foreach (Department::$fields as $f=>$ldapName) {
-    $department[$f] = $this->department->$f;
-}
-echo json_encode($department);
+echo json_encode($this->department->getData(), JSON_PRETTY_PRINT);

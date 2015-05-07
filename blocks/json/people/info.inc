@@ -5,13 +5,4 @@
  * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Person $this->person
  */
-use Application\Models\Person;
-
-$person = [];
-foreach (Person::$fields as $f=>$ldapName) {
-    $person[$f] = $this->person->$f;
-    if ($this->person->hasPhoto()) {
-        $person['photo'] = $this->person->getPhotoUrl();
-    }
-}
-echo json_encode($person, JSON_PRETTY_PRINT);
+echo json_encode($this->person->getData(), JSON_PRETTY_PRINT);

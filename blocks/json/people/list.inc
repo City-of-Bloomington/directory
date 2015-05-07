@@ -7,13 +7,8 @@
  */
 use Blossom\Classes\Block;
 
-$json = [];
-if (count($this->people)) {
-    $block = new Block('people/info.inc');
-
-    foreach ($this->people as $p) {
-        $block->person = $p;
-        $json[] = $block->render('json', $this->template);
-    }
+$people = [];
+foreach ($this->people as $p) {
+    $people[] = $p->getData();
 }
-echo '['.implode(',', $json).']';
+echo json_encode($people, JSON_PRETTY_PRINT);

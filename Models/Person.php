@@ -144,4 +144,23 @@ class Person
     {
         return new EmergencyContact($this);
     }
+
+    /**
+     * Returns all data about this person
+     *
+     * The data returned should be ready for encoding into JSON or XML
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        $out = [];
+        
+        foreach (array_keys(self::$fields) as $f) {
+            $out[$f] = $this->$f;
+        }
+        if ($this->hasPhoto()) { $out['photo'] = $this->getPhotoUrl(); }
+
+        return $out;
+    }
 }

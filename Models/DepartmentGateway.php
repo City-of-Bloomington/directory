@@ -91,7 +91,7 @@ class DepartmentGateway
     {
         $ldap = self::getConnection();
 
-        $result = @ldap_search(
+        $result = @ldap_read(
             $ldap,
             $dn,
             "(objectClass=organizationalUnit)",
