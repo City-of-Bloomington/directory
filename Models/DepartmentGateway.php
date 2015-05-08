@@ -288,7 +288,10 @@ class DepartmentGateway
         $dn = self::getDepartmentDn();
 
         $matches = explode('/', $path);
-        foreach ($matches as $ou) { $dn = "OU=$ou,$dn"; }
+        foreach ($matches as $ou) {
+            $ou = str_replace('_', ' ', $ou);
+            $dn = "OU=$ou,$dn";
+        }
         return $dn;
     }
 
@@ -306,6 +309,7 @@ class DepartmentGateway
 
             $path = '';
             foreach ($matches[1] as $name) {
+                $name = str_replace(' ', '_', strtolower($name));
                 $path = "/$name$path";
             }
             return $path;
