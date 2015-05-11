@@ -1,4 +1,4 @@
-<div id="panel-one">
+<div id="panel-one" class="panel">
 <?php
 	global $USER_ROLE;
 	if ($USER_ROLE == 'Administrator') {

@@ -8,7 +8,7 @@
 <body>
 	<?php $this->_include('partials/header.inc'); ?>
 	<main>
-		<div class="container" id="panel-container">
+		<div class="panel" id="content-panel">
 			<?php
 				include BLOSSOM.'/errorMessages.php';
 

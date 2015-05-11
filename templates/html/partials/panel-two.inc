@@ -1,2 +1,2 @@
-<div id="panel-two">
+<div id="panel-two" class="panel">
 </div>

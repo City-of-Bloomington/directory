@@ -1,7 +1,3 @@
-<?php
-use Application\Models\User;
-?>
-
 <div class="nav1">
     <nav class="container">
 		<?php
