@@ -39,6 +39,7 @@ use Blossom\Classes\View;
         ?>
          <h2><?php echo View::escape($this->person->title); ?></h2>
         <div><?php echo View::escape($this->person->department); ?></div>
+        <div><?php echo View::escape($this->person->division); ?></div>
         <div><?php echo View::escape($this->person->location); ?></div>
         <?php
             $block = new Block('directoryAttributes/contactInfo.inc', ['entry'=>$this->person]);

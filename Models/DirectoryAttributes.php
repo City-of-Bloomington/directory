@@ -39,6 +39,7 @@ trait DirectoryAttributes
         'email'       => 'mail',
         'title'       => 'title',
         'department'  => 'department',
+        'division'    => 'division',
         'location'    => 'physicaldeliveryofficename',
         'address'     => 'street',
         'city'        => 'l',
