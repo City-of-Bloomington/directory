@@ -19,19 +19,63 @@ use Blossom\Classes\View;
         </thead>
         <tbody>
     <?php
+        $departments = DepartmentGateway::getDepartments();
+
+        function renderChildren($departments)
+        {
+            if (count($departments)) {
+                foreach ($departments as $d) {
+                    $name = View::escape($d->name);
+                    $address = "{$d->address}\n{$d->city} {$d->state} {$d->zip}";
+                    $phone = $d->office;
+                    if ($phone) {
+                        $breadcrumbs = $d->getBreadcrumbs();
+                        if (count($breadcrumbs) > 2) {
+                            array_pop($breadcrumbs);
+                            end($breadcrumbs);
+                            $parent = key($breadcrumbs);
+                            if ($parent != 'City Hall') {
+                                $name = "$parent - $name";
+                            }
+                        }
+
+                        echo "
+                        <tr><th>$name</th>
+                            <td class=\"mod-number\">$phone</td>
+                            <td><address>$address</address></td>
+                        </tr>
+                        ";
+                        renderChildren($d->getChildren());
+                    }
+                }
+            }
+        }
+        renderChildren($departments);
+        /*
         $departments = DepartmentGateway::getTelephoneNumbers();
 
+        $rows = [];
         foreach ($departments as $d) {
             $name = View::escape($d->name);
             $address = "{$d->address}\n{$d->city} {$d->state} {$d->zip}";
             $phone = $d->office;
-            echo "
+
+            $breadcrumbs = $d->getBreadcrumbs();
+            array_pop($breadcrumbs);
+            end($breadcrumbs);
+            $parent = key($breadcrumbs);
+            $name = "$parent - $name";
+
+            $rows[$name] = "
             <tr><th>$name</th>
                 <td class=\"mod-number\">$phone</td>
                 <td><address>$address</address></td>
             </tr>
             ";
         }
+        ksort($rows);
+        foreach ($rows as $html) { echo $html; }
+        */
     ?>
         </tbody>
     </table>

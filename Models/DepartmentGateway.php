@@ -233,34 +233,6 @@ class DepartmentGateway
 
     /**
      * @param string $dn
-     * @return array
-     */
-    public static function getTelephoneNumbers($dn='')
-    {
-        $departments = [];
-
-        if (!$dn) { $dn = self::getDepartmentDn(); }
-
-        $ldap = self::getConnection();
-        $result = ldap_search(
-            $ldap,
-            $dn,
-            '(&(objectClass=organizationalUnit)(telephoneNumber=*))',
-            array_values(DirectoryAttributes::$fields)
-        );
-        $count = ldap_count_entries($ldap, $result);
-        if ($count) {
-            ldap_sort($ldap, $result, 'name');
-            $entries = ldap_get_entries($ldap, $result);
-            for ($i=0; $i<$count; $i++) {
-                $departments[] = new Department($entries[$i]);
-            }
-        }
-        return $departments;
-    }
-
-    /**
-     * @param string $dn
      * @param array $modified
      * @param array $deleted
      */

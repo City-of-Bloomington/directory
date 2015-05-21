@@ -43,7 +43,7 @@ trait DirectoryAttributes
         'location'    => 'physicaldeliveryofficename',
         'address'     => 'street',
         'city'        => 'l',
-        'state'       => 'state',
+        'state'       => 'st',
         'zip'         => 'postalcode',
         'office'      => 'telephonenumber',
         'fax'         => 'facsimiletelephonenumber',
