@@ -1,3 +1,4 @@
+.build
 configuration.inc
 site_config.inc
 data/photos/*
@@ -13,5 +14,6 @@ public/css/**/.sass-cache
 node_modules
 .ftppass
 gulpfile.js
-.build
 *.mo
+
+package.json
