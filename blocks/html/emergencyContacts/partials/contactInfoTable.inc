@@ -29,4 +29,4 @@ foreach (array_keys(EmergencyContact::$contactFields) as $f) {
         ";
     }
 }
-if ($rows) { echo "<table>$rows</table>"; }
+if ($rows) { echo "<table class=\"contact\">$rows</table>"; }

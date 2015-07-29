@@ -30,7 +30,7 @@ foreach ($fields as $f) {
         echo "<a href=\"mailto:$email\">$email</a>";
     ?>
 </div>
-<table>
+<table class="contact">
     <?php
         foreach (DirectoryAttributes::$phoneNumberFields as $label) {
             $number = $this->entry->$label;
