@@ -26,6 +26,11 @@ class Person
 
     public function handleUpdate($post)
     {
+        $fields  = ['address', 'city', 'state', 'zip'];
+        foreach ($fields as $f) {
+            $this->$f = $post[$f];
+        }
+        
         foreach (self::$phoneNumberFields as $field) {
             $this->$field = $post[$field];
         }
@@ -155,7 +160,7 @@ class Person
     public function getData()
     {
         $out = [];
-        
+
         foreach (array_keys(self::$fields) as $f) {
             $out[$f] = $this->$f;
         }

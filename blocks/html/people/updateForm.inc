@@ -21,50 +21,52 @@ $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
             $photo = $this->person->hasPhoto()
                 ? "<img src=\"{$this->person->getPhotoUri()}\" />"
                 : "";
-            #$photo = $this->person->hasLdapPhoto()
-            #    ? "<img src=\"".BASE_URI."/people/photo?username={$this->person->username}\" align=\"left\" />"
-            #    : "<img src=\"".BASE_URI."/images/nophoto.jpg\"  align=\"left\" />";
             echo $photo;
         ?>
     </div>
     <div class="person-details">
+    <form method="post" action="<?php echo BASE_URI; ?>/people/update">
         <h1><?php echo View::escape($this->person->getFullname()); ?></h1>
         <h2><?php echo View::escape($this->person->title); ?></h2>
         <div><?php echo View::escape($this->person->department); ?></div>
         <div><?php echo View::escape($this->person->location); ?></div>
-        <div>
-            <address>
-                <?php
-                echo View::escape($this->person->address)."\n";
-                echo View::escape($this->person->city);
-                echo View::escape($this->person->state);
-                echo View::escape($this->person->zip);
-                ?>
-            </address>
-        </div>
+        <fieldset><legend><?= $this->_('address'); ?></legend>
+            <textarea name="address" id="address"><?= View::escape($this->person->address); ?></textarea>
+            <?php
+                $fields = ['city', 'state', 'zip'];
+                foreach ($fields as $f) {
+                    $value = View::escape($this->person->$f);
+                    echo "
+                    <dl><dt><label  for=\"$f\">{$this->_($f)}</label></dt>
+                        <dd><input name=\"$f\" id=\"$f\" value=\"$value\" /></dd>
+                    </dl>
+                    ";
+                }
+            ?>
+            <dl>
+        </fieldset>
         <div>
             <?php
                 $email = View::escape($this->person->email);
                 echo "<a href=\"mailto:$email\">$email</a>";
             ?>
         </div>
-        <form method="post" action="<?php echo BASE_URI; ?>/people/update">
-            <fieldset>
-                <input name="username" type="hidden" value="<?php echo $this->person->username; ?>" />
-                <?php
-                    foreach (Person::$phoneNumberFields as $label) {
-                        $number = View::escape($this->person->$label);
-                        echo "
-                        <dl><dt><label  for=\"$label\">$label</label></dt>
-                            <dd><input name=\"$label\" id=\"$label\" value=\"$number\" type=\"tel\" /></dd>
-                        </dl>
-                        ";
-                    }
+        <fieldset>
+            <input name="username" type="hidden" value="<?php echo $this->person->username; ?>" />
+            <?php
+                foreach (Person::$phoneNumberFields as $label) {
+                    $number = View::escape($this->person->$label);
+                    echo "
+                    <dl><dt><label  for=\"$label\">$label</label></dt>
+                        <dd><input name=\"$label\" id=\"$label\" value=\"$number\" type=\"tel\" /></dd>
+                    </dl>
+                    ";
+                }
 
-                    $h = $this->template->getHelper('saveAndCancelButtons');
-                    echo $h->saveAndCancelButtons(BASE_URI.'/people/view?username='.$this->person->username);
-                ?>
-            </fieldset>
-        </form>
+                $h = $this->template->getHelper('saveAndCancelButtons');
+                echo $h->saveAndCancelButtons(BASE_URI.'/people/view?username='.$this->person->username);
+            ?>
+        </fieldset>
+    </form>
     </div>
 </section>
