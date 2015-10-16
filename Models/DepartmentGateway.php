@@ -108,6 +108,26 @@ class DepartmentGateway
     }
 
     /**
+     * Returns an objectClass filter based on internal/external access
+     *
+     * We want to make sure that we honor the DIRECTORY_PUBLIC_GROUP config.
+     * If external traffic is requesting information, we need to make sure
+     * we're only including people results that are members of the this group.
+     *
+     * For internal traffic, we can include all people results.
+     *
+     * @return string
+     */
+    public static function getPersonFilter()
+    {
+        $config = self::getConfig();
+
+        return ($config['DIRECTORY_PUBLIC_GROUP'] && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $_SERVER['REMOTE_ADDR']))
+            ? "(&(objectClass=person)(memberof=$config[DIRECTORY_PUBLIC_GROUP]))"
+            : '(objectClass=person)';
+    }
+
+    /**
      * @param array $fields An array of key=>values to search on
      * @return array An array of Person objects
      */
@@ -129,6 +149,9 @@ class DepartmentGateway
             $q = $fields['query'];
             $filter = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
+
+        $objectClass = self::getPersonFilter();
+        $filter = "(&$objectClass$filter)";
 
         $ldap = self::getConnection();
         $result = ldap_search(
@@ -158,7 +181,7 @@ class DepartmentGateway
         $result = ldap_search(
             $ldap,
             $dn,
-            "(objectClass=user)",
+            self::getPersonFilter(),
             array_values(DirectoryAttributes::$fields)
         );
         return self::hydratePersonObjects($result);
@@ -193,11 +216,13 @@ class DepartmentGateway
      */
     public static function getPerson($username)
     {
+        $objectClass = self::getPersonFilter();
+
         $ldap = self::getConnection();
         $result = ldap_search(
             $ldap,
             self::getDepartmentDn(),
-            "(&(objectClass=person)(sAMAccountName=$username))",
+            "(&$objectClass(sAMAccountName=$username))",
             array_values(DirectoryAttributes::$fields)
         );
         $count = ldap_count_entries($ldap, $result);
@@ -213,11 +238,13 @@ class DepartmentGateway
      */
     public static function getPhoto($username)
     {
+        $objectClass = self::getPersonFilter();
+
         $ldap = self::getConnection();
         $result = ldap_search(
             $ldap,
             self::getDepartmentDn(),
-            "(&(objectClass=person)(sAMAccountName=$username))",
+            "(&$objectClass(sAMAccountName=$username))",
             ['jpegphoto']
         );
         $count = ldap_count_entries($ldap, $result);
