@@ -6,7 +6,7 @@ use Blossom\Classes\View;
         <div class="site-title">
             <h1><a href="<?php echo BASE_URL; ?>/"><?php echo View::escape(APPLICATION_NAME); ?></a></h1>
             <div class="site-location" id="location_name">
-                <a href="<?php echo BASE_URL; ?>">City of Bloomington, Mark Kruzan, Mayor</a>
+                <a href="<?php echo BASE_URL; ?>">City of Bloomington, John Hamilton, Mayor</a>
             </div>
         </div>
         <div class="site-utilityBar">
