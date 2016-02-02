@@ -55,11 +55,13 @@ class LoginController extends Controller
             // If they have a CAS authentication, go ahead and log them into the
             // site as Staff.  We don't need to save the user accounts in the database
             try {
+                $employee = new Employee($username);
+
                 $_SESSION['USER'] = new User();
                 $_SESSION['USER']->setUsername($username);
                 $_SESSION['USER']->setRole('Staff');
                 $_SESSION['USER']->setAuthenticationMethod('Employee');
-                $_SESSION['USER']->populateFromExternalIdentity(new Employee($username));
+                $_SESSION['USER']->populateFromExternalIdentity($employee);
                 header("Location: {$this->return_url}");
                 exit();
             }
