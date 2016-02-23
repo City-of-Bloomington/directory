@@ -11,7 +11,6 @@ use Blossom\Classes\View;
         </div>
         <div class="site-utilityBar">
         <?php
-            $this->addToAsset('scripts', JQUERY.'/jquery.min.js');
             $this->addToAsset('scripts', BASE_URI.'/js/menus.js');
 
             include APPLICATION_HOME.'/templates/html/partials/panel-widgets/User_menu.inc';

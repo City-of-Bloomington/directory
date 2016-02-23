@@ -1,10 +1,9 @@
 <?php
 /**
- * @copyright 2014 City of Bloomington, Indiana
+ * @copyright 2014-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
-namespace Blossom\Classes;
+namespace Application\Models;
 /**
  * Uncomment this line to have more debug information go
  * into the apache error log.

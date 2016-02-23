@@ -8,8 +8,6 @@
 use Blossom\Classes\View;
 
 if (isset($_SESSION['USER'])) {
-    $this->addToAsset('scripts', JQUERY.'/jquery.min.js');
-
     $name = View::escape($_SESSION['USER']->getFullname());
 
     echo "
