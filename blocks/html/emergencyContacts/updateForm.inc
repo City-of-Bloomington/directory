@@ -8,7 +8,8 @@
 use Application\Models\EmergencyContact;
 use Blossom\Classes\View;
 
-$this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/lib/libphonenumber/build/utils.js');
+$this->template->addToAsset('scripts',     JQUERY);
+$this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/utils.js');
 $this->template->addToAsset('stylesheets', INTL_TEL_INPUT.'/build/css/intlTelInput.css');
 $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/intlTelInput.min.js');
 $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');

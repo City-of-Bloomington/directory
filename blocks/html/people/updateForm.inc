@@ -9,6 +9,7 @@ use Application\Models\User;
 use Application\Models\Person;
 use Blossom\Classes\View;
 
+$this->template->addToAsset('scripts',     JQUERY);
 $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/lib/libphonenumber/build/utils.js');
 $this->template->addToAsset('stylesheets', INTL_TEL_INPUT.'/build/css/intlTelInput.css');
 $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/intlTelInput.min.js');
