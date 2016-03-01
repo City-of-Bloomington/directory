@@ -76,7 +76,7 @@ class PeopleController extends Controller
                 exit();
             }
             else {
-                $this->template->blocks[] = new Block('people/list.inc', ['people'=>$people]);
+                $this->template->blocks[] = new Block('people/searchResults.inc', ['people'=>$people]);
             }
         }
         if ($this->template->outputFormat == 'html') {

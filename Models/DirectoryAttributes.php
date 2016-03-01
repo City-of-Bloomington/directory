@@ -49,7 +49,8 @@ trait DirectoryAttributes
         'fax'         => 'facsimiletelephonenumber',
         'cell'        => 'mobile',
         'other'       => 'othertelephone',
-        'pager'       => 'pager'
+        'pager'       => 'pager',
+        'employeeNum' => 'employeeNumber'
     ];
 
     public static $phoneNumberFields = [

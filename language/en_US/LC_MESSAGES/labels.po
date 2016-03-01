@@ -169,3 +169,9 @@ msgstr[1] "Emergency Contacts"
 
 msgid "emergencyContacts_update"
 msgstr "Edit Emergency Contact Info"
+
+msgid "noResults"
+msgstr "No Results Found"
+
+msgid "notInNewWorld"
+msgstr "People not in New World"

@@ -68,3 +68,10 @@ msgid "tty_help"
 msgstr ""
 "Do you want to receive messages to your text telephone for the hearing "
 "impaired?"
+
+
+msgid "noResults_help"
+msgstr ""
+"Please double-check your spelling and try your search again. "
+"If that doesn&lsquo;t work, try browsing through the city&lsquo;s "
+"Directory of Departments. "

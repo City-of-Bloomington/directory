@@ -51,7 +51,7 @@ class DepartmentGateway
     public static function getDepartmentDn()
     {
         $c = self::getConfig();
-        return 'OU=Departments,'.$c['DIRECTORY_BASE_DN'];
+        return $c['DIRECTORY_BASE_DN'];
     }
 
     /**
@@ -131,24 +131,43 @@ class DepartmentGateway
     public static function search($fields)
     {
         # Build the LDAP query
-        if (!empty($fields['firstname']) || !empty($fields['lastname'])) {
-            if (!empty($fields['firstname'])) { $f[] = "(|(givenName=$fields[firstname]*)(displayName=$fields[firstname]*))"; }
-            if (!empty($fields['lastname' ])) { $f[] = "(|(sn=$fields[lastname]*)(sn=*-$fields[lastname]*))"; }
-
-            $filter = (count($f) > 1)
-                ? '(&'.implode('', $f).')'
-                : $f[0];
-        }
-        elseif (!empty($fields['extension'])) {
-            $filter = "(telephoneNumber=*$fields[extension])";
-        }
-        elseif (!empty($fields['query'])) {
+        $f = [self::getPersonFilter()];
+        if (!empty($fields['query'])) {
             $q = $fields['query'];
-            $filter = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
+            $f[] = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
+        else {
+            foreach ($fields as $key=>$value) {
+                switch ($key) {
+                    case 'firstname':
+                        $f[] = "(|(givenName=$value*)(displayName=$value*))";
+                    break;
 
-        $objectClass = self::getPersonFilter();
-        $filter = "(&$objectClass$filter)";
+                    case 'lastname':
+                        $f[] = "(|(sn=$value*)(sn=*-$value*))";
+                    break;
+
+                    case 'extension':
+                        $f[] = "(telephoneNumber=*$value)";
+                    break;
+
+                    case 'employeeNum':
+                        $f[] = empty($value)
+                            ? "(!(employeeNumber=*))"
+                            :   "(employeeNumber=$value)";
+                    break;
+
+                    default:
+                        if (array_key_exists($key, array_keys(DirectoryAttributes::$fields))) {
+                            $ldapFieldname = DirectoryAttributes::$fields[$key];
+                            $f[] = "($ldapFieldname=$value)";
+                        }
+                }
+            }
+        }
+        $filter = (count($f) > 1)
+            ? '(&'.implode('', $f).')'
+            : $f[0];
 
         $ldap = self::getConnection();
         $result = ldap_search(
