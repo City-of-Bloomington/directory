@@ -24,13 +24,13 @@ $title = $this->user->getId() ? $this->_('user_edit') : $this->_('user_add');
 
             <dl><dt><label  for="firstname"><?php echo $this->_('firstname'); ?></label></dt>
                 <dd><input name="firstname" id="firstname" value="<?php echo $firstname; ?>"
-                        required="required" inputmode="latin-name" type="text" />
+                        inputmode="latin-name" type="text" />
                 </dd>
             </dl>
 
             <dl><dt><label  for="lastname"><?php echo $this->_('lastname'); ?></label></dt>
                 <dd><input name="lastname" id="lastname" value="<?php echo $lastname; ?>"
-                        required="required" inputmode="latin-name" type="text" />
+                        inputmode="latin-name" type="text" />
                 </dd>
             </dl>
 

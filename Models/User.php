@@ -1,10 +1,10 @@
 <?php
 /**
- * @copyright 2009-2014 City of Bloomington, Indiana
+ * @copyright 2009-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
+
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 use Blossom\Classes\ExternalIdentity;
@@ -127,7 +127,7 @@ class User extends ActiveRecord
 
 		$method = $this->getAuthenticationMethod();
 		if ($this->getUsername() && $method && $method != 'local') {
-			$class = "Blossom\\Classes\\$method";
+			$class = "Application\\Models\\$method";
 			$identity = new $class($this->getUsername());
 			$this->populateFromExternalIdentity($identity);
 		}
@@ -171,7 +171,7 @@ class User extends ActiveRecord
 
 				default:
 					$method = $this->getAuthenticationMethod();
-					$class = "Blossom\\Classes\\$method";
+					$class = "Application\\Models\\$method";
 					return $class::authenticate($this->getUsername(),$password);
 			}
 		}

@@ -15,14 +15,6 @@ define('JQUERY',         BASE_URI.'/js/vendor/jquery-2.1.1');
 define('INTL_TEL_INPUT', BASE_URI.'/js/vendor/intl-tel-input');
 
 /**
- * Used when there's an error on the site.  The Framework will
- * print out a nice error message, encouraging users to report any problems
- * See: Blossom\Classes\Error
- */
-define('ADMINISTRATOR_NAME','Site Admin');
-define('ADMINISTRATOR_EMAIL','admin@servername.com');
-
-/**
  * Database Setup
  * Refer to the PDO documentation for DSN sytnax for your database type
  * http://www.php.net/manual/en/pdo.drivers.php
@@ -76,7 +68,7 @@ $DIRECTORY_CONFIG = [
  * phpCAS is a PHP library for handling the calls to the CAS service
  * It is the official library, part of the Jasig CAS project
  */
-//define('CAS',APPLICATION_HOME.'/libraries/phpCAS');
+//define('CAS',APPLICATION_HOME.'/vendor/jasig/phpcas/source');
 //define('CAS_SERVER','cas.somewhere.org');
 //define('CAS_URI','cas');
 
