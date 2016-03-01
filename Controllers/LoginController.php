@@ -6,11 +6,11 @@
  */
 namespace Application\Controllers;
 
+use Application\Models\Employee;
+use Application\Models\User;
 use Blossom\Classes\Controller;
-use Blossom\Classes\Employee;
 use Blossom\Classes\Template;
 use Blossom\Classes\Block;
-use Application\Models\User;
 
 class LoginController extends Controller
 {
