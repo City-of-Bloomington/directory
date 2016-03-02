@@ -10,6 +10,11 @@ use Application\Models\DepartmentGateway;
 use Blossom\Classes\Template;
 use Blossom\Classes\Block;
 
+/**
+ * Grab a timestamp for calculating process time
+ */
+$startTime = microtime(1);
+
 include '../configuration.inc';
 
 // Check for routes
@@ -51,3 +56,10 @@ else {
 }
 
 echo $template->render();
+
+if ($template->outputFormat === 'html') {
+    # Calculate the process time
+    $endTime = microtime(1);
+    $processTime = $endTime - $startTime;
+    echo "<!-- Process Time: $processTime -->";
+}

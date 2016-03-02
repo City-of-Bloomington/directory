@@ -1,12 +1,4 @@
 <footer>
-    <?php
-        global $startTime;
-
-        # Calculate the process time
-        $endTime = microtime(1);
-        $processTime = $endTime - $startTime;
-        echo "<!-- Process Time: $processTime -->";
-    ?>
 </footer>
 <?php
 	if (   isset($this->assets['scripts'])) {
@@ -28,5 +20,4 @@
 
   ga('create', 'UA-9224894-6', 'auto');
   ga('send', 'pageview');
-
 </script>

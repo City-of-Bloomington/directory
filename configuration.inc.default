@@ -71,8 +71,3 @@ if (!defined('STDIN')) {
 //Zend\Log\Logger::registerErrorHandler($logger);
 //Zend\Log\Logger::registerExceptionHandler($logger);
 //Zend\Log\Logger::registerFatalErrorShutdownFunction($logger);
-
-/**
- * Grab a timestamp for calculating process time
- */
-$startTime = microtime(1);
