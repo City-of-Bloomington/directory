@@ -16,14 +16,23 @@ define('INTL_TEL_INPUT', BASE_URI.'/js/vendor/intl-tel-input');
 
 /**
  * Database Setup
- * Refer to the PDO documentation for DSN sytnax for your database type
- * http://www.php.net/manual/en/pdo.drivers.php
  */
-define('DB_ADAPTER','Pdo_Mysql');
-define('DB_HOST','localhost');
-define('DB_NAME','application');
-define('DB_USER','application');
-define('DB_PASS','password');
+$DATABASES = [
+    'default' => [
+        'driver'   => 'Pdo_Mysql',
+        'hostname' => 'localhost',
+        'database' => 'application',
+        'username' => 'application',
+        'password' => 'password',
+        'charset'  => 'utf8'
+    ],
+    'hr' => [
+        'driver'   => 'Pdo',
+        'dsn'      => 'odbc:hrDatabase',
+        'username' => 'username',
+        'password' => 'password'
+    ]
+];
 
 /**
  * Directory Configuration

@@ -5,6 +5,8 @@
  */
 namespace Application\Models;
 
+use Blossom\Classes\ActiveRecord;
+
 class DepartmentGateway
 {
     private static $config;
@@ -227,18 +229,21 @@ class DepartmentGateway
     }
 
     /**
-     * @param string $username
+     * @param string $id Username or Employee Number
      * @return Person
      */
-    public static function getPerson($username)
+    public static function getPerson($id)
     {
         $objectClass = self::getPersonFilter();
+        $filter = ActiveRecord::isId($id)
+            ? "employeeNumber=$id"
+            : "sAMAccountName=$id";
 
         $ldap = self::getConnection();
         $result = ldap_search(
             $ldap,
             self::getDepartmentDn(),
-            "(&$objectClass(sAMAccountName=$username))",
+            "(&$objectClass($filter))",
             array_values(DirectoryAttributes::$fields)
         );
         $count = ldap_count_entries($ldap, $result);

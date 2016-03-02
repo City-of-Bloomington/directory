@@ -175,3 +175,6 @@ msgstr "No Results Found"
 
 msgid "notInNewWorld"
 msgstr "People not in New World"
+
+msgid "notInActiveDirectory"
+msgstr "People not in Active Directory"
