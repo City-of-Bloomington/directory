@@ -4,39 +4,31 @@
  *
  * We're using the same markup whether it's a Department or a Person
  *
- * @copyright 2015 City of Bloomington, Indiana
+ * @copyright 2015-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param DirectoryAttributes $this->entry
  */
 use Application\Models\DirectoryAttributes;
-use Blossom\Classes\View;
-$fields = ['address', 'city', 'state', 'zip', 'email'];
+$fields = [
+    DirectoryAttributes::ADDRESS,
+    DirectoryAttributes::CITY,
+    DirectoryAttributes::STATE,
+    DirectoryAttributes::ZIP,
+    DirectoryAttributes::EMAIL
+];
 foreach ($fields as $f) {
-    $$f = View::escape($this->entry->$f);
+    $$f = self::escape($this->entry->$f);
 }
 ?>
-<div>
-<?php
-    echo "
-    <address>$address
-    $city $state $zip
-    </address>
-    ";
-?>
-</div>
-<div>
-    <?php
-        echo "<a href=\"mailto:$email\">$email</a>";
-    ?>
-</div>
+<div><?= "<address>$address\n$city $state $zip</address>"; ?></div>
+<div><?= "<a href=\"mailto:$email\">$email</a>"; ?></div>
 <table class="contact">
-    <?php
-        foreach (DirectoryAttributes::$phoneNumberFields as $label) {
-            $number = $this->entry->$label;
-            if ($number) {
-                echo "<tr><th>$label</th><td>$number</td></tr>";
-            }
+<?php
+    foreach (DirectoryAttributes::$phoneNumberFields as $label) {
+        $number = $this->entry->$label;
+        if ($number) {
+            echo "<tr><th>$label</th><td>$number</td></tr>";
         }
-    ?>
+    }
+?>
 </table>

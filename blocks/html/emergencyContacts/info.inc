@@ -14,7 +14,7 @@ $contact = $this->person->getEmergencyContacts();
 ?>
 <section class="person-emergencyProfile">
     <header>
-        <h2><?php echo $this->_(['emergencyContact', 'emergencyContacts', 1]); ?></h2>
+        <h1><?php echo $this->_(['emergencyContact', 'emergencyContacts', 1]); ?></h1>
         <div class="tools">
             <?php
                 if (User::isAllowed('people', 'updateEmergencyContacts')) {

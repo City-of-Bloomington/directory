@@ -261,16 +261,15 @@ a.button:hover {
 
 textarea#address { height:3em; }
 
-.sync-list {
+#synchronizeForm fieldset {
     width:45%;
     float: left; margin-right: 2em;
 
     .container {
-        height:600px; overflow-y:scroll;
+        height:550px; overflow-y:scroll;
     }
     article {
         border:1px solid black;
-        border-radius:8px;
         margin-bottom:1em;
 
         header {

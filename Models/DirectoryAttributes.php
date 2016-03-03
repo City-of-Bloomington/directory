@@ -19,8 +19,33 @@
  */
 namespace Application\Models;
 
-trait DirectoryAttributes
+abstract class DirectoryAttributes
 {
+    const NAME        = 'name';
+    const DN          = 'dn';
+    const OU          = 'ou';
+    const USERNAME    = 'username';
+    const CN          = 'cn';
+    const FIRSTNAME   = 'firstname';
+    const LASTNAME    = 'lastname';
+    const DISPLAYNAME = 'displayname';
+    const EMAIL       = 'email';
+    const TITLE       = 'title';
+    const DEPARTMENT  = 'department';
+    const DIVISION    = 'division';
+    const LOCATION    = 'location';
+    const ADDRESS     = 'address';
+    const CITY        = 'city';
+    const STATE       = 'state';
+    const ZIP         = 'zip';
+    const OFFICE      = 'office';
+    const FAX         = 'fax';
+    const CELL        = 'cell';
+    const OTHER       = 'other';
+    const PAGER       = 'pager';
+    const EMPLOYEENUM = 'employeeNum';
+    const EMPLOYEEID  = 'employeeID';
+
     /**
      * Maps inernal application fieldnames to LDAP attributes
      *
@@ -28,33 +53,34 @@ trait DirectoryAttributes
      * Each value is the LDAP attribute name
      */
     public static $fields = [
-        'name'        => 'name',
-        'dn'          => 'distinguishedname',
-        'ou'          => 'ou',
-        'username'    => 'samaccountname',
-        'cn'          => 'cn',
-        'firstname'   => 'givenname',
-        'lastname'    => 'sn',
-        'displayname' => 'displayname',
-        'email'       => 'mail',
-        'title'       => 'title',
-        'department'  => 'department',
-        'division'    => 'division',
-        'location'    => 'physicaldeliveryofficename',
-        'address'     => 'street',
-        'city'        => 'l',
-        'state'       => 'st',
-        'zip'         => 'postalcode',
-        'office'      => 'telephonenumber',
-        'fax'         => 'facsimiletelephonenumber',
-        'cell'        => 'mobile',
-        'other'       => 'othertelephone',
-        'pager'       => 'pager',
-        'employeeNum' => 'employeeNumber'
+        self::NAME        => 'name',
+        self::DN          => 'distinguishedname',
+        self::OU          => 'ou',
+        self::USERNAME    => 'samaccountname',
+        self::CN          => 'cn',
+        self::FIRSTNAME   => 'givenname',
+        self::LASTNAME    => 'sn',
+        self::DISPLAYNAME => 'displayname',
+        self::EMAIL       => 'mail',
+        self::TITLE       => 'title',
+        self::DEPARTMENT  => 'department',
+        self::DIVISION    => 'division',
+        self::LOCATION    => 'physicaldeliveryofficename',
+        self::ADDRESS     => 'street',
+        self::CITY        => 'l',
+        self::STATE       => 'st',
+        self::ZIP         => 'postalcode',
+        self::OFFICE      => 'telephonenumber',
+        self::FAX         => 'facsimiletelephonenumber',
+        self::CELL        => 'mobile',
+        self::OTHER       => 'othertelephone',
+        self::PAGER       => 'pager',
+        self::EMPLOYEENUM => 'employeeNumber',
+        self::EMPLOYEEID  => 'employeeID'
     ];
 
     public static $phoneNumberFields = [
-        'office', 'fax', 'cell', 'other', 'pager'
+        self::OFFICE, self::FAX, self::CELL, self::OTHER, self::PAGER
     ];
 
     /**

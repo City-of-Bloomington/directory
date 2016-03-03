@@ -2,18 +2,15 @@
 /**
  * Wrapper class for an LDAP entry
  *
- * @copyright 2014-2015 City of Bloomington, Indiana
+ * @copyright 2014-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
 use Blossom\Classes\Database;
 
-class Person
+class Person extends DirectoryAttributes
 {
-    use DirectoryAttributes;
-
     /**
      * Whitelist of accepted file types
      */
@@ -26,11 +23,11 @@ class Person
 
     public function handleUpdate($post)
     {
-        $fields  = ['address', 'city', 'state', 'zip'];
+        $fields  = [self::ADDRESS, self::CITY, self::STATE, self::ZIP];
         foreach ($fields as $f) {
             $this->$f = $post[$f];
         }
-        
+
         foreach (self::$phoneNumberFields as $field) {
             $this->$field = $post[$field];
         }

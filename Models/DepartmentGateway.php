@@ -141,11 +141,11 @@ class DepartmentGateway
         else {
             foreach ($fields as $key=>$value) {
                 switch ($key) {
-                    case 'firstname':
+                    case DirectoryAttributes::FIRSTNAME:
                         $f[] = "(|(givenName=$value*)(displayName=$value*))";
                     break;
 
-                    case 'lastname':
+                    case DirectoryAttributes::LASTNAME:
                         $f[] = "(|(sn=$value*)(sn=*-$value*))";
                     break;
 
@@ -153,7 +153,7 @@ class DepartmentGateway
                         $f[] = "(telephoneNumber=*$value)";
                     break;
 
-                    case 'employeeNum':
+                    case DirectoryAttributes::EMPLOYEENUM:
                         $f[] = empty($value)
                             ? "(!(employeeNumber=*))"
                             :   "(employeeNumber=$value)";

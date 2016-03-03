@@ -26,10 +26,10 @@ $ZEND_ACL->addResource(new Resource('index'));
 $ZEND_ACL->addResource(new Resource('people'));
 $ZEND_ACL->addResource(new Resource('users'));
 $ZEND_ACL->addResource(new Resource('login'));
-$ZEND_ACL->addResource(new Resource('admin'));
 
 $ZEND_ACL->addResource(new Resource('departments'));
 $ZEND_ACL->addResource(new Resource('emergencyContacts'));
+$ZEND_ACL->addResource(new Resource('synchronize'));
 
 /**
  * Assign permissions to the resources

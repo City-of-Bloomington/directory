@@ -67,6 +67,12 @@ msgstr "Settings"
 msgid "administration"
 msgstr "Administration"
 
+msgid "employeeNum"
+msgstr "Employee Number"
+
+msgid "employeeID"
+msgstr "Employee ID"
+
 msgid "name"
 msgstr "Name"
 
@@ -173,8 +179,17 @@ msgstr "Edit Emergency Contact Info"
 msgid "noResults"
 msgstr "No Results Found"
 
+msgid "synchronize"
+msgstr "Synchronize"
+
 msgid "notInNewWorld"
 msgstr "People not in New World"
 
 msgid "notInActiveDirectory"
 msgstr "People not in Active Directory"
+
+msgid "adRecord"
+msgstr "Active Directory"
+
+msgid "hrRecord"
+msgstr "New World"
