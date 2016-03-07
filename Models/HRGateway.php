@@ -9,6 +9,10 @@ use Blossom\Classes\Database;
 
 class HRGateway
 {
+    const UDFAttributeID = 52;
+    const TableID        = 66;
+    const vsEmploymentStatusId = 258;
+
     private static $connection;
 
     public static function getConnection()
@@ -48,8 +52,13 @@ class HRGateway
      */
     private static function getEmployeeSelect()
     {
+        $attributeId = self::UDFAttributeID;
+        $tableId     = self::TableID;
+        $statusId    = self::vsEmploymentStatusId;
+
         return "select  e.EmployeeId                   as employeeID,
                         e.EmployeeNumber               as employeeNum,
+                        n.EmployeeNameId               as employeeNameID,
                         e.EmployeeName                 as name,
                         e.LastName                     as lastname,
                         e.FirstName                    as firstname,
@@ -57,12 +66,14 @@ class HRGateway
                         e.OrgStructureDescconcatenated as department,
                         udf.ValString                  as username
                 from HR.vwEmployeeInformation     e
-                join HR.vwEmployeeJobWithPosition job on e.EmployeeId=job.EmployeeId
-                left join dbo.UDFEntry            udf on e.EmployeeId=udf.AttachedFKey and udf.UDFAttributeID=52 and udf.TableID=66
-                where e.vsEmploymentStatusId=258
-                and job.IsPrimaryJob = 1
-                and job.EffectiveDate     <= GETDATE() and GETDATE() <= job.EffectiveEndDate
-                and job.PositionDetailESD <= GETDATE() and GETDATE() <= job.PositionDetailEED";
+                join HR.vwEmployeeJobWithPosition job  on e.EmployeeId=job.EmployeeId
+                                                      and job.IsPrimaryJob = 1
+                                                      and GETDATE() between job.EffectiveDate     and job.EffectiveEndDate
+                                                      and GETDATE() between job.PositionDetailESD and job.PositionDetailEED
+                join HR.EmployeeName              n    on e.EmployeeId=n.EmployeeId
+                                                      and GETDATE() between   n.EffectiveDate     and   n.EffectiveEndDate
+                left join dbo.UDFEntry            udf  on n.EmployeeNameId=udf.AttachedFKey and udf.UDFAttributeID=$attributeId and udf.TableID=$tableId
+                where e.vsEmploymentStatusId=$statusId";
     }
 
     public function getEmployees()
@@ -101,16 +112,16 @@ class HRGateway
 
     public static function saveEmployeeUsername($employee)
     {
-       if (!empty($employee['employeeID']) && !empty($employee['username'])) {
+       if (!empty($employee['employeeNameID']) && !empty($employee['username'])) {
             // Our db driver does not support bound parameters
             // Take great care with the inputs here
-            $tableId     = 66;
-            $attributeId = 52;
-            $employeeID  = (int)$employee['employeeID'];
-            $username    = preg_replace('/[^a-z]/', '', strtolower($employee['username']));
+            $tableId         = self::TableID;
+            $attributeId     = self::UDFAttributeID;
+            $employeeNameID  = (int)$employee['employeeNameID'];
+            $username        = preg_replace('/[^a-z]/', '', strtolower($employee['username']));
 
             $sql = "select ValString from dbo.UDFEntry
-                    where AttachedFKey=$employeeID
+                    where AttachedFKey=$employeeNameID
                       and UDFAttributeID=$attributeId
                       and TableID=$tableId";
             $result = self::dbQuery($sql);
@@ -121,7 +132,7 @@ class HRGateway
                 if ($row['ValString'] !== $username) {
                     $sql = "update dbo.UDFEntry
                             set ValString='$username', ChangedDate=GETDATE(), ChangedUserID=0
-                            where AttachedFKey=$employeeID
+                            where AttachedFKey=$employeeNameID
                               and UDFAttributeID=$attributeId
                               and TableID=$tableId";
                     self::dbQuery($sql);
@@ -129,8 +140,8 @@ class HRGateway
             }
             else {
                 $sql = "insert into dbo.UDFEntry
-                        (TableID, AttachedFKey, UDFAttributeID, ValString, ChangedDate, ChangedUserID)
-                        values($tableId, $employeeID, $attributeId, '$username', GETDATE(), 0)";
+                              (TableID,  AttachedFKey,  UDFAttributeID,  ValString, ChangedDate, ChangedUserID)
+                        values($tableId, $employeeNameID, $attributeId, '$username', GETDATE(),  0)";
                 self::dbQuery($sql);
             }
        }
