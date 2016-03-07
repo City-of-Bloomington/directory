@@ -14,7 +14,7 @@ $employeeNum = $this->hrRecord['employeeNum'];
         <h1><?= $this->_('synchronize'); ?></h1>
     </header>
 
-    <form method="post" action="<?= BASE_URI; ?>/synchronize/update">
+    <form method="post" action="<?= BASE_URI; ?>/synchronize/compare">
         <fieldset><legend><?= $this->_('adRecord'); ?></legend>
         <?php
             $block = new Block('people/partials/details.inc', [
@@ -44,6 +44,13 @@ $employeeNum = $this->hrRecord['employeeNum'];
                 <dd><input name=\"username\" id=\"username\" value=\"$username\" /></dd>
             </dl>
             ";
+        ?>
+        </fieldset>
+
+        <fieldset>
+        <?php
+            $helper = $this->template->getHelper('saveAndCancelButtons');
+            echo $helper->saveAndCancelButtons(BASE_URI.'/synchronize');
         ?>
         </fieldset>
     </form>

@@ -183,10 +183,10 @@ msgid "synchronize"
 msgstr "Synchronize"
 
 msgid "notInNewWorld"
-msgstr "People not in New World"
+msgstr "Active Directory records missing employeeNum"
 
 msgid "notInActiveDirectory"
-msgstr "People not in Active Directory"
+msgstr "New World employees missing usernames"
 
 msgid "adRecord"
 msgstr "Active Directory"

@@ -12,24 +12,28 @@ use Application\Models\DirectoryAttributes;
         <header>
             <button type="submit"><?= $this->_('compare'); ?></button>
         </header>
-        <fieldset><legend><?= $this->_('notInNewWorld'); ?></legend>
+        <fieldset>
+            <legend>
+            <?php
+                $count = count($this->adRecords);
+                echo "{$this->_('notInNewWorld')} ($count)";
+            ?>
+            </legend>
             <div class="container">
             <?php
                 $fieldname = DirectoryAttributes::USERNAME;
 
+                $fields = ['title', 'firstname', 'lastname', 'department', 'username'];
                 foreach ($this->adRecords as $p) {
                     $url   = BASE_URI.'/people/view?username='.$p['username'];
-                    $title = self::escape($p['title']);
-                    $name  = self::escape($p['name']);
-                    $department  = $p['department' ];
-                    $username    = $p['username'   ];
+                    foreach ($fields as $f) { $$f = self::escape($p[$f]); }
 
                     echo "
                     <article>
                         <header>
                             <label>
                                 <input name=\"$fieldname\" type=\"radio\" value=\"$username\" />
-                                $name
+                                $firstname $lastname
                             </label>
                         </header>
                         <div>$title</div>
@@ -42,24 +46,27 @@ use Application\Models\DirectoryAttributes;
             </div>
         </fieldset>
 
-        <fieldset><legend><?= $this->_('notInActiveDirectory'); ?></legend>
+        <fieldset>
+            <legend>
+            <?php
+                $count = count($this->hrRecords);
+                echo "{$this->_('notInActiveDirectory')} ($count)";
+            ?>
+            </legend>
             <div class="container">
             <?php
                 $fieldname = DirectoryAttributes::EMPLOYEENUM;
-                
-                foreach ($this->hrRecords as $p) {
-                    $title = self::escape($p['title']);
-                    $name  = self::escape($p['name']);
 
-                    $employeeNum = $p['employeeNum'];
-                    $department  = $p['department' ];
+                $fields = ['title', 'firstname', 'lastname', 'employeeNum', 'department'];
+                foreach ($this->hrRecords as $p) {
+                    foreach ($fields as $f) { $$f = self::escape($p[$f]); }
 
                     echo "
                     <article>
                         <header>
                             <label>
                                 <input name=\"$fieldname\" type=\"radio\" value=\"$employeeNum\" />
-                                $name
+                                $firstname $lastname
                             </label>
                         </header>
                         <div>$title</div>

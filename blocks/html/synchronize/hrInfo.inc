@@ -6,23 +6,18 @@
  */
 use Application\Models\DirectoryAttributes;
 
-$fields = [
-    DirectoryAttributes::NAME,
-    DirectoryAttributes::TITLE,
-    DirectoryAttributes::DEPARTMENT,
-    DirectoryAttributes::EMPLOYEENUM
-];
+$fields = ['firstname', 'lastname', 'title', 'department', 'employeeNum'];
 foreach ($fields as $f) {
     $$f = self::escape($this->hrRecord[$f]);
 }
 ?>
 <header>
-    <h1><?= $name; ?></h1>
+    <h1><?= "$firstname $lastname"; ?></h1>
 </header>
  <h2><?= $title;       ?></h2>
 <div><?= $department;  ?></div>
 <table class="contact">
-    <tr><th><?= $this->_(DirectoryAttributes::EMPLOYEENUM); ?></th>
+    <tr><th><?= $this->_('employeeNum'); ?></th>
         <td><?= $employeeNum; ?></td>
     </tr>
 </table>

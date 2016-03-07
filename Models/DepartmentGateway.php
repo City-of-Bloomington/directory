@@ -121,7 +121,14 @@ class DepartmentGateway
     {
         $config = self::getConfig();
 
-        return ($config['DIRECTORY_PUBLIC_GROUP'] && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $_SERVER['REMOTE_ADDR']))
+        // @NOTE
+        // When running on the command line, we need to decide what IP address to use
+        // Right now, this will just use 127.0.0.1, which might not be what we want
+        $ipAddress = isset($_SERVER['REMOTE_ADDR'])
+                        ?  $_SERVER['REMOTE_ADDR']
+                        :  gethostbyname(gethostname());
+
+        return ($config['DIRECTORY_PUBLIC_GROUP'] && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $ipAddress))
             ? "(&(objectClass=person)(memberof=$config[DIRECTORY_PUBLIC_GROUP]))"
             : '(objectClass=person)';
     }
@@ -216,7 +223,6 @@ class DepartmentGateway
         $people = [];
         $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            ldap_sort($ldap, $result, 'sn');
             $entries = ldap_get_entries($ldap, $result);
             for ($i=0; $i<$count; $i++) {
                 // Ignore user account flagged with an asterisk
@@ -225,6 +231,10 @@ class DepartmentGateway
                 }
             }
         }
+        usort($people, function ($a, $b) {
+            if     ($a->entry['sn'][0] === $b->entry['sn'][0]) { return 0; }
+            return ($a->entry['sn'][0]  <  $b->entry['sn'][0]) ? -1 : 1;
+        });
         return $people;
     }
 

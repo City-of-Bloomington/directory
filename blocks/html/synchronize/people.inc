@@ -13,17 +13,15 @@ if ($count) {
         $heading
         <div class=\"container\">
     ";
+        $fields = ['title', 'firstname', 'lastname', 'department', 'username', 'employeeNum'];
         foreach ($this->people as $p) {
-            $title = self::escape($p['title']);
-            $name  = self::escape($p['name']);
-            if (isset($p['username'])) {
-                $url   = BASE_URI.'/people/view?username='.$p['username'];
+            foreach ($fields as $f) { $$f = isset($p[$f]) ? self::escape($p[$f]) : ''; }
+
+            $name = "$firstname $lastname";
+            if ($username) {
+                $url   = BASE_URI."/people/view?username=$username";
                 $name = "<a href=\"$url\">$name</a>";
             }
-
-            $employeeNum = isset($p['employeeNum']) ? $p['employeeNum'] : '';
-            $department  = isset($p['department' ]) ? $p['department' ] : '';
-            $username    = isset($p['username'   ]) ? $p['username'   ] : '';
 
             echo "
             <article>

@@ -75,8 +75,8 @@ abstract class DirectoryAttributes
         self::CELL        => 'mobile',
         self::OTHER       => 'othertelephone',
         self::PAGER       => 'pager',
-        self::EMPLOYEENUM => 'employeeNumber',
-        self::EMPLOYEEID  => 'employeeID'
+        self::EMPLOYEENUM => 'employeenumber',
+        self::EMPLOYEEID  => 'employeeid'
     ];
 
     public static $phoneNumberFields = [
