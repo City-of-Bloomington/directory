@@ -1,16 +1,16 @@
 <?php
 /**
- * @copyright 2015 City of Bloomington, Indiana
+ * @copyright 2015-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 use Application\Models\User;
 
 $links = '';
 if (User::isAllowed('users')) {
     $routes = [
-        'users'  => 'user',
-        'emergencyContacts' => 'emergencyContact'
+        'users'             => 'user',
+        'emergencyContacts' => 'emergencyContact',
+        'jobTitleCodes'     => 'jobTitleCode'
     ];
     foreach ($routes as $plural=>$singular) {
         $requiredAction = 'index';

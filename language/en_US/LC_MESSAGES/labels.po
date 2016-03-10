@@ -97,8 +97,13 @@ msgstr "Authentication"
 msgid "role"
 msgstr "Role"
 
+msgid "code"
+msgstr "Code"
+
 msgid "title"
-msgstr "Title"
+msgid_plural "titles"
+msgstr[0] "Title"
+msgstr[1] "Titles"
 
 msgid "email"
 msgid_plural "emails"
@@ -193,3 +198,14 @@ msgstr "Active Directory"
 
 msgid "hrRecord"
 msgstr "New World"
+
+msgid "jobTitleCode"
+msgid_plural "jobTitleCodes"
+msgstr[0] "Job Title Code"
+msgstr[1] "Job Title Codes"
+
+msgid "jobTitleCode_add"
+msgstr "New Job Title Code"
+
+msgid "jobTitleCode_edit"
+msgstr "Edit Job Title Code"

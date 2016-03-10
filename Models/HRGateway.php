@@ -5,8 +5,6 @@
  */
 namespace Application\Models;
 
-use Blossom\Classes\Database;
-
 class HRGateway
 {
     const UDFAttributeID = 52;
@@ -30,7 +28,7 @@ class HRGateway
      * @param string $sql
      * @return array
      */
-    private static function dbQuery($sql)
+    public static function dbQuery($sql)
     {
         $pdo = self::getConnection();
 
@@ -41,8 +39,8 @@ class HRGateway
             return $rows;
         }
         else {
-            print_r($pdo->errorInfo());
-            exit();
+            $errorInfo = $pdo->errorInfo();
+            throw new \Exception($errorInfo[2]);
         }
 
     }
@@ -62,7 +60,7 @@ class HRGateway
                         e.EmployeeName                 as name,
                         e.LastName                     as lastname,
                         e.FirstName                    as firstname,
-                        job.JobTitle                   as title,
+                        isnull(x.Title, job.JobTitle)  as title,
                         e.OrgStructureDescconcatenated as department,
                         udf.ValString                  as username
                 from HR.vwEmployeeInformation     e
@@ -70,13 +68,14 @@ class HRGateway
                                                       and job.IsPrimaryJob = 1
                                                       and GETDATE() between job.EffectiveDate     and job.EffectiveEndDate
                                                       and GETDATE() between job.PositionDetailESD and job.PositionDetailEED
+                left join COB.jobTitleCrosswalk   x    on job.JobTitle=x.Code
                 join HR.EmployeeName              n    on e.EmployeeId=n.EmployeeId
                                                       and GETDATE() between   n.EffectiveDate     and   n.EffectiveEndDate
                 left join dbo.UDFEntry            udf  on n.EmployeeNameId=udf.AttachedFKey and udf.UDFAttributeID=$attributeId and udf.TableID=$tableId
                 where e.vsEmploymentStatusId=$statusId";
     }
 
-    public function getEmployees()
+    public static function getEmployees()
     {
         $sql = self::getEmployeeSelect().
                 " order by e.LastName, e.FirstName";

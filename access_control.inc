@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2012-2015 City of Bloomington, Indiana
+ * @copyright 2012-2016 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -30,6 +29,7 @@ $ZEND_ACL->addResource(new Resource('login'));
 $ZEND_ACL->addResource(new Resource('departments'));
 $ZEND_ACL->addResource(new Resource('emergencyContacts'));
 $ZEND_ACL->addResource(new Resource('synchronize'));
+$ZEND_ACL->addResource(new Resource('jobTitleCodes'));
 
 /**
  * Assign permissions to the resources
