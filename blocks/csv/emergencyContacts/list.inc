@@ -149,7 +149,7 @@ foreach ($this->contacts as $contact) {
     $person = $contact->getPerson();
     if ($person) {
         $row = array_fill_keys($everbridgeFields, '');
-        $row['External ID'] = 'cob'.$contact->getEmployeeNum();
+        $row['External ID'] = 'cob.'.$person->username;
         $row['First Name' ] = str_replace(',', '', $person->firstname);
         $row['Last Name'  ] = str_replace(',', '', $person->lastname);
         $row['Country'    ] = 'US';
