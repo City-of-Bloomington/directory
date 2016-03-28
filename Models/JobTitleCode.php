@@ -96,7 +96,7 @@ class JobTitleCode
                     where id={$this->getId()}";
         }
         else {
-            $sql = "insert into $table (Code, Title}
+            $sql = "insert into $table (Code, Title)
                     values('{$this->getCode()}', '{$this->getTitle()}')";
         }
         HRGateway::dbQuery($sql);
