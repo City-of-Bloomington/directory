@@ -166,6 +166,13 @@ class DepartmentGateway
                             :   "(employeeNumber=$value)";
                     break;
 
+                    case 'non-payroll':
+                        $config = self::getConfig();
+                        $f[] = empty($value)
+                            ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
+                            :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
+                    break;
+
                     default:
                         if (array_key_exists($key, array_keys(DirectoryAttributes::$fields))) {
                             $ldapFieldname = DirectoryAttributes::$fields[$key];
