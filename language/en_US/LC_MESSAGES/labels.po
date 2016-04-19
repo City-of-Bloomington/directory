@@ -122,6 +122,18 @@ msgstr "TTY"
 msgid "office"
 msgstr "Office"
 
+msgid "fax"
+msgstr "Fax"
+
+msgid "cell"
+msgstr "Cell"
+
+msgid "other"
+msgstr "Other"
+
+msgid "pager"
+msgstr "Public"
+
 msgid "address"
 msgstr "Address"
 

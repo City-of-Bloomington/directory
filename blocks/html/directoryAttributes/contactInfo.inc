@@ -32,6 +32,7 @@ foreach (DirectoryAttributes::$phoneNumberFields as $label) {
     if (in_array($label, $publishable)) {
         $number = $this->entry->$label;
         if ($number) {
+            $label = $this->_($label);
             $rows.= "<tr><th>$label</th><td>$number</td></tr>";
         }
     }
