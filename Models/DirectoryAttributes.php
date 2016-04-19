@@ -47,37 +47,54 @@ abstract class DirectoryAttributes
     const EMPLOYEEID  = 'employeeID';
 
     /**
-     * Maps inernal application fieldnames to LDAP attributes
+     * Maps internal application fieldnames to LDAP attributes
+     * Includes only the fields that are allowed to be published
      *
      * Each key is the internal name.
      * Each value is the LDAP attribute name
+     *
+     * We are publishing different sets of information about people,
+     * depending on whether the request is being made internally or
+     * externally.
+     *
+     * Even if a person's record is okay to publish to the outside world,
+     * there are still fields that we want to keep hidden.
      */
-    public static $fields = [
-        self::NAME        => 'name',
-        self::DN          => 'distinguishedname',
-        self::OU          => 'ou',
-        self::USERNAME    => 'samaccountname',
-        self::CN          => 'cn',
-        self::FIRSTNAME   => 'givenname',
-        self::LASTNAME    => 'sn',
-        self::DISPLAYNAME => 'displayname',
-        self::EMAIL       => 'mail',
-        self::TITLE       => 'title',
-        self::DEPARTMENT  => 'department',
-        self::DIVISION    => 'division',
-        self::LOCATION    => 'physicaldeliveryofficename',
-        self::ADDRESS     => 'street',
-        self::CITY        => 'l',
-        self::STATE       => 'st',
-        self::ZIP         => 'postalcode',
-        self::OFFICE      => 'telephonenumber',
-        self::FAX         => 'facsimiletelephonenumber',
-        self::CELL        => 'mobile',
-        self::OTHER       => 'othertelephone',
-        self::PAGER       => 'pager',
-        self::EMPLOYEENUM => 'employeenumber',
-        self::EMPLOYEEID  => 'employeeid'
-    ];
+    public static function getPublishableFields()
+    {
+        // Fields that are freely available to the outside world
+        $f = [
+            self::NAME        => 'name',
+            self::DN          => 'distinguishedname',
+            self::OU          => 'ou',
+            self::USERNAME    => 'samaccountname',
+            self::CN          => 'cn',
+            self::FIRSTNAME   => 'givenname',
+            self::LASTNAME    => 'sn',
+            self::DISPLAYNAME => 'displayname',
+            self::EMAIL       => 'mail',
+            self::TITLE       => 'title',
+            self::DEPARTMENT  => 'department',
+            self::DIVISION    => 'division',
+            self::LOCATION    => 'physicaldeliveryofficename',
+            self::ADDRESS     => 'street',
+            self::CITY        => 'l',
+            self::STATE       => 'st',
+            self::ZIP         => 'postalcode',
+            self::FAX         => 'facsimiletelephonenumber',
+            self::PAGER       => 'pager',
+            self::EMPLOYEENUM => 'employeenumber',
+            self::EMPLOYEEID  => 'employeeid'
+        ];
+
+        // These are fields of information we want to only publish internally
+        if (!DepartmentGateway::isExternalRequest()) {
+            $f[self::OFFICE] = 'telephonenumber';
+            $f[self::CELL  ] = 'mobile';
+            $f[self::OTHER ] = 'othertelephone';
+        }
+        return $f;
+    }
 
     public static $phoneNumberFields = [
         self::OFFICE, self::FAX, self::CELL, self::OTHER, self::PAGER
@@ -109,8 +126,10 @@ abstract class DirectoryAttributes
      * @return string
      */
     public function __get($field) {
-        if (array_key_exists($field, self::$fields)) {
-            $attribute = self::$fields[$field];
+        $publishable = self::getPublishableFields();
+
+        if (array_key_exists($field, $publishable)) {
+            $attribute = $publishable[$field];
             if (!empty($this->entry[$attribute])) {
                 if ($this->entry[$attribute]['count'] == 1) {
                     return $this->entry[$attribute][0];
@@ -134,9 +153,11 @@ abstract class DirectoryAttributes
      */
     public function __set($field, $value)
     {
-        if (array_key_exists($field, self::$fields)) {
+        $publishable = self::getPublishableFields();
+
+        if (array_key_exists($field, $publishable)) {
             $currentValue = $this->$field;
-            $attribute    = self::$fields[$field];
+            $attribute    = $publishable[$field];
 
             if ($value) {
                 if ($value != $currentValue) {
@@ -163,11 +184,16 @@ abstract class DirectoryAttributes
         }
     }
 
-    public function getMainPhone()
+    public function getPhone()
     {
-        foreach (self::$phoneNumberFields as $field) {
-            $v = $this->__get($field);
-            if ($v) { return $v; }
+        if (!DepartmentGateway::isExternalRequest()) {
+            foreach (self::$phoneNumberFields as $field) {
+                $v = $this->__get($field);
+                if ($v) { return $v; }
+            }
+        }
+        else {
+            return $this->__get(self::PAGER);
         }
     }
 }

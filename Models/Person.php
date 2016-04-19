@@ -158,7 +158,7 @@ class Person extends DirectoryAttributes
     {
         $out = [];
 
-        foreach (array_keys(self::$fields) as $f) {
+        foreach (array_keys(self::getPublishableFields()) as $f) {
             $out[$f] = $this->$f;
         }
         if ($this->hasPhoto()) { $out['photo'] = $this->getPhotoUrl(); }

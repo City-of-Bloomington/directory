@@ -68,8 +68,8 @@ class DepartmentGateway
 
         $departments = [];
 
-        $result = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::$fields));
-        $count = ldap_count_entries($ldap, $result);
+        $result = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::getPublishableFields()));
+        $count  = ldap_count_entries($ldap, $result);
         if ($count) {
             ldap_sort($ldap, $result, 'name');
             $entries = ldap_get_entries($ldap, $result);
@@ -94,7 +94,7 @@ class DepartmentGateway
             $ldap,
             $dn,
             "(objectClass=organizationalUnit)",
-            array_values(DirectoryAttributes::$fields)
+            array_values(DirectoryAttributes::getPublishableFields())
         );
         if ($result
             && ldap_count_entries($ldap, $result)) {
@@ -104,6 +104,30 @@ class DepartmentGateway
         else {
             throw new \Exception('ldap/unknownDepartment');
         }
+    }
+
+    /**
+     * Returns whether the request is from outside or not
+     *
+     * We want to make sure that we honor the DIRECTORY_PUBLIC_GROUP config.
+     * If external traffic is requesting information, we need to make sure
+     * we're only including people results that are members of the this group.
+     *
+     * @return boolean
+     */
+    public static function isExternalRequest()
+    {
+        $config = self::getConfig();
+
+        // @NOTE
+        // When running on the command line, we need to decide what IP address to use
+        // Right now, this will just use 127.0.0.1, which might not be what we want
+        $ipAddress = isset($_SERVER['REMOTE_ADDR'])
+                        ?  $_SERVER['REMOTE_ADDR']
+                        :  gethostbyname(gethostname());
+
+        return ($config['DIRECTORY_PUBLIC_GROUP']
+                && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $ipAddress));
     }
 
     /**
@@ -121,14 +145,7 @@ class DepartmentGateway
     {
         $config = self::getConfig();
 
-        // @NOTE
-        // When running on the command line, we need to decide what IP address to use
-        // Right now, this will just use 127.0.0.1, which might not be what we want
-        $ipAddress = isset($_SERVER['REMOTE_ADDR'])
-                        ?  $_SERVER['REMOTE_ADDR']
-                        :  gethostbyname(gethostname());
-
-        return ($config['DIRECTORY_PUBLIC_GROUP'] && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $ipAddress))
+        return self::isExternalRequest()
             ? "(&(objectClass=person)(memberof=$config[DIRECTORY_PUBLIC_GROUP]))"
             : '(objectClass=person)';
     }
@@ -147,37 +164,40 @@ class DepartmentGateway
         }
         else {
             foreach ($fields as $key=>$value) {
-                switch ($key) {
-                    case DirectoryAttributes::FIRSTNAME:
-                        $f[] = "(|(givenName=$value*)(displayName=$value*))";
-                    break;
+                if (array_key_exists($key, array_keys(DirectoryAttributes::getPublishableFields()))) {
+                    switch ($key) {
+                        case DirectoryAttributes::FIRSTNAME:
+                            $f[] = "(|(givenName=$value*)(displayName=$value*))";
+                        break;
 
-                    case DirectoryAttributes::LASTNAME:
-                        $f[] = "(|(sn=$value*)(sn=*-$value*))";
-                    break;
+                        case DirectoryAttributes::LASTNAME:
+                            $f[] = "(|(sn=$value*)(sn=*-$value*))";
+                        break;
 
-                    case 'extension':
-                        $f[] = "(telephoneNumber=*$value)";
-                    break;
+                        case DirectoryAttributes::EMPLOYEENUM:
+                            $f[] = empty($value)
+                                ? "(!(employeeNumber=*))"
+                                :   "(employeeNumber=$value)";
+                        break;
 
-                    case DirectoryAttributes::EMPLOYEENUM:
-                        $f[] = empty($value)
-                            ? "(!(employeeNumber=*))"
-                            :   "(employeeNumber=$value)";
-                    break;
-
-                    case 'non-payroll':
-                        $config = self::getConfig();
-                        $f[] = empty($value)
-                            ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
-                            :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
-                    break;
-
-                    default:
-                        if (array_key_exists($key, array_keys(DirectoryAttributes::$fields))) {
+                        default:
                             $ldapFieldname = DirectoryAttributes::$fields[$key];
                             $f[] = "($ldapFieldname=$value)";
-                        }
+                    }
+                }
+                elseif (!self::isExternalRequest()) {
+                    switch ($key) {
+                        case 'extension':
+                            $f[] = "(telephoneNumber=*$value)";
+                        break;
+
+                        case 'non-payroll':
+                            $config = self::getConfig();
+                            $f[] = empty($value)
+                                ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
+                                :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
+                        break;
+                    }
                 }
             }
         }
@@ -190,7 +210,7 @@ class DepartmentGateway
             $ldap,
             self::getDepartmentDn(),
             $filter,
-            array_values(DirectoryAttributes::$fields)
+            array_values(DirectoryAttributes::getPublishableFields())
         );
 
         return self::hydratePersonObjects($result);
@@ -214,7 +234,7 @@ class DepartmentGateway
             $ldap,
             $dn,
             self::getPersonFilter(),
-            array_values(DirectoryAttributes::$fields)
+            array_values(DirectoryAttributes::getPublishableFields())
         );
         return self::hydratePersonObjects($result);
     }
@@ -261,7 +281,7 @@ class DepartmentGateway
             $ldap,
             self::getDepartmentDn(),
             "(&$objectClass($filter))",
-            array_values(DirectoryAttributes::$fields)
+            array_values(DirectoryAttributes::getPublishableFields())
         );
         $count = ldap_count_entries($ldap, $result);
         if ($count) {

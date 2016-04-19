@@ -12,7 +12,7 @@ $departments = DepartmentGateway::getTelephoneNumbers();
 $out = [];
 foreach ($departments as $d) {
     $department = [];
-    foreach (Department::$fields as $f=>$ldapName) {
+    foreach (Department::getPublishableFields() as $f=>$ldapName) {
         $department[$f] = $d->$f;
     }
     $department['path'] = $d->getPath();

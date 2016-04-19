@@ -26,7 +26,7 @@ if (count($this->people)) {
         $name  = self::escape($p->getFullname());
         $title = self::escape($p->title);
 
-        $phone = $p->getMainPhone();
+        $phone = $p->getPhone();
 
         echo "
         <tr><td><a href=\"$url\">$name</a></td>

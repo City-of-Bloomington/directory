@@ -117,9 +117,8 @@ class Department extends DirectoryAttributes
         }
 
         $out = [];
-        foreach (array_keys(self::$fields) as $f) { $out[$f] = $this->$f; }
+        foreach (array_keys(self::getPublishableFields()) as $f) { $out[$f] = $this->$f; }
         $out['path']   = $this->getPath();
-
 
         # Are there any people in just this department?
         $people = $this->getPeople($staff);

@@ -9,6 +9,9 @@
  * @param DirectoryAttributes $this->entry
  */
 use Application\Models\DirectoryAttributes;
+
+$publishable = array_keys(DirectoryAttributes::getPublishableFields());
+
 $fields = [
     DirectoryAttributes::ADDRESS,
     DirectoryAttributes::CITY,
@@ -17,18 +20,22 @@ $fields = [
     DirectoryAttributes::EMAIL
 ];
 foreach ($fields as $f) {
-    $$f = self::escape($this->entry->$f);
+    $$f = in_array($f, $publishable) ? self::escape($this->entry->$f) : '';
 }
-?>
-<div><?= "<address>$address\n$city $state $zip</address>"; ?></div>
-<div><?= "<a href=\"mailto:$email\">$email</a>"; ?></div>
-<table class="contact">
-<?php
-    foreach (DirectoryAttributes::$phoneNumberFields as $label) {
+echo "
+<div><address>$address\n$city $state $zip</address></div>
+<div><a href=\"mailto:$email\">$email</a></div>
+";
+
+$rows = '';
+foreach (DirectoryAttributes::$phoneNumberFields as $label) {
+    if (in_array($label, $publishable)) {
         $number = $this->entry->$label;
         if ($number) {
-            echo "<tr><th>$label</th><td>$number</td></tr>";
+            $rows.= "<tr><th>$label</th><td>$number</td></tr>";
         }
     }
-?>
-</table>
+}
+if ($rows) {
+    echo "<table class=\"contact\">$rows</table>";
+}
