@@ -163,8 +163,9 @@ class DepartmentGateway
             $f[] = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
         else {
+            $publishable = DirectoryAttributes::getPublishableFields();
             foreach ($fields as $key=>$value) {
-                if (array_key_exists($key, array_keys(DirectoryAttributes::getPublishableFields()))) {
+                if (array_key_exists($key, $publishable)) {
                     switch ($key) {
                         case DirectoryAttributes::FIRSTNAME:
                             $f[] = "(|(givenName=$value*)(displayName=$value*))";
