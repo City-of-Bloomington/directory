@@ -68,7 +68,7 @@ class DepartmentGateway
 
         $departments = [];
 
-        $result  = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::getPublishableFields()));
+        $result  = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(Department::getPublishableFields()));
         $count = ldap_count_entries($ldap, $result);
         if ($count) {
             $entries = ldap_get_entries($ldap, $result);
@@ -100,7 +100,7 @@ class DepartmentGateway
             $ldap,
             $dn,
             "(objectClass=organizationalUnit)",
-            array_values(DirectoryAttributes::getPublishableFields())
+            array_values(Department::getPublishableFields())
         );
         if ($result
             && ldap_count_entries($ldap, $result)) {
@@ -157,11 +157,15 @@ class DepartmentGateway
     }
 
     /**
+     * Search for People records
+     *
      * @param array $fields An array of key=>values to search on
      * @return array An array of Person objects
      */
     public static function search($fields)
     {
+        $publishableFields = Person::getPublishableFields();
+
         # Build the LDAP query
         $f = [self::getPersonFilter()];
         if (!empty($fields['query'])) {
@@ -169,9 +173,8 @@ class DepartmentGateway
             $f[] = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
         else {
-            $publishable = DirectoryAttributes::getPublishableFields();
             foreach ($fields as $key=>$value) {
-                if (array_key_exists($key, $publishable)) {
+                if (array_key_exists($key, $publishableFields)) {
                     switch ($key) {
                         case DirectoryAttributes::FIRSTNAME:
                             $f[] = "(|(givenName=$value*)(displayName=$value*))";
@@ -217,7 +220,7 @@ class DepartmentGateway
             $ldap,
             self::getDepartmentDn(),
             $filter,
-            array_values(DirectoryAttributes::getPublishableFields())
+            array_values($publishableFields)
         );
 
         return self::hydratePersonObjects($result);
@@ -241,7 +244,7 @@ class DepartmentGateway
             $ldap,
             $dn,
             self::getPersonFilter(),
-            array_values(DirectoryAttributes::getPublishableFields())
+            array_values(Person::getPublishableFields())
         );
         return self::hydratePersonObjects($result);
     }
@@ -288,7 +291,7 @@ class DepartmentGateway
             $ldap,
             self::getDepartmentDn(),
             "(&$objectClass($filter))",
-            array_values(DirectoryAttributes::getPublishableFields())
+            array_values(Person::getPublishableFields())
         );
         $count = ldap_count_entries($ldap, $result);
         if ($count) {

@@ -10,7 +10,8 @@
  */
 use Application\Models\DirectoryAttributes;
 
-$publishable = array_keys(DirectoryAttributes::getPublishableFields());
+$class = get_class($this->entry);
+$publishable = array_keys($class::getPublishableFields());
 
 $fields = [
     DirectoryAttributes::ADDRESS,

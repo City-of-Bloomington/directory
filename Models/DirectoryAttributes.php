@@ -88,7 +88,9 @@ abstract class DirectoryAttributes
         ];
 
         // These are fields of information we want to only publish internally
-        if (!DepartmentGateway::isExternalRequest()) {
+        if (get_called_class() === __namespace__.'\Department'
+            || !DepartmentGateway::isExternalRequest()) {
+
             $f[self::OFFICE] = 'telephonenumber';
             $f[self::CELL  ] = 'mobile';
             $f[self::OTHER ] = 'othertelephone';
