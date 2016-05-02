@@ -68,14 +68,20 @@ class DepartmentGateway
 
         $departments = [];
 
-        $result = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::getPublishableFields()));
-        $count  = ldap_count_entries($ldap, $result);
+        $result  = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(DirectoryAttributes::getPublishableFields()));
+        $count = ldap_count_entries($ldap, $result);
         if ($count) {
-            ldap_sort($ldap, $result, 'name');
             $entries = ldap_get_entries($ldap, $result);
-            for ($i=0; $i<$count; $i++) {
-                if (!in_array($entries[$i]['name'][0], self::$hiddenDepartments)) {
-                    $departments[] = new Department($entries[$i]);
+            unset($entries['count']);
+
+            usort($entries, function ($a, $b) {
+                if (   $a['name'][0] === $b['name'][0]) { return 0; }
+                return $a['name'][0]  <  $b['name'][0] ? -1 : 1;
+            });
+
+            foreach ($entries as $entry) {
+                if (!in_array($entry['name'][0], self::$hiddenDepartments)) {
+                    $departments[] = new Department($entry);
                 }
             }
         }
