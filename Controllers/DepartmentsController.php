@@ -24,8 +24,13 @@ class DepartmentsController extends Controller
             $this->template->blocks[] = new Block('departments/info.inc', ['department'=>$department]);
         }
         catch (\Exception $e) {
-            header('HTTP/1.1 404 Not Found', true, 404);
-            $_SESSION['errorMessages'][] = $e;
+            if ($_GET['dn'] == 'OU=monkeys,OU=Departments,DC=cob,DC=bloomington,DC=in,DC=gov') {
+                $this->template->blocks[] = new Block('furiousGeorge.inc');
+            }
+            else {
+                header('HTTP/1.1 404 Not Found', true, 404);
+                $_SESSION['errorMessages'][] = $e;
+            }
         }
     }
 
