@@ -88,7 +88,7 @@ class HRGateway
     public static function getEmployeesWithoutAccounts()
     {
         $sql = self::getEmployeeSelect().
-                " and udf.ValString is null
+                " and udf.ValString is null or udf.ValString=''
                   order by e.LastName, e.FirstName";
         return self::dbQuery($sql);
     }
