@@ -133,7 +133,7 @@ class DepartmentGateway
                         :  gethostbyname(gethostname());
 
         return ($config['DIRECTORY_PUBLIC_GROUP']
-                && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $ipAddress));
+                && !in_array($ipAddress, $config['DIRECTORY_INTERNAL_IP']));
     }
 
     /**
