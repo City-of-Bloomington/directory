@@ -12,6 +12,8 @@ namespace Application\Models;
 
 class Ldap
 {
+    const NETWORK_TIMEOUT = 3;
+
     private static $connection;
 
     public static function authenticate($config, $user, $pass)
@@ -32,6 +34,8 @@ class Ldap
             if (self::$connection = ldap_connect($config['DIRECTORY_SERVER'])) {
                 ldap_set_option(self::$connection, LDAP_OPT_PROTOCOL_VERSION,3);
                 ldap_set_option(self::$connection, LDAP_OPT_REFERRALS, 0);
+                ldap_set_option(self::$connection, LDAP_OPT_TIMELIMIT,       self::NETWORK_TIMEOUT);
+                ldap_set_option(self::$connection, LDAP_OPT_NETWORK_TIMEOUT, self::NETWORK_TIMEOUT);
                 if (!empty($config['DIRECTORY_ADMIN_BINDING'])) {
                     if (!ldap_bind(
                             self::$connection,

@@ -9,6 +9,8 @@ use Blossom\Classes\ActiveRecord;
 
 class DepartmentGateway
 {
+    const LDAP_CONNECTION_FAILED = 'ldap/failedConnection';
+
     private static $config;
     private static $connection;
     private static $hiddenDepartments = ['Other Users'];
@@ -41,7 +43,7 @@ class DepartmentGateway
              self::$connection = Ldap::getConnection(self::getConfig());
 
             if (!self::$connection) {
-                throw new \Exception('ldap/failedConnection');
+                throw new \Exception(self::LDAP_CONNECTION_FAILED);
             }
         }
         return self::$connection;

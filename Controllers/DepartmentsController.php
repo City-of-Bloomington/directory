@@ -28,7 +28,12 @@ class DepartmentsController extends Controller
                 $this->template->blocks[] = new Block('furiousGeorge.inc');
             }
             else {
-                header('HTTP/1.1 404 Not Found', true, 404);
+                if ($e->getMessage() == DepartmentGateway::LDAP_CONNECTION_FAILED) {
+                    header('HTTP/1.1 504 Gateway Timeout', true, 504);
+                }
+                else {
+                    header('HTTP/1.1 404 Not Found', true, 404);
+                }
                 $_SESSION['errorMessages'][] = $e;
             }
         }
