@@ -15,6 +15,7 @@ $everbridgeFields = [
     'Last Name',
     'Suffix',
     'External ID',
+    'Organization Name',
     'Country',
     'Business Name',
     'Record Type',
@@ -155,6 +156,7 @@ foreach ($this->contacts as $contact) {
         $row['Country'    ] = 'US';
         $row['Record Type'] = 'City of Bloomington Employee';
         $row['Groups'     ] = '*|CoB '.$contact->getDepartment();
+        $row['Organization Name'] = 'City of Bloomington';
 
         foreach (EmergencyContact::$contactFields as $key=>$everBridgeName) {
             $get = 'get'.ucfirst($key);
