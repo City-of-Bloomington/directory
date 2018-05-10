@@ -58,10 +58,9 @@ class Department extends DirectoryAttributes
      * @param array $people An array of Person objects
      * @return array An array of Person objects
      */
-    public function getPeople(&$people=null)
+    public function getPeople(array &$people=null)
     {
-        $c = count($people);
-        if (count($people)) {
+        if ($people) {
             $out = [];
             if ($this->entry['ou'][0] != 'Departments') {
                 foreach ($people as $person) {
