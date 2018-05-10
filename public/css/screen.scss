@@ -20,12 +20,12 @@ button, .button {
     color:#333;
     display:inline-block;
 	padding: .25em 1em;
-    font-size: (14em/16);
+    font-size: $font-size-small;
 	font-weight:normal;
 	background: linear-gradient(to bottom, #f2f2f9 21%,#CDD1D9 80%);
     vertical-align: middle;
     > .fa {
-        font-size: (15em/15);
+        font-size: $font-size-normal;
     }
 	&:hover {
 		background: linear-gradient(to bottom, #f8f8fd 21%, #d5dfe4 80%);
@@ -50,7 +50,7 @@ a.button:hover {
 .fa-download    { color:black; }
 
 .breadcrumbs {
-    font-size: (13em/16);
+    font-size: $font-size-smaller;
     margin: .5em 0 1.5em 0;
 
     > span {
@@ -122,7 +122,7 @@ a.button:hover {
 
         > a {
             display: inline-block;
-            font-size: (20rem/16);
+            font-size: $font-size-big;
             margin: 0 0 .5em 0;
         }
         > .list-departments {
@@ -141,7 +141,7 @@ a.button:hover {
                 padding: 0;
 
                 > a {
-                    font-size: 1rem;
+                    font-size: $font-size-normal;
                     margin: 0 0 .25em 0;
                 }
             }
@@ -274,7 +274,7 @@ textarea#address { height:3em; }
 
         header {
             background-color:#ccc;
-            font-size:100%;
+            font-size: $font-size-normal;
             font-weight:bold;
             margin:0; padding:2px;
         }
@@ -282,5 +282,19 @@ textarea#address { height:3em; }
         div {
             margin-left:1em; margin-right:1em;
         }
+    }
+}
+
+
+#content-panel .searchForm {
+    input {
+        width:80%; border-radius:8px;
+        padding-left: $font-size-biggest + 1rem;
+        font-size: $font-size-biggest;
+        background-color: $color-table-background;
+        background-repeat: no-repeat;
+        background-position:left .5rem center;
+        background-size: $font-size-biggest;
+        background-image: url('fa-svg/gothic/search.svg');
     }
 }

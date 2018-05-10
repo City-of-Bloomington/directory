@@ -27,7 +27,7 @@
 
         a {
             background: rgba(255, 255, 255, .5);
-            color: $nav1-link-color;
+            color: $color-link;
             display: block;
             float: left;
             margin: 0 .5em .4em 0;
@@ -39,14 +39,15 @@
                 text-decoration: none;
             }
         }
-        &-searchForm {
+
+        .searchForm {
             float: right;
 
             > fieldset {
                 margin: 0;
 
                 > input {
-                    font-size: 1em;
+                    font-size: $font-size-normal;
                     padding: .25em;
                 }
             }

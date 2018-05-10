@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2014-2015 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
 
@@ -61,6 +60,9 @@ class PeopleController extends Controller
 
     public function search()
     {
+        if ($this->template->outputFormat == 'html') {
+            $this->template->blocks[] = new Block('people/search/simpleForm.inc');
+        }
         if (!empty($_GET['lastname']) || !empty($_GET['firstname']) || !empty($_GET['extension'])
             || !empty($_GET['query'])) {
             // Begin easter egg
@@ -76,11 +78,8 @@ class PeopleController extends Controller
                 exit();
             }
             else {
-                $this->template->blocks[] = new Block('people/searchResults.inc', ['people'=>$people]);
+                $this->template->blocks[] = new Block('people/search/results.inc', ['people'=>$people]);
             }
-        }
-        if ($this->template->outputFormat == 'html') {
-            $this->template->blocks[] = new Block('people/searchForm.inc');
         }
     }
 
