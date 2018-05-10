@@ -1,2 +1,2 @@
 #!/bin/bash
-sass --style compact screen.scss screen.css
+pysassc -t compact -m screen.scss screen.css

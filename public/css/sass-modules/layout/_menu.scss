@@ -32,7 +32,7 @@
             transition: background .25s, color .25s;
 
             &:hover {
-                background: $header-text-color;
+                background: $color-header;
                 color: #fff;
                 text-decoration: none;
             }

@@ -8,25 +8,25 @@ body {
 }
 h1 {
     color: #777;
-    font-size: 2rem;
+    font-size: $font-size-biggest;
     font-weight: 300;
     margin: 0 0 1em;
 }
 h2 {
   color: #555;
-  font-size: 1.3rem;
+  font-size: $font-size-bigger;
   font-weight: normal;
   margin: .5em 0;
 }
 h3 {
     color: #666;
-    font-size: 1.5rem;
+    font-size: $font-size-big;
     font-weight: normal;
     margin:.5em 0 .25em 0;
 }
-h4 { font-size:100%; font-weight: $semibold; }
+h4 { font-size:$font-size-normal; font-weight: $semibold; }
 a {
-    color: $link-color;
+    color: $color-link;
     text-decoration:none;
 }
 p {
@@ -52,7 +52,7 @@ fieldset {
 legend {
     color: #747474;
     display: block;
-    font-size: 1.15em;
+    font-size: $font-size-normal;
     font-weight: normal;
     margin: 0;
     padding: 0 0 0 0;
@@ -68,11 +68,11 @@ label { font-weight:normal; }
 
 @media print {
     h1 {
-        font-size: 1.5rem;
+        font-size: $font-size-bigger;
         margin: .5em 0 0 0;
     }
     h2 {
-        font-size: 1.35rem;
+        font-size: $font-size-big;
         margin: .5em 0 0 0;
     }
 }

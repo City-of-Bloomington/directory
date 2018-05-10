@@ -1,16 +1,31 @@
 $header-background-url: "images/header-bg-2.jpg";
 
 $body-background-url: "images/showers-blurred.jpg";
-$accent-color-1: #1e59ae;
 
-$font-link-color: #1e59ae;
 $font-body-family: "Open Sans", "Helvetica Neue", Arial, sans-serif;
 
-$city-logo-url: "images/Simple_City_Logo.svg"; //URL relative to location of screen.css
-$header-text-color: #1e59ae;
+$font-size-biggest:  2rem;
+$font-size-bigger: 1.5rem;
+$font-size-big:    1.3rem;
+$font-size-normal:   1rem;
+$font-size-small:  .85rem;
+$font-size-smaller: .8rem;
 
-$nav1-link-color: #1e59ae;
-$link-color: #1e59ae;
+$city-logo-url: "images/Simple_City_Logo.svg"; //URL relative to location of screen.css
+
+@import 'color-palette';
+$color-text-default:               $mine-shaft;
+$color-content-background:         $white;
+$color-selected-background:        $havelock-blue;
+
+$color-header:                     $biscay;
+$color-nav1:                       $biscay;
+$color-link:                       $biscay;
+$color-border-table:               $wafer;
+
+$color-table-background:           $gainsboro;
+$color-table-background-alt:       $silver;
+$color-table-header-background:    $biscay;
 
 $semibold: 600;
 

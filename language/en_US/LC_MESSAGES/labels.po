@@ -1,25 +1,20 @@
 # Translation
-# Copyright (C) 2013-2014 City of Bloomington
-# This file is distributed under the same license as the Blossom package.
-#
-# Cliff Ingham, 2013-2014.
+# Copyright (C) 2013-2018 City of Bloomington
+# This file is distributed under the same license as the Directory application
 domain "labels"
 
 msgid ""
 msgstr ""
-"Project-Id-Version: Blossom\n"
+"Project-Id-Version: Directory\n"
 "Report-Msgid-Bugs-To: dev@bloomington.in.gov\n"
-"POT-Creation-Date: 2013-09-20 16:33-0400\n"
-"PO-Revision-Date: 2015-01-29 10:36-0500\n"
 "Last-Translator: Cliff Ingham <inghamn@bloomington.in.gov>\n"
 "Language-Team: City of Bloomington <dev@bloomington.in.gov>\n"
+"PO-Revision-Date: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.5.4\n"
 "Language: en_US\n"
-"X-Poedit-SourceCharset: UTF-8\n"
 
 msgid "home"
 msgstr "Home"

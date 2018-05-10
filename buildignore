@@ -1,12 +1,11 @@
 /buildignore
-/build.sh
 /build
-/dist
 .git/
 .git*
 configuration.inc
 site_config.inc
 backup.cnf
+/data/cache/*
 /data/photos/*
 /data/sessions/*
 /public/css/Font-Awesome/less/

@@ -3,7 +3,7 @@ body > header {
 
     > .container {
         margin: 0 auto 0;
-        color: $header-text-color;
+        color: $color-header;
         position: relative;
         @include clearfix();
 
@@ -25,10 +25,10 @@ body > header {
                 float: left;
                 padding: .5em 0;
 
-                a { color: $header-text-color; }
+                a { color: $color-header; }
 
                 h1 {
-                    font-size:1.5em;
+                    font-size: $font-size-bigger;
                     font-weight: normal;
                     margin: .5em 0 .25em 0;
                 }

@@ -2,7 +2,7 @@ form dl {
     padding: .5em 0;
 
     > dt {
-        font-size: (12em/16);
+        font-size: $font-size-smaller;
         font-weight: normal;
         margin: 0 0 .25em 0;
     }
@@ -14,7 +14,7 @@ form dl {
             box-sizing: border-box;
             border: 1px solid #e0e0e0;
             font-family: $font-body-family;
-            font-size: 1em;
+            font-size: $font-size-normal;
             padding: .5em;
             transition: border-color .35s ease-in-out, background-color .5s ease-in-out;
             width: 100%;
@@ -45,7 +45,7 @@ form dl {
         > dt {
             color: #666;
             float: left;
-            font-size: (13em/16);
+            font-size: $font-size-smaller;
             margin: 0;
             padding: 1em 0 0 1em;
             width: 8em;
@@ -54,7 +54,7 @@ form dl {
             margin-left: 8em;
 
             input {
-                font-size: (14em/16);
+                font-size: $font-size-small;
                 width: 20em;
 
                 &.datePicker { width:inherit; }
