@@ -130,9 +130,11 @@ class DepartmentGateway
         // @NOTE
         // When running on the command line, we need to decide what IP address to use
         // Right now, this will just use 127.0.0.1, which might not be what we want
-        $ipAddress = isset($_SERVER['REMOTE_ADDR'])
-                        ?  $_SERVER['REMOTE_ADDR']
-                        :  gethostbyname(gethostname());
+        $ipAddress = isset($_SERVER['HTTP_X_FORWARDED_FOR'])
+                         ? $_SERVER['HTTP_X_FORWARDED_FOR']
+                         : (isset($_SERVER['REMOTE_ADDR'])
+                                ? $_SERVER['REMOTE_ADDR']
+                                : gethostbyname(gethostname()));
 
         return ($config['DIRECTORY_PUBLIC_GROUP']
                 && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $ipAddress));
