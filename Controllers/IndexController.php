@@ -13,7 +13,6 @@ class IndexController extends Controller
 	public function index()
     {
         $this->template->blocks[] = new Block('people/search/simpleForm.inc');
-        $this->template->blocks[] = new Block('departments/list.inc');
 	}
 
 	public function monkeys()
