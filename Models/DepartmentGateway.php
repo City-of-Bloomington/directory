@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -117,7 +117,7 @@ class DepartmentGateway
     /**
      * Returns whether the request is from outside or not
      *
-     * We want to make sure that we honor the DIRECTORY_PUBLIC_GROUP config.
+     * We want to make sure that we honor the DIRECTORY_RESTRICTED config.
      * If external traffic is requesting information, we need to make sure
      * we're only including people results that are members of the this group.
      *
@@ -136,14 +136,14 @@ class DepartmentGateway
                                 ? $_SERVER['REMOTE_ADDR']
                                 : gethostbyname(gethostname()));
 
-        return ($config['DIRECTORY_PUBLIC_GROUP']
+        return ($config['DIRECTORY_RESTRICTED']
                 && !preg_match("/$config[DIRECTORY_INTERNAL_IP]/", $ipAddress));
     }
 
     /**
      * Returns an objectClass filter based on internal/external access
      *
-     * We want to make sure that we honor the DIRECTORY_PUBLIC_GROUP config.
+     * We want to make sure that we honor the DIRECTORY_RESTRICTED config.
      * If external traffic is requesting information, we need to make sure
      * we're only including people results that are members of the this group.
      *
@@ -156,7 +156,7 @@ class DepartmentGateway
         $config = self::getConfig();
 
         return self::isExternalRequest()
-            ? "(&(objectClass=person)(memberof=$config[DIRECTORY_PUBLIC_GROUP]))"
+            ? "(&(objectClass=person)(!(memberof=$config[DIRECTORY_RESTRICTED])))"
             : '(objectClass=person)';
     }
 
