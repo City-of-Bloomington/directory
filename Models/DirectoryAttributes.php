@@ -13,9 +13,8 @@
  * as the sAMAccountName.  This class declares the mapping for
  * all the fields used in the Directory application.
  *
- * @copyright 2014-2015 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Models;
 
@@ -45,6 +44,10 @@ abstract class DirectoryAttributes
     const PAGER       = 'pager';
     const EMPLOYEENUM = 'employeeNum';
     const EMPLOYEEID  = 'employeeID';
+
+    const EXTENSION   = 'extension';
+    const NON_PAYROLL = 'non-payroll';
+    const PROMOTED    = 'promoted';
 
     /**
      * Maps internal application fieldnames to LDAP attributes

@@ -45,35 +45,25 @@ class Department extends DirectoryAttributes
         return count($this->getChildren()) ? true : false;
     }
 
-
     /**
-     * Returns people in this department
+     * Removes people in subdepartments
      *
-     * If $people is passed in, $people is used as the data source, instead of LDAP.
-     *
-     * So, if you've already queried LDAP for a set of people, you can
-     * filter your existing result set to this department.  Just pass your existing
-     * result set to this function.
-     *
-     * @param array $people An array of Person objects
-     * @return array An array of Person objects
+     * @param  array $people An array of Person objects
+     * @return array         An array of Person objects
      */
-    public function getPeople(array &$people=null)
+    public function filterTopLevelPeople(array $people)
     {
-        if ($people) {
-            $out = [];
-            if ($this->entry['ou'][0] != 'Departments') {
-                foreach ($people as $person) {
-                    if ($person->entry['dn'] === "CN={$person->entry['cn'][0]},{$this->entry['dn']}") {
-                        $out[] = $person;
-                    }
+        $out = [];
+        // When looking at the root of the departments,
+        // don't list any top level people.
+        if ($this->entry['ou'][0] != 'Departments') {
+            foreach ($people as $person) {
+                if ($person->entry['dn'] === "CN={$person->entry['cn'][0]},{$this->entry['dn']}") {
+                    $out[] = $person;
                 }
             }
-            return $out;
         }
-        else {
-            return DepartmentGateway::getPeople($this->dn);
-        }
+        return $out;
     }
 
     /**
@@ -102,25 +92,20 @@ class Department extends DirectoryAttributes
     }
 
     /**
-     * Returns all data for this department
+     * Returns all data, recursively, for this department
      *
      * The data returned should be ready for encoding into JSON or XML
      *
      * @return array
      */
-    public function getData(&$staff=null)
+    public function getData(array $query=null)
     {
-        if (!$staff) {
-            # Grab all the people inside this department, including sub-departments
-            $staff = $this->getPeople();
-        }
-
         $out = [];
         foreach (array_keys(self::getPublishableFields()) as $f) { $out[$f] = $this->$f; }
         $out['path']   = $this->getPath();
 
-        # Are there any people in just this department?
-        $people = $this->getPeople($staff);
+        $staff  = DepartmentGateway::search($this->entry['dn'], $query ? $query : []);
+        $people = $this->filterTopLevelPeople($staff);
         if (count($people)) {
             $out['people'] = [];
             foreach ($people as $p) {
@@ -135,5 +120,5 @@ class Department extends DirectoryAttributes
             }
         }
         return $out;
-   }
+    }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\DepartmentGateway;
@@ -8,7 +8,7 @@ use Application\Models\HRGateway;
 
 include __DIR__.'/../configuration.inc';
 
-$people    = DepartmentGateway::getPeople();
+$people    = DepartmentGateway::getPeople($DIRECTORY_CONFIG['Employee']['DIRECTORY_BASE_DN']);
 $employees = [];
 $em = HRGateway::getEmployees();
 foreach ($em as $e) {

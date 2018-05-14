@@ -52,7 +52,7 @@ class DepartmentGateway
     /**
      * @return string
      */
-    public static function getDepartmentDn()
+    private static function getDepartmentDn()
     {
         $c = self::getConfig();
         return $c['DIRECTORY_BASE_DN'];
@@ -71,7 +71,7 @@ class DepartmentGateway
         $departments = [];
 
         $result  = ldap_list($ldap, $dn, "(objectClass=organizationalUnit)", array_values(Department::getPublishableFields()));
-        $count = ldap_count_entries($ldap, $result);
+        $count   = ldap_count_entries($ldap, $result);
         if ($count) {
             $entries = ldap_get_entries($ldap, $result);
             unset($entries['count']);
@@ -163,53 +163,62 @@ class DepartmentGateway
     /**
      * Search for People records
      *
-     * @param array $fields An array of key=>values to search on
-     * @return array An array of Person objects
+     * @param  string $base_dn  Base DN for the query
+     * @param  array  $fields   An array of key=>values to search on
+     * @return array            An array of Person objects
      */
-    public static function search($fields)
+    public static function search(string $base_dn, array $fields)
     {
         $publishableFields = Person::getPublishableFields();
 
         # Build the LDAP query
         $f = [self::getPersonFilter()];
         if (!empty($fields['query'])) {
-            $q = $fields['query'];
+            $q   = $fields['query'];
             $f[] = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
         }
         else {
+            $config = self::getConfig();
+
             foreach ($fields as $key=>$value) {
-                if (array_key_exists($key, $publishableFields)) {
-                    switch ($key) {
-                        case DirectoryAttributes::FIRSTNAME:
-                            $f[] = "(|(givenName=$value*)(displayName=$value*))";
-                        break;
+                switch ($key) {
+                    case DirectoryAttributes::FIRSTNAME:
+                        $f[] = "(|(givenName=$value*)(displayName=$value*))";
+                    break;
 
-                        case DirectoryAttributes::LASTNAME:
-                            $f[] = "(|(sn=$value*)(sn=*-$value*))";
-                        break;
+                    case DirectoryAttributes::LASTNAME:
+                        $f[] = "(|(sn=$value*)(sn=*-$value*))";
+                    break;
 
-                        case DirectoryAttributes::EMPLOYEENUM:
-                            $f[] = empty($value)
+                    case DirectoryAttributes::EMPLOYEENUM:
+                        $f[] = empty($value)
                                 ? "(!(employeeNumber=*))"
                                 :   "(employeeNumber=$value)";
-                        break;
+                    break;
 
-                        default:
-                            $ldapFieldname = DirectoryAttributes::$fields[$key];
-                            $f[] = "($ldapFieldname=$value)";
-                    }
+                    case DirectoryAttributes::PROMOTED:
+                        $f[] = $value
+                                ?   "(memberOf=$config[DIRECTORY_PROMOTED])"
+                                : "(!(memberOf=$config[DIRECTORY_PROMOTED]))";
+                    break;
+
+                    default:
+                        if (array_key_exists($key, $publishableFields)) {
+                            $ldapKey = DirectoryAttributes::$fields[$key];
+                            $f[]     = "($ldapKey=$value)";
+                        }
                 }
-                elseif (!self::isExternalRequest()) {
+
+                if (!self::isExternalRequest()) {
                     switch ($key) {
-                        case 'extension':
+                        case DirectoryAttributes::EXTENSION:
                             $f[] = "(telephoneNumber=*$value)";
                         break;
 
-                        case 'non-payroll':
-                            $config = self::getConfig();
+                        case DirectoryAttributes::NON_PAYROLL:
                             $f[] = empty($value)
-                                ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
-                                :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
+                                 ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
+                                 :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
                         break;
                     }
                 }
@@ -222,7 +231,7 @@ class DepartmentGateway
         $ldap = self::getConnection();
         $result = ldap_search(
             $ldap,
-            self::getDepartmentDn(),
+            $base_dn,
             $filter,
             array_values($publishableFields)
         );
@@ -236,21 +245,12 @@ class DepartmentGateway
      * If you provide a dn, this only returns people in that dn
      * If you do not provide a dn, then ALL users are retuned
      *
-     * @param string $dn
-     * @return array An array of Person objects
+     * @param  string $dn
+     * @return array       An array of Person objects
      */
-    public static function getPeople($dn=null)
+    public static function getPeople(string $dn)
     {
-        if (!$dn) { $dn = self::getDepartmentDn(); }
-
-        $ldap = self::getConnection();
-        $result = ldap_search(
-            $ldap,
-            $dn,
-            self::getPersonFilter(),
-            array_values(Person::getPublishableFields())
-        );
-        return self::hydratePersonObjects($result);
+        return self::search($dn, []);
     }
 
     /**

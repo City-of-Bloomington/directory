@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2016 City of Bloomington, Indiana
+ * @copyright 2016-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\DepartmentGateway;
@@ -9,7 +9,10 @@ use Blossom\Classes\Database;
 
 include '../configuration.inc';
 
-$people = DepartmentGateway::search(['employeeNum'=>'*']);
+$people = DepartmentGateway::search(
+    $DIRECTORY_CONFIG['Employee']['DIRECTORY_BASE_DN'],
+    ['employeeNum'=>'*']
+);
 foreach ($people as $p) {
     echo "{$p->employeeNum} {$p->username} \n";
 

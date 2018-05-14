@@ -15,8 +15,13 @@ class SynchronizeController extends Controller
 {
     public function index()
     {
+        global $DIRECTORY_CONFIG;
+
         $adRecords = [];
-        $people = DepartmentGateway::search(['employeeNum'=>null, 'non-payroll'=>null]);
+        $people = DepartmentGateway::search(
+            $DIRECTORY_CONFIG['Employee']['DIRECTORY_BASE_DN'],
+            ['employeeNum'=>null, 'non-payroll'=>null]
+        );
         foreach ($people as $p) {
             if (!$p->employeeNum) {
                 $adRecords[] = [

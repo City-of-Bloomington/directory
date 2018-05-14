@@ -60,6 +60,8 @@ class PeopleController extends Controller
 
     public function search()
     {
+        global $DIRECTORY_CONFIG;
+
         if ($this->template->outputFormat == 'html') {
             $this->template->blocks[] = new Block('people/search/simpleForm.inc');
         }
@@ -71,7 +73,12 @@ class PeopleController extends Controller
                 exit();
             }
             // End easter egg
-            $people = DepartmentGateway::search($_GET);
+
+
+            $people = DepartmentGateway::search(
+                $DIRECTORY_CONFIG['Employee']['DIRECTORY_BASE_DN'],
+                $_GET
+            );
             if (count($people) == 1 && $this->template->outputFormat == 'html') {
                 $username = $people[0]->username;
                 header('Location: '.BASE_URL."/people/view?username=$username");
