@@ -6,6 +6,7 @@
 declare (strict_types=1);
 $query = !empty($_GET['query']) ? parent::escape($_GET['query']) : '';
 ?>
+<h1><?= $this->_('search'); ?></h1>
 <form method="get" action="<?= BASE_URI; ?>/people/search" class="searchForm">
     <fieldset>
         <input name="query" placeholder="<?= $this->_('search_help', 'messages'); ?>" value="<?= $query; ?>" />

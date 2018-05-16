@@ -23,7 +23,7 @@ msgid "photo_type_requirements"
 msgstr "Photo must be one of these valid formats: %s"
 
 msgid "search_help"
-msgstr "Type here: search by name, email, or username"
+msgstr "search by name, email, or username"
 
 msgid "search_by_name"
 msgstr "Search by Name"
