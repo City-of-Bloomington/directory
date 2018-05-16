@@ -69,7 +69,7 @@ class Person extends DirectoryAttributes
         }
 
         // Move the file where it's supposed to go
-        $newFile   = APPLICATION_HOME."/data/photos/{$this->username}.jpg";
+        $newFile   = SITE_HOME."/photos/{$this->username}.jpg";
         $directory = dirname($newFile);
         if (!is_dir($directory)) {
             mkdir  ($directory, 0777, true);
@@ -87,7 +87,7 @@ class Person extends DirectoryAttributes
 
     public function hasPhoto()
     {
-        return file_exists(APPLICATION_HOME."/public/photos/{$this->username}.jpg");
+        return file_exists(SITE_HOME."/photos/{$this->username}.jpg");
     }
 
     /**
