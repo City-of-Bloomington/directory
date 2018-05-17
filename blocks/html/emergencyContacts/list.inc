@@ -1,20 +1,19 @@
 <?php
 /**
- * @copyright 2015 City of Bloomington, Indiana
+ * @copyright 2015-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  * @param Zend\Db\Results $this->contacts
  */
 use Application\Models\EmergencyContact;
 use Blossom\Classes\Block;
-use Blossom\Classes\Url;
+use Application\Classes\Url;
 ?>
 <section>
     <h1><?php echo $this->_(['emergencyContact', 'emergencyContacts', 2]); ?></h1>
     <div>
     <?php
         $helper = $this->template->getHelper('buttonLink');
-        $url = new Url(Url::current_url());
+        $url = new Url(Url::current_url(BASE_HOST));
         $url->format = 'csv';
         echo $helper->buttonLink($url, 'CSV', 'download');
     ?>
