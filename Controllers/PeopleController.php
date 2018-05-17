@@ -92,11 +92,15 @@ class PeopleController extends Controller
 
     public function photo()
     {
-        $person = DepartmentGateway::getPerson($_GET['username']);
+        $person = null;
+        if (!DepartmentGateway::isExternalRequest()) {
+            $person = DepartmentGateway::getPerson($_GET['username']);
+        }
         if (!$person) { $this->handle404(); return; }
 
+
         header('Content-type: image/jpeg');
-        echo DepartmentGateway::getPhoto($_GET['username']);
+        echo $person->getPhoto();
         exit();
     }
 

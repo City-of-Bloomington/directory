@@ -2,7 +2,7 @@
 /**
  * Wrapper class for an LDAP entry
  *
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 namespace Application\Models;
@@ -11,6 +11,7 @@ use Blossom\Classes\Database;
 
 class Person extends DirectoryAttributes
 {
+    private $photoFile;
     /**
      * Whitelist of accepted file types
      */
@@ -18,7 +19,8 @@ class Person extends DirectoryAttributes
 
     public function __construct($ldap_entry)
     {
-        $this->entry   = $ldap_entry;
+        $this->entry     = $ldap_entry;
+        $this->photoFile = "/photos/{$this->username}.jpg";
     }
 
     public function handleUpdate($post)
@@ -69,7 +71,7 @@ class Person extends DirectoryAttributes
         }
 
         // Move the file where it's supposed to go
-        $newFile   = SITE_HOME."/photos/{$this->username}.jpg";
+        $newFile   = SITE_HOME.$this->photoFile;
         $directory = dirname($newFile);
         if (!is_dir($directory)) {
             mkdir  ($directory, 0777, true);
@@ -85,35 +87,15 @@ class Person extends DirectoryAttributes
         }
     }
 
-    public function hasPhoto()
-    {
-        return file_exists(SITE_HOME."/photos/{$this->username}.jpg");
-    }
-
-    /**
-     * @return string
-     */
-    public function getPhotoUrl() { return BASE_URL."/photos/{$this->username}.jpg"; }
-    public function getPhotoUri() { return BASE_URI."/photos/{$this->username}.jpg"; }
-
-    /**
-     * Returns whether the Ldap entry has a photo for this person
-     *
-     * @return boolean
-     */
-    public function hasLdapPhoto()
-    {
-        return !empty($this->entry['jpegphoto']);
-    }
-
-    /**
-     * Returns the raw Ldap photo data
-     *
-     * @return string
-     */
-    public function getLdapPhoto()
-    {
-        return $this->entry['jpegphoto'][0];
+    public function hasPhoto     (): bool { return $this->hasLocalPhoto() || $this->hasLdapPhoto(); }
+    public function hasLdapPhoto (): bool { return DepartmentGateway::getPhoto($this->username) ? true : false; }
+    public function hasLocalPhoto(): bool { return $this->photoFile && file_exists(SITE_HOME.$this->photoFile); }
+    public function getPhotoUrl(): string { return BASE_URL.$this->photoFile; }
+    public function getPhotoUri(): string { return BASE_URI.$this->photoFile; }
+    public function getPhoto() {
+        return $this->hasLocalPhoto()
+            ? file_get_contents(SITE_HOME.$this->photoFile)
+            : DepartmentGateway::getPhoto($this->username);
     }
 
     /**

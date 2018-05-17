@@ -1,25 +1,26 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  * @param Person $this->person
  */
+use Application\Models\DepartmentGateway;
 use Application\Models\User;
 use Blossom\Classes\Block;
 ?>
 <section class="person-profile">
-    <div class="person-photoContainer">
-        <?php
-            # Get their photo, if they've got one
+    <?php
+        # Get their photo, if they've got one
+        if (!DepartmentGateway::isExternalRequest()) {
             $photo = $this->person->hasPhoto()
                 ? "<img src=\"{$this->person->getPhotoUri()}\" />"
                 : "";
             #$photo = $this->person->hasLdapPhoto()
             #    ? "<img src=\"".BASE_URI."/people/photo?username={$this->person->username}\" align=\"left\" />"
             #    : "<img src=\"".BASE_URI."/images/nophoto.jpg\"  align=\"left\" />";
-            echo $photo;
-        ?>
-    </div>
+            echo "<div class=\"person-photoContainer\">$photo</div>";
+        }
+    ?>
     <section class="person-details">
         <?php
             $this->_include('people/partials/details.inc');

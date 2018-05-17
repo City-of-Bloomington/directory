@@ -305,8 +305,10 @@ class DepartmentGateway
     }
 
     /**
-     * @param string $username
-     * @return data Binary image data
+     * Returns the binary data for the image stored in LDAP
+     *
+     * @param  string $username
+     * @return data              Binary image data
      */
     public static function getPhoto($username)
     {

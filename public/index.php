@@ -1,8 +1,7 @@
 <?php
 /**
- * @copyright 2012-2015 City of Bloomington, Indiana
+ * @copyright 2012-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
  */
 namespace Application\Controllers;
 
@@ -18,7 +17,12 @@ $startTime = microtime(1);
 include '../configuration.inc';
 
 // Check for routes
-if (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {
+if (preg_match('|'.BASE_URI.'/photos/(.+)\.jpg|', $_SERVER['REQUEST_URI'], $matches)) {
+    $resource         = 'people';
+    $action           = 'photo';
+    $_GET['username'] = $matches[1];
+}
+elseif (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {
 	$resource = isset($matches[2]) ? $matches[2] : 'index';
 	$action   = isset($matches[4]) ? $matches[4] : 'index';
 }
