@@ -1,5 +1,4 @@
 .build
-configuration.inc
 site_config.inc
 data/cache/*
 data/photos/*

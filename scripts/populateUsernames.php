@@ -7,7 +7,7 @@ use Application\Models\DepartmentGateway;
 use Application\Models\HRGateway;
 use Blossom\Classes\Database;
 
-include '../configuration.inc';
+include '../bootstrap.php';
 
 $people = DepartmentGateway::search(
     $DIRECTORY_CONFIG['Employee']['DIRECTORY_BASE_DN'],

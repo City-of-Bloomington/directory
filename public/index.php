@@ -14,7 +14,7 @@ use Blossom\Classes\Block;
  */
 $startTime = microtime(1);
 
-include '../configuration.inc';
+include '../bootstrap.php';
 
 // Check for routes
 if (preg_match('|'.BASE_URI.'/photos/(.+)\.jpg|', $_SERVER['REQUEST_URI'], $matches)) {

@@ -6,7 +6,7 @@
 use Application\Models\DepartmentGateway;
 use Application\Models\HRGateway;
 
-include __DIR__.'/../configuration.inc';
+include __DIR__.'/../bootstrap.php';
 
 $people    = DepartmentGateway::getPeople($DIRECTORY_CONFIG['Employee']['DIRECTORY_BASE_DN']);
 $employees = [];
