@@ -273,8 +273,11 @@ class DepartmentGateway
             }
         }
         usort($people, function ($a, $b) {
-            if     ($a->entry['sn'][0] === $b->entry['sn'][0]) { return 0; }
-            return ($a->entry['sn'][0]  <  $b->entry['sn'][0]) ? -1 : 1;
+            $al = isset($a->entry['sn'][0]) ? $a->entry['sn'][0] : '';
+            $bl = isset($b->entry['sn'][0]) ? $b->entry['sn'][0] : '';
+
+            if     ($al === $bl) { return 0; }
+            return ($al  <  $bl) ? -1 : 1;
         });
         return $people;
     }
