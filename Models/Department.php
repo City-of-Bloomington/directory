@@ -21,6 +21,11 @@ class Department extends DirectoryAttributes
     public function getUrl() { return BASE_URL.DepartmentGateway::getPathForDn($this->entry['dn']); }
     public function getUri() { return BASE_URI.DepartmentGateway::getPathForDn($this->entry['dn']); }
 
+    public function getName()
+    {
+        return $this->displayname ? $this->displayname : $this->name;
+    }
+
     /**
      * @return array
      */

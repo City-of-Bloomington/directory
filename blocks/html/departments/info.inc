@@ -28,7 +28,7 @@ use Blossom\Classes\View;
 </nav>
 
 <section>
-    <h1><?php echo View::escape($this->department->name); ?></h1>
+    <h1><?php echo View::escape($this->department->getName()); ?></h1>
     <?php
         $block = new Block('directoryAttributes/contactInfo.inc', ['entry'=>$this->department]);
         echo $block->render('html', $this->template);
@@ -47,11 +47,19 @@ use Blossom\Classes\View;
 
         function renderChildren($departments, $block, &$staff)
         {
+            static $contactInfo;
+
+
             if (count($departments)) {
+                if (!$contactInfo) {
+                     $contactInfo = new Block('directoryAttributes/contactInfo.inc');
+                }
                 echo '<ul class="list-departments">';
                 foreach ($departments as $d) {
-                    $name = View::escape($d->name);
+                    $name = View::escape($d->getName());
                     echo "<li><a href=\"{$d->getUri()}\">$name</a>";
+                    $contactInfo->entry = $d;
+                    echo $contactInfo->render('html', $block->template);
 
                     $people = $d->filterTopLevelPeople($staff);
                     if (count($people)) {

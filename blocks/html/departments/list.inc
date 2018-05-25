@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2014-2016 City of Bloomington, Indiana
+ * @copyright 2014-2018 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
  */
 use Application\Models\DepartmentGateway;
@@ -19,7 +19,7 @@ use Blossom\Classes\View;
                     : '<ul class="list-departments">';
 
                 foreach ($departments as $d) {
-                    $name = View::escape($d->name);
+                    $name = View::escape($d->getName());
                     echo "<li><a href=\"{$d->getUri()}\">$name</a>";
 
                     renderChildren($d->getChildren(), true);
