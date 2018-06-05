@@ -12,7 +12,7 @@ use Blossom\Classes\View;
     <table>
         <thead>
             <tr>
-                <th scope="col">Name</th>
+                <th scope="col" style="text-align: right;">Name</th>
                 <th scope="col">Phone</th>
                 <th scope="col">Address</th>
             </tr>
