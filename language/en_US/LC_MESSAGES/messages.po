@@ -22,8 +22,11 @@ msgstr "Signed in as %s"
 msgid "photo_type_requirements"
 msgstr "Photo must be one of these valid formats: %s"
 
-msgid "search_help"
+msgid "search_placeholder"
 msgstr "search by name, email, or username"
+
+msgid "search_help"
+msgstr "The City of Bloomington Directory allows you to search for City employees by name, email or username."
 
 msgid "search_by_name"
 msgstr "Search by Name"

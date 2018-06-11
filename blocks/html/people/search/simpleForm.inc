@@ -7,9 +7,9 @@ declare (strict_types=1);
 $query = !empty($_GET['query']) ? parent::escape($_GET['query']) : '';
 ?>
 <h1><?= $this->_('search'); ?></h1>
-<p style="max-width: 100%;">The City of Bloomington Directory allows you to search for City employees by name, email or username.</p>
+<p><?= $this->_('search_help', 'messages'); ?></p>
 <form method="get" action="<?= BASE_URI; ?>/people/search" class="searchForm">
-  <fieldset>
-    <input name="query" placeholder="<?= $this->_('search_help', 'messages'); ?>" value="<?= $query; ?>" />
-  </fieldset>
+    <fieldset>
+        <input name="query" placeholder="<?= $this->_('search_placeholder', 'messages'); ?>" value="<?= $query; ?>" />
+    </fieldset>
 </form>
