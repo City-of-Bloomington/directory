@@ -79,3 +79,16 @@ table {
         }
     }
 }
+
+#departments-numbers table {
+    thead,
+    tbody {
+        tr {
+            th {
+                &:first-child {
+                    text-align: right;
+                }
+            }
+        }
+    }
+}
