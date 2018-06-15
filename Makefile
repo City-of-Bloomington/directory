@@ -26,6 +26,7 @@ compile: deps $(LANGUAGES)
 	pysassc -t compact -m public/css/screen.scss public/css/screen.css
 
 package: compile
+	if [ ! -d build ]; then mkdir build; fi
 	rsync -rl --exclude-from=buildignore --delete . build/$(APPNAME)
 	cd build && tar czf $(APPNAME).tar.gz $(APPNAME)
 
