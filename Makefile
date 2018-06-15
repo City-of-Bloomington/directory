@@ -5,7 +5,7 @@ MSGFMT := $(shell command -v msgfmt 2> /dev/null)
 
 LANGUAGES := $(wildcard language/*/LC_MESSAGES)
 
-default: clean compile package
+default: compile package
 
 deps:
 ifndef SASS
@@ -20,11 +20,12 @@ clean:
 	mkdir build
 
 	rm -Rf public/css/.sass-cache
+	find language -name '*.mo' -delete
 
 compile: deps $(LANGUAGES)
 	pysassc -t compact -m public/css/screen.scss public/css/screen.css
 
-package:
+package: compile
 	rsync -rl --exclude-from=buildignore --delete . build/$(APPNAME)
 	cd build && tar czf $(APPNAME).tar.gz $(APPNAME)
 

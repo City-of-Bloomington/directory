@@ -151,7 +151,7 @@ class DepartmentGateway
      *
      * @return string
      */
-    public static function getPersonFilter()
+    public static function getPersonFilter(): string
     {
         $config = self::getConfig();
 
@@ -167,76 +167,98 @@ class DepartmentGateway
      * @param  array  $fields   An array of key=>values to search on
      * @return array            An array of Person objects
      */
-    public static function search(string $base_dn, array $fields)
+    public static function search(string $base_dn, array $fields): array
     {
-        $publishableFields = Person::getPublishableFields();
-
         # Build the LDAP query
-        $f = [self::getPersonFilter()];
-        if (!empty($fields['query'])) {
-            $q   = $fields['query'];
-            $f[] = "(|(givenName=$q*)(displayName=$q*)(sn=$q*)(mail=$q*)(sAMAccountName=$q*))";
+        $filters  = !empty($fields['query'])
+                  ? self::simpleSearchFilters  ($fields['query'])
+                  : self::advancedSearchFilters($fields);
+
+        // If there's more than one filter, combine them with AND
+        $filter   = (count($filters) > 1)
+                  ? '(&'.implode('', $filters).')'
+                  : $filters[0];
+
+        $ldap     = self::getConnection();
+        $result   = ldap_search($ldap,
+                                $base_dn,
+                                $filter,
+                                array_values(Person::getPublishableFields()));
+
+        return self::hydratePersonObjects($result);
+    }
+
+    /**
+     * @param  string $query  Text string to search for
+     * @return array          An array of ldap filter strings
+     */
+    private static function simpleSearchFilters(string $query): array
+    {
+        $filters = [self::getPersonFilter()];
+        $search  = ["(sAMAccountName=$query*)",
+                       "(displayName=$query*)",
+                         "(givenName=$query*)",
+                                "(sn=$query*)"];
+        if (!self::isExternalRequest()) {
+            $search[] = "(telephoneNumber=*$query*)";
         }
-        else {
-            $config = self::getConfig();
+        $filters[] = '(|'.implode('', $search).')';
+        return $filters;
+    }
 
-            foreach ($fields as $key=>$value) {
-                switch ($key) {
-                    case DirectoryAttributes::FIRSTNAME:
-                        $f[] = "(|(givenName=$value*)(displayName=$value*))";
-                    break;
+    /**
+     * @param  array  $fields   An array of key=>values to search on
+     * @return array            An array of ldap filter strings
+     */
+    private static function advancedSearchFilters(array $fields): array
+    {
+        $f      = [self::getPersonFilter()];
+        $config =  self::getConfig();
 
-                    case DirectoryAttributes::LASTNAME:
-                        $f[] = "(|(sn=$value*)(sn=*-$value*))";
-                    break;
+        foreach ($fields as $key=>$value) {
+            switch ($key) {
+                case DirectoryAttributes::FIRSTNAME:
+                    $f[] = "(|(givenName=$value*)(displayName=$value*))";
+                break;
 
-                    case DirectoryAttributes::EMPLOYEENUM:
-                        $f[] = empty($value)
-                                ? "(!(employeeNumber=*))"
-                                :   "(employeeNumber=$value)";
-                    break;
+                case DirectoryAttributes::LASTNAME:
+                    $f[] = "(|(sn=$value*)(sn=*-$value*))";
+                break;
 
-                    case DirectoryAttributes::PROMOTED:
-                        $f[] = $value
-                                ?   "(memberOf=$config[DIRECTORY_PROMOTED])"
-                                : "(!(memberOf=$config[DIRECTORY_PROMOTED]))";
-                    break;
+                case DirectoryAttributes::EMPLOYEENUM:
+                    $f[] = empty($value)
+                         ? "(!(employeeNumber=*))"
+                         :   "(employeeNumber=$value)";
+                break;
 
-                    default:
-                        if (array_key_exists($key, $publishableFields)) {
-                            $ldapKey = DirectoryAttributes::$fields[$key];
-                            $f[]     = "($ldapKey=$value)";
-                        }
-                }
+                case DirectoryAttributes::PROMOTED:
+                    $f[] = $value
+                         ?   "(memberOf=$config[DIRECTORY_PROMOTED])"
+                         : "(!(memberOf=$config[DIRECTORY_PROMOTED]))";
+                break;
 
-                if (!self::isExternalRequest()) {
-                    switch ($key) {
-                        case DirectoryAttributes::EXTENSION:
-                            $f[] = "(telephoneNumber=*$value)";
-                        break;
-
-                        case DirectoryAttributes::NON_PAYROLL:
-                            $f[] = empty($value)
-                                 ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
-                                 :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
-                        break;
+                default:
+                    if (array_key_exists($key, Person::getPublishableFields())) {
+                        $ldapKey = DirectoryAttributes::$fields[$key];
+                        $f[]     = "($ldapKey=$value)";
                     }
+            }
+
+            if (!self::isExternalRequest()) {
+                switch ($key) {
+                    case DirectoryAttributes::EXTENSION:
+                        $f[] = "(telephoneNumber=*$value)";
+                    break;
+
+                    case DirectoryAttributes::NON_PAYROLL:
+                        $f[] = empty($value)
+                             ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
+                             :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
+                    break;
                 }
             }
         }
-        $filter = (count($f) > 1)
-            ? '(&'.implode('', $f).')'
-            : $f[0];
-
-        $ldap = self::getConnection();
-        $result = ldap_search(
-            $ldap,
-            $base_dn,
-            $filter,
-            array_values($publishableFields)
-        );
-
-        return self::hydratePersonObjects($result);
+        return $f;
     }
 
     /**
