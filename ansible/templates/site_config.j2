@@ -1,0 +1,86 @@
+<?php
+define('APPLICATION_NAME','Department & Employee Directory');
+
+/**
+ * URL Generation settings
+ *
+ * Do NOT use trailing slashes
+ *
+ * If your site is being proxied, change BASE_HOST to the hostname
+ * used for the outside world.
+ */
+define('BASE_URI' , '{{ directory_base_uri }}');
+define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
+                        : '{{ ansible_host }}');
+define('BASE_URL' , "https://".BASE_HOST.BASE_URI);
+
+/**
+ * Javascript libraries
+ */
+define('JQUERY',         BASE_URI.'/js/vendor/jquery/jquery-2.2.1.min.js');
+define('INTL_TEL_INPUT', BASE_URI.'/js/vendor/intl-tel-input');
+
+/**
+ * Database Setup
+ */
+$DATABASES = [
+    'default' => [
+        'driver'   => 'Pdo_Mysql',
+        'hostname' => 'localhost',
+        'database' => '{{ directory_db.default.name }}',
+        'username' => '{{ directory_db.default.user }}',
+        'password' => '{{ directory_db.default.pass }}',
+        'charset'  => 'utf8'
+    ],
+    'hr' => [
+        'driver'   => 'Pdo',
+        'dsn'      => 'odbc:hrdb',
+        'username' => '{{ directory_db.hr.user }}',
+        'password' => '{{ directory_db.hr.pass }}'
+    ]
+];
+
+/**
+ * Directory Configuration
+ *
+ * This supports doing user authentication from multiple external
+ * directories, such as LDAP or ADS. This is required since city staff
+ * are in a seperate LDAP directory from public user accounts.
+ * Classes that implement ExternalIdentity should have an entry here.
+ *
+ * See: ExternalIdentity
+ */
+$DIRECTORY_CONFIG = [
+    'Employee'=> [
+        'DIRECTORY_TYPE'               => '{{ directory_ldap.TYPE               }}',
+        'DIRECTORY_SERVER'             => '{{ directory_ldap.SERVER             }}',
+        'DIRECTORY_BASE_DN'            => '{{ directory_ldap.BASE_DN            }}',
+        'DIRECTORY_USERNAME_ATTRIBUTE' => '{{ directory_ldap.USERNAME_ATTRIBUTE }}',
+        'DIRECTORY_USER_BINDING'       => '{{ directory_ldap.USER_BINDING       }}',
+        'DIRECTORY_ADMIN_BINDING'      => '{{ directory_ldap.ADMIN_BINDING      }}',
+        'DIRECTORY_ADMIN_PASS'         => '{{ directory_ldap.ADMIN_PASS         }}',
+        'DIRECTORY_RESTRICTED'         => '{{ directory_ldap.RESTRICTED         }}',
+        'DIRECTORY_PROMOTED'           => '{{ directory_ldap.PROMOTED           }}',
+        'DIRECTORY_NONPAYROLL'         => '{{ directory_ldap.NONPAYROLL         }}',
+        'DIRECTORY_INTERNAL_IP'        => '{{ directory_ldap.INTERNAL_IP        }}'
+    ]
+];
+
+/**
+ * CAS authentication http://www.jasig.org/cas
+ *
+ * https://wiki.jasig.org/display/CASC/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Jasig CAS project
+ */
+define('CAS', APPLICATION_HOME.'/vendor/jasig/phpcas/source');
+define('CAS_SERVER','{{ directory_cas_server }}');
+define('CAS_URI','cas');
+
+define('DATE_FORMAT', 'n/j/Y H:i:s');
+define('LOCALE', 'en_US');
+define('DEFAULT_CITY', 'Bloomington');
+define('DEFAULT_STATE', 'IN');
+define('DEFAULT_ZIP', 47404);

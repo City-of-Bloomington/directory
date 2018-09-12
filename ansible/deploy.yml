@@ -1,0 +1,97 @@
+---
+- hosts: "directory"
+  become: "yes"
+  roles:
+    - "City-of-Bloomington.mysql"
+    - "City-of-Bloomington.php"
+
+  tasks:
+    - name: "Install distro packages"
+      apt:
+        name: "{{ item }}"
+        state: "present"
+      with_items:
+        - "php-mysql"
+        - "php-odbc"
+        - "unixodbc"
+        - "unixodbc-dev"
+        - "freetds-dev"
+        - "freetds-bin"
+        - "tdsodbc"
+
+    - include_tasks: "tasks/database.yml"
+
+    - name: "Extract release"
+      unarchive:
+        src: "{{ directory_archive_path }}"
+        dest: "/usr/local/src"
+      register: "release"
+
+    - name: "Remove old release"
+      file:
+        path: "{{ directory_install_path }}"
+        state: "absent"
+      when: "release.changed"
+
+    - name: "Create directories"
+      file:
+        path: "{{ item }}"
+        state: "directory"
+        owner: "www-data"
+        group: "staff"
+        mode:  "u=rwX,g=rwXs,o=rX"
+      with_items:
+        - "{{ directory_install_path }}"
+        - "{{ directory_backup_path  }}"
+        - "{{ directory_site_home    }}"
+        - "/var/log/cron"
+
+    - name: "Install release"
+      command: "rsync -rl /usr/local/src/directory/ {{ directory_install_path }}/"
+      when: "release.changed"
+
+    - name: "Update site_home"
+      command: "rsync -rl /usr/local/src/directory/data/ {{ directory_site_home }}/"
+      when: "release.changed"
+
+    - name: "Apache configuration"
+      template:
+        src:  "apache.conf"
+        dest: "/etc/apache2/sites-enabled/conf.d/directory.conf"
+      notify: "apache_restart"
+
+    - name: "Install CRON"
+      template:
+        src:  "cron.sh"
+        dest: "/etc/cron.daily/backup.d/directory"
+        mode: "0755"
+
+    - name: "Configure backup credentials"
+      template:
+        src:  "backup.cnf"
+        dest: "/etc/cron.daily/backup.d/directory.cnf"
+        mode: "0400"
+
+    - name: "Install site_config"
+      template:
+        src:  "site_config.j2"
+        dest: "{{ directory_site_home }}/site_config.inc"
+
+    - name: "Update directory ownership"
+      command: "chown -R www-data:staff {{ item }}"
+      args:
+        warn: "no"
+      with_items:
+        - "{{ directory_install_path }}"
+        - "{{ directory_backup_path  }}"
+        - "{{ directory_site_home    }}"
+
+    - name: "Update directory permission"
+      command: "chmod -R u=rwX,g=rwX,o=rX {{ item }}"
+      args:
+        warn: "no"
+      with_items:
+        - "{{ directory_install_path }}"
+        - "{{ directory_backup_path  }}"
+        - "{{ directory_site_home    }}"
+...

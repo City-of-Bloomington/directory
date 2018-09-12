@@ -1,4 +1,6 @@
 .build
+ansible/roles/*
+*.retry
 site_config.inc
 data/cache/*
 data/photos/*
@@ -7,7 +9,6 @@ data/templates/*
 data/blocks/*
 vendor
 build
-dist
 screen.css
 screen.css.map
 .sass-cache

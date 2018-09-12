@@ -1,0 +1,52 @@
+---
+- name: "Create mysql database"
+  mysql_db:
+    config_file: "{{ mysql_defaults_extra_file }}"
+    name: "{{ directory_db.default.name }}"
+    state: "present"
+  no_log: "True"
+
+- name: "Create mysql user for site"
+  mysql_user:
+    name:     "{{ directory_db.default.user }}"
+    password: "{{ directory_db.default.pass }}"
+    priv:     "{{ directory_db.default.name }}.*:ALL"
+    state: "present"
+    config_file: "{{ mysql_defaults_extra_file }}"
+  no_log: "True"
+
+- name: "Configure SQL Server driver"
+  ini_file:
+    path: "/etc/odbcinst.ini"
+    section: "sql-server"
+    option: "{{ item.key   }}"
+    value:  "{{ item.value }}"
+  with_items:
+    - { key: "Description", value: "MS Sql Server Driver" }
+    - { key: "Driver", value: "/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so" }
+    - { key: "Setup",  value: "/usr/lib/x86_64-linux-gnu/odbc/libtdsS.so" }
+
+- name: "Register SQL Server datasource"
+  ini_file:
+    path: "/etc/freetds/freetds.conf"
+    section: "hrdb"
+    option: "{{ item.key   }}"
+    value:  "{{ item.value }}"
+  with_items:
+    - { key: "host", value: "{{ directory_db.hr.host }}" }
+    - { key: "port", value: "{{ directory_db.hr.port }}" }
+    - { key: "tds version", value: "8.0" }
+
+- name: "Configure SQL Server connection"
+  ini_file:
+    path: "/etc/odbc.ini"
+    section: "hrdb"
+    option: "{{ item.key   }}"
+    value:  "{{ item.value }}"
+  with_items:
+    - { key: "Description", value: "HR Database Connection for Directory" }
+    - { key: "Driver",      value: "sql-server" }
+    - { key: "Servername",  value: "hrdb" }
+    - { key: "Database",    value: "{{ directory_db.hr.name }}" }
+    - { key: "Port",        value: "{{ directory_db.hr.port }}" }
+...

@@ -1,0 +1,3 @@
+[mysqldump]
+user={{ directory_db.default.user }}
+password={{ directory_db.default.pass }}
