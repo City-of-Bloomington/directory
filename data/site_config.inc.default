@@ -63,7 +63,6 @@ $DIRECTORY_CONFIG = [
 // 		'DIRECTORY_RESTRICTED'         => '',
 //      'DIRECTORY_PROMOTED'           => '',
 //      'DIRECTORY_NONPAYROLL'         => '',
-//      'DIRECTORY_INTERNAL_IP'        => ''
 // 	]
 // Example for LDAP style authentication
 // 	'LDAP' => [
@@ -76,7 +75,6 @@ $DIRECTORY_CONFIG = [
 // 		'DIRECTORY_RESTRICTED'         => '',
 //      'DIRECTORY_PROMOTED'           => '',
 //      'DIRECTORY_NONPAYROLL'         => '',
-//      'DIRECTORY_INTERNAL_IP'        => ''
 // 	]
 ];
 
