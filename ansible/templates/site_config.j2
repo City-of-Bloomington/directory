@@ -89,7 +89,7 @@ define('DEFAULT_ZIP', 47404);
  * logging errors to a Skidder server.  You must register for an application_id
  * on the skidder server you want to post errors to.
  */
-{% if directory_skidder.application_id %}
+{% if directory_skidder is defined and directory_skidder.application_id %}
 $writer = new Blossom\Classes\Log\SkidderWriter('{{ directory_skidder.server }}', {{ directory_skidder.application_id }} );
 $logger = new Zend\Log\Logger();
 $logger->addWriter($writer);

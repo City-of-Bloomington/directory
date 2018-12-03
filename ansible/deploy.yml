@@ -8,16 +8,17 @@
   tasks:
     - name: "Install distro packages"
       apt:
-        name: "{{ item }}"
+        name: "{{ packages }}"
         state: "present"
-      with_items:
-        - "php-mysql"
-        - "php-odbc"
-        - "unixodbc"
-        - "unixodbc-dev"
-        - "freetds-dev"
-        - "freetds-bin"
-        - "tdsodbc"
+      vars:
+        packages:
+          - "php-mysql"
+          - "php-odbc"
+          - "unixodbc"
+          - "unixodbc-dev"
+          - "freetds-dev"
+          - "freetds-bin"
+          - "tdsodbc"
 
     - include_tasks: "tasks/database.yml"
 
