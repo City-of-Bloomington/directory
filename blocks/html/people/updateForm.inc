@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2015-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2015-2018 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Person $this->person
  */
 use Application\Models\User;
@@ -12,6 +12,16 @@ $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/lib/libphonenumber/b
 $this->template->addToAsset('stylesheets', INTL_TEL_INPUT.'/build/css/intlTelInput.css');
 $this->template->addToAsset('scripts',     INTL_TEL_INPUT.'/build/js/intlTelInput.min.js');
 $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
+
+$fullname = parent::escape($this->person->getFullname());
+$editable = Person::getEditableFields();
+$fields   = array_merge(
+    [Person::TITLE, Person::DEPARTMENT, Person::LOCATION, Person::EMAIL, Person::USERNAME],
+    $editable
+);
+foreach ($fields as $f) {
+    $$f = parent::escape($this->person->$f);
+}
 ?>
 <section class="person-profile">
     <div class="person-photoContainer">
@@ -25,45 +35,52 @@ $this->template->addToAsset('scripts',     BASE_URI.'/js/phoneNumbers.js');
     </div>
     <div class="person-details">
     <form method="post" action="<?= BASE_URI; ?>/people/update">
-        <h1> <?= self::escape($this->person->getFullname()); ?></h1>
-        <h2> <?= self::escape($this->person->title); ?></h2>
-        <div><?= self::escape($this->person->department); ?></div>
-        <div><?= self::escape($this->person->location); ?></div>
+        <h1> <?= $fullname;   ?></h1>
+        <h2> <?= $title;      ?></h2>
+        <div><?= $department; ?></div>
+        <div><?= $location;   ?></div>
+
         <fieldset><legend><?= $this->_('address'); ?></legend>
-            <textarea name="address" id="address"><?= self::escape($this->person->address); ?></textarea>
+            <textarea name="address" id="address"><?= $address; ?></textarea>
             <?php
-                $fields = ['city', 'state', 'zip'];
+                $fields = [Person::CITY, Person::STATE, Person::ZIP];
                 foreach ($fields as $f) {
-                    $value = self::escape($this->person->$f);
                     echo "
                     <dl><dt><label  for=\"$f\">{$this->_($f)}</label></dt>
-                        <dd><input name=\"$f\" id=\"$f\" value=\"$value\" /></dd>
+                        <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
                     </dl>
                     ";
                 }
             ?>
             <dl>
         </fieldset>
-        <div>
+        <fieldset><legend><?= $this->_('hr'); ?></legend>
+            <div><?= "<a href=\"mailto:$email\">$email</a>";?></div>
             <?php
-                $email = self::escape($this->person->email);
-                echo "<a href=\"mailto:$email\">$email</a>";
+                $f = Person::EMPLOYEEID;
+                if (in_array($f, $editable)) {
+                    echo "
+                    <dl><dt><label  for=\"$f\">{$this->_($f)}</label></dt>
+                        <dd><input name=\"$f\" id=\"$f\" value=\"{$$f}\" /></dd>
+                    </dl>
+                    ";
+                }
             ?>
-        </div>
+        </fieldset>
         <fieldset>
-            <input name="username" type="hidden" value="<?= $this->person->username; ?>" />
+            <legend><?= $this->_(['phone', 'phones', count(Person::$phoneNumberFields)]); ?></legend>
+            <input name="username" type="hidden" value="<?= $username; ?>" />
             <?php
                 foreach (Person::$phoneNumberFields as $label) {
-                    $number  = self::escape($this->person->$label);
                     echo "
                     <dl><dt><label  for=\"$label\">{$this->_($label)}</label></dt>
-                        <dd><input name=\"$label\" id=\"$label\" value=\"$number\" type=\"tel\" /></dd>
+                        <dd><input name=\"$label\" id=\"$label\" value=\"{$$label}\" type=\"tel\" /></dd>
                     </dl>
                     ";
                 }
 
                 $h = $this->template->getHelper('saveAndCancelButtons');
-                echo $h->saveAndCancelButtons(BASE_URI.'/people/view?username='.$this->person->username);
+                echo $h->saveAndCancelButtons(BASE_URI.'/people/view?username='.$username);
             ?>
         </fieldset>
     </form>

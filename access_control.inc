@@ -1,7 +1,7 @@
 <?php
 /**
- * @copyright 2012-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2012-2018 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -14,9 +14,9 @@ use Zend\Permissions\Acl\Assertion\AssertionInterface;
 
 $ZEND_ACL = new Acl();
 $ZEND_ACL->addRole(new Role('Anonymous'))
-		 ->addRole(new Role('Public'), 'Anonymous')
-		 ->addRole(new Role('Staff'), 'Public')
-		 ->addRole(new Role('Administrator'), 'Staff');
+		 ->addRole(new Role('Public'   ), 'Anonymous')
+		 ->addRole(new Role('Staff'    ), 'Public'   )
+		 ->addRole(new Role('Administrator'));
 
 /**
  * Declare all the resources
@@ -28,6 +28,7 @@ $ZEND_ACL->addResource(new Resource('login'));
 
 $ZEND_ACL->addResource(new Resource('departments'));
 $ZEND_ACL->addResource(new Resource('emergencyContacts'));
+$ZEND_ACL->addResource(new Resource('hr'));
 $ZEND_ACL->addResource(new Resource('synchronize'));
 $ZEND_ACL->addResource(new Resource('jobTitleCodes'));
 

@@ -56,7 +56,7 @@ class Department extends DirectoryAttributes
      * @param  array $people An array of Person objects
      * @return array         An array of Person objects
      */
-    public function filterTopLevelPeople(array $people)
+    public function filterTopLevelPeople(array $people): array
     {
         $out = [];
         // When looking at the root of the departments,
@@ -76,7 +76,7 @@ class Department extends DirectoryAttributes
      *
      * @return array[name => dn]
      */
-    public function getBreadcrumbs()
+    public function getBreadcrumbs(): array
     {
         $breadcrumbs = [];
 

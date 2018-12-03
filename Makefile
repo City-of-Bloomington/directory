@@ -1,6 +1,6 @@
 APPNAME=directory
 
-SASS := $(shell command -v pysassc 2> /dev/null)
+SASS := $(shell command -v sassc 2> /dev/null)
 MSGFMT := $(shell command -v msgfmt 2> /dev/null)
 
 LANGUAGES := $(wildcard language/*/LC_MESSAGES)
@@ -9,7 +9,7 @@ default: compile package
 
 deps:
 ifndef SASS
-	$(error "pysassc is not installed")
+	$(error "sassc is not installed")
 endif
 ifndef MSGFMT
 	$(error "msgfmt is not installed, please install gettext")
@@ -23,7 +23,7 @@ clean:
 	find language -name '*.mo' -delete
 
 compile: deps $(LANGUAGES)
-	pysassc -t compact -m public/css/screen.scss public/css/screen.css
+	sassc -t compact -m public/css/screen.scss public/css/screen.css
 
 package: compile
 	if [ ! -d build ]; then mkdir build; fi

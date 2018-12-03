@@ -3,7 +3,7 @@
  * Wrapper class for an LDAP entry
  *
  * @copyright 2014-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -17,6 +17,7 @@ class Person extends DirectoryAttributes
      */
     public static $validPhotoFormats = ['jpg'];
 
+
     public function __construct($ldap_entry)
     {
         $this->entry     = $ldap_entry;
@@ -25,13 +26,8 @@ class Person extends DirectoryAttributes
 
     public function handleUpdate($post)
     {
-        $fields  = [self::ADDRESS, self::CITY, self::STATE, self::ZIP];
-        foreach ($fields as $f) {
+        foreach (parent::getEditableFields() as $f) {
             $this->$f = $post[$f];
-        }
-
-        foreach (self::$phoneNumberFields as $field) {
-            $this->$field = $post[$field];
         }
     }
 
@@ -146,5 +142,15 @@ class Person extends DirectoryAttributes
         if ($this->hasPhoto()) { $out['photo'] = $this->getPhotoUrl(); }
 
         return $out;
+    }
+
+	public static function isAllowed(string $resource, ?string $action=null): bool
+    {
+		global $ZEND_ACL;
+		$role = 'Anonymous';
+		if (isset  ($_SESSION['USER']) && $_SESSION['USER']->getRole()) {
+			$role = $_SESSION['USER']->getRole();
+		}
+		return $ZEND_ACL->isAllowed($role, $resource, $action);
     }
 }

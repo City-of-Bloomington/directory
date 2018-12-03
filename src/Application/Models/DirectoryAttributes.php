@@ -14,7 +14,7 @@
  * all the fields used in the Directory application.
  *
  * @copyright 2014-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
@@ -85,9 +85,7 @@ abstract class DirectoryAttributes
             self::STATE       => 'st',
             self::ZIP         => 'postalcode',
             self::FAX         => 'facsimiletelephonenumber',
-            self::PAGER       => 'pager',
-            self::EMPLOYEENUM => 'employeenumber',
-            self::EMPLOYEEID  => 'employeeid'
+            self::PAGER       => 'pager'
         ];
 
         // These are fields of information we want to only publish internally
@@ -98,7 +96,26 @@ abstract class DirectoryAttributes
             $f[self::CELL  ] = 'mobile';
             $f[self::OTHER ] = 'othertelephone';
         }
+
+        if (Person::isAllowed('hr', 'view')) {
+            $f[self::EMPLOYEENUM] = 'employeenumber';
+            $f[self::EMPLOYEEID ] = 'employeeid';
+        }
+
         return $f;
+    }
+
+    public static function getEditableFields(): array
+    {
+        $fields = array_merge(
+            [self::ADDRESS, self::CITY, self::STATE, self::ZIP],
+            self::$phoneNumberFields
+        );
+
+        if (Person::isAllowed('hr', 'edit')) {
+            $fields[] = self::EMPLOYEEID;
+        }
+        return $fields;
     }
 
     public static $phoneNumberFields = [

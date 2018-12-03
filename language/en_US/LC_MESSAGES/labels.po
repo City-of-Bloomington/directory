@@ -106,7 +106,9 @@ msgstr[0] "Email"
 msgstr[1] "Email Addresses"
 
 msgid "phone"
-msgstr "Phone (Voice)"
+msgid_plural "phones"
+msgstr[0] "Phone (Voice)"
+msgstr[1] "Phone Numbers"
 
 msgid "sms"
 msgstr "Phone (Text)"

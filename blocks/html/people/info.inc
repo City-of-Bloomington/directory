@@ -5,6 +5,7 @@
  * @param Person $this->person
  */
 use Application\Models\DepartmentGateway;
+use Application\Models\Person;
 use Application\Models\User;
 use Blossom\Classes\Block;
 ?>
@@ -24,6 +25,10 @@ use Blossom\Classes\Block;
     <section class="person-details">
         <?php
             $this->_include('people/partials/details.inc');
+
+            if (Person::isAllowed('hr', 'view')) {
+                $this->_include('people/partials/hr.inc');
+            }
 
             $block = new Block('directoryAttributes/contactInfo.inc', ['entry'=>$this->person]);
             echo $block->render('html', $this->template);
