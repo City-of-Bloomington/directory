@@ -9,8 +9,7 @@ data/templates/*
 data/blocks/*
 vendor
 build
-screen.css
-screen.css.map
+screen-*.css*
 .sass-cache
 node_modules
 .ftppass
