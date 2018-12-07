@@ -117,7 +117,7 @@ class HRGateway
             $tableId         = self::TableID;
             $attributeId     = self::UDFAttributeID;
             $employeeNameID  = (int)$employee['employeeNameID'];
-            $username        = preg_replace('/[^a-z]/', '', strtolower($employee['username']));
+            $username        = preg_replace('/[^a-z\.]/', '', strtolower($employee['username']));
 
             $sql = "select ValString from dbo.UDFEntry
                     where AttachedFKey=$employeeNameID
