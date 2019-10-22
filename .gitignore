@@ -15,4 +15,5 @@ node_modules
 .ftppass
 gulpfile.js
 *.mo
+*.cache
 package.json

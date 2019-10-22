@@ -5,14 +5,24 @@
     }],
     "require": {
         "php": ">=7.2",
-        "City-of-Bloomington/blossom-lib": "dev-master",
-        "jasig/phpcas": "~1",
-        "zendframework/zend-db": "~2.5",
-        "zendframework/zend-log": "~2.5",
-        "zendframework/zend-paginator": "~2.5",
-        "zendframework/zend-permissions-acl": "~2.5"
+        "city-of-bloomington/blossom-lib": "dev-master",
+        "jasig/phpcas":                       "@stable",
+        "aws/aws-sdk-php":                    "@stable",
+        "guzzlehttp/guzzle":                  "@stable",
+        "zendframework/zend-db":              "@stable",
+        "zendframework/zend-log":             "@stable",
+        "zendframework/zend-paginator":       "@stable",
+        "zendframework/zend-permissions-acl": "@stable"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "@stable"
     },
     "autoload": {
         "psr-4": {"Application\\": "src/Application"}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Test\\": "src/Test"
+        }
     }
 }

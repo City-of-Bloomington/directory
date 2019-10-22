@@ -1,15 +1,12 @@
 <?php
 /**
- * @copyright 2015 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
- * @author Cliff Ingham <inghamn@bloomington.in.gov>
+ * @copyright 2015-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
+use PHPUnit\Framework\TestCase;
 use Application\Models\EmergencyContact;
 
-$_SERVER['SITE_HOME'] = __DIR__;
-require_once '../../configuration.inc';
-
-class EmergencyContactsTest extends PHPUnit_Framework_TestCase
+class EmergencyContactsTest extends TestCase
 {
     public function testEmailValidation()
     {
