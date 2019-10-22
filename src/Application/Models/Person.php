@@ -2,12 +2,13 @@
 /**
  * Wrapper class for an LDAP entry
  *
- * @copyright 2014-2018 City of Bloomington, Indiana
+ * @copyright 2014-2019 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
 use Blossom\Classes\Database;
+use Application\Authentication\Auth;
 
 class Person extends DirectoryAttributes
 {
@@ -18,7 +19,7 @@ class Person extends DirectoryAttributes
     public static $validPhotoFormats = ['jpg'];
 
 
-    public function __construct($ldap_entry)
+    public function __construct(?array $ldap_entry=null)
     {
         $this->entry     = $ldap_entry;
         $this->photoFile = "/photos/{$this->username}.jpg";
@@ -146,11 +147,6 @@ class Person extends DirectoryAttributes
 
 	public static function isAllowed(string $resource, ?string $action=null): bool
     {
-		global $ZEND_ACL;
-		$role = 'Anonymous';
-		if (isset  ($_SESSION['USER']) && $_SESSION['USER']->getRole()) {
-			$role = $_SESSION['USER']->getRole();
-		}
-		return $ZEND_ACL->isAllowed($role, $resource, $action);
+        return Auth::isAuthorized($resource, $action, Auth::getAuthenticatedUser());
     }
 }

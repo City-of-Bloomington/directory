@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright 2012-2018 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2012-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Controllers;
 
+use Application\Authentication\Auth;
 use Application\Models\DepartmentGateway;
 use Blossom\Classes\Template;
 use Blossom\Classes\Block;
@@ -34,8 +35,7 @@ $template = !empty($_REQUEST['format'])
 
 // Execute the Controller::action()
 if (isset($resource) && isset($action) && $ZEND_ACL->hasResource($resource)) {
-	$USER_ROLE = isset($_SESSION['USER']) ? $_SESSION['USER']->getRole() : 'Anonymous';
-	if ($ZEND_ACL->isAllowed($USER_ROLE, $resource, $action)) {
+    if (Auth::isAuthorized($resource, $action, Auth::getAuthenticatedUser())) {
 		$controller = __namespace__.'\\'.ucfirst($resource).'Controller';
 		$c = new $controller($template);
 		$c->$action();

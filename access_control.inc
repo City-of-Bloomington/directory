@@ -1,9 +1,11 @@
 <?php
 /**
- * @copyright 2012-2018 City of Bloomington, Indiana
+ * @copyright 2012-2019 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
+
+use Application\Authentication\Auth;
 
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
@@ -48,10 +50,11 @@ class OwnInfoAssertion implements AssertionInterface
 {
     public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
     {
-        return (   isset($_REQUEST['username'])
-                && isset($_SESSION['USER'])
-                && $_SESSION['USER']->getUsername()==$_REQUEST['username']
-        );
+        if (isset($_REQUEST['username'])) {
+            $user = Auth::getAuthenticatedUser();
+            return $user->getUsername() == $_REQUEST['username'];
+        }
+        return false;
     }
 }
 $ZEND_ACL->allow('Staff', 'people', 'updateEmergencyContacts', new OwnInfoAssertion());

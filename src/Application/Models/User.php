@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright 2009-2016 City of Bloomington, Indiana
- * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE.txt
+ * @copyright 2009-2019 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 namespace Application\Models;
 
+use Application\Authentication\Auth;
 use Blossom\Classes\ActiveRecord;
 use Blossom\Classes\Database;
 use Blossom\Classes\ExternalIdentity;
@@ -189,12 +190,7 @@ class User extends ActiveRecord
 	 */
 	public static function isAllowed($resource, $action=null)
 	{
-		global $ZEND_ACL;
-		$role = 'Anonymous';
-		if (isset($_SESSION['USER']) && $_SESSION['USER']->getRole()) {
-			$role = $_SESSION['USER']->getRole();
-		}
-		return $ZEND_ACL->isAllowed($role, $resource, $action);
+        return Auth::isAuthorized($resource, $action, Auth::getAuthenticatedUser());
 	}
 
 	//----------------------------------------------------------------

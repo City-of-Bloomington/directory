@@ -5,6 +5,7 @@
  */
 namespace Application\Models;
 
+use Application\Authentication\Auth;
 use Blossom\Classes\ActiveRecord;
 
 class DepartmentGateway
@@ -125,7 +126,8 @@ class DepartmentGateway
      */
     public static function isExternalRequest(): bool
     {
-        return !isset($_SESSION['USER']);
+        $user = Auth::getAuthenticatedUser();
+        return $user ? false : true;
     }
 
     /**
