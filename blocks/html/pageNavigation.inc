@@ -6,7 +6,7 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  * @param Paginator $this->paginator
  */
-use Application\Url;
+use Application\Classes\Url;
 $pages = $this->paginator->getPages();
 
 if (count($pages->pagesInRange) > 1) {
