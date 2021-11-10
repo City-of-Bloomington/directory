@@ -1,0 +1,75 @@
+{#
+ * @copyright 2018-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * @param array  users  Search Results
+ *
+ * Query parameters that were used for the search
+ * @param string username
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param string role
+ * @param string authentication_method
+ *
+ * Pagination
+ * @param int    total
+ * @param int    itemsPerPage
+ * @param int    currentPage
+ *
+ * @param array  additional_params    Additional URL parameters to preserve
+ *
+ * Metadata
+ * @param array  roles
+ * @param array  authentication_methods
+#}
+{% extends "html/layouts/default.twig" %}
+{% import  "html/macros/pagination.twig" as pagination %}
+{% block content %}
+<section>
+    <header>
+        <h1>{{ _(['user', 'users', 100]) }}</h1>
+    </header>
+    <form method="get" action="{{ uri('users.index') }}">
+        <fieldset>
+            <div><label  for="firstname">{{ _('firstname') }}</label>
+                 <input name="firstname" id="firstname" value="{{ firstname }}" />
+            </div>
+            <div><label  for="lastname">{{ _('lastname') }}</label>
+                 <input name="lastname" id="lastname" value="{{ lastname }}" />
+            </div>
+            <div><label  for="username">{{ _('username') }}</label>
+                 <input name="username" id="username" value="{{ username }}" />
+            </div>
+            <div><label  for="email">{{ _('email') }}</label>
+                 <input name="email" id="email" value="{{ email }}" />
+            </div>
+            <div><label   for="role">{{ _('role') }}</label>
+                 <select name="role" id="role">
+                    <option value=""></option>
+                    {% for o in roles %}<option {{ role==o ? 'selected="true"' : '' }}>{{ o }}</option>{% endfor %}
+                 </select>
+            </div>
+            <div><label   for="authentication_method">{{ _('authentication_method') }}</label>
+                 <select name="authentication_method" id="authentication_method">
+                    <option value=""></option>
+                    {% for o in authentication_methods %}<option {{ authentication_method==o ? 'selected="true"' : '' }}>{{ o }}</option>{% endfor %}
+                 </select>
+            </div>
+            {% if additional_params is defined %}
+            {% for k, v in additional_params %}
+            <input type="hidden" name="{{ k }}" value="{{ v }}" />
+            {% endfor %}
+            {% endif %}
+            <button type="submit" class="search">{{ _('search') }}</button>
+        </fieldset>
+    </form>
+    {% if users %}
+        {{ include('html/users/list.twig') }}
+    {% endif %}
+
+    {% if total > itemsPerPage %}
+        {{ pagination.pageLinks(total, itemsPerPage, currentPage) }}
+    {% endif %}
+</section>
+{% endblock %}

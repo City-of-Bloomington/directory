@@ -1,0 +1,37 @@
+<?php
+/**
+ * @copyright 2021 City of Bloomington, Indiana
+ * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ */
+declare (strict_types=1);
+
+$rf = new \Aura\Router\RouterFactory(BASE_URI);
+$ROUTES = $rf->newInstance();
+$ROUTES->setTokens([
+    'id'       => '\d+',
+    'username' => '[a-z\.]+'
+]);
+
+
+$ROUTES->add('home.index',    '/'       )->setValues(['controller' => 'Web\Departments\Controllers\ListController']);
+$ROUTES->add('login.login',   '/login'  )->setValues(['controller' => 'Web\Authentication\LoginController']);
+$ROUTES->add('login.logout',  '/logout' )->setValues(['controller' => 'Web\Authentication\LogoutController']);
+
+$ROUTES->attach('departments', '/departments', function ($r) {
+    $r->add('numbers', '/numbers')->setValues(['controller'=>'Web\Departments\Controllers\NumbersController']);
+    $r->add('view',    '/{path}' )->setValues(['controller' => 'Web\Departments\Controllers\InfoController'])
+                                  ->addTokens(['path' => '[a-z_/]+']);
+    $r->add('index',   ''        )->setValues(['controller' => 'Web\Departments\Controllers\ListController']);
+});
+
+$ROUTES->attach('people', '/people', function ($r) {
+    $r->add('photo', '/{username}.jpg')->setValues(['controller' => 'Web\People\Controllers\PhotoController']);
+    $r->add('view',  '/{username}'    )->setValues(['controller' => 'Web\People\Controllers\InfoController']);
+});
+
+$ROUTES->attach('users', '/users', function ($r) {
+    $r->add('update', '/update{/id}') ->setValues(['controller' => 'Web\Users\Controllers\UpdateController']);
+    $r->add('delete', '/delete/{id}') ->setValues(['controller' => 'Web\Users\Controllers\DeleteController']);
+    $r->add('view',   '/{id}'       ) ->setValues(['controller' => 'Web\Users\Controllers\InfoController'  ]);
+    $r->add('index',  '')             ->setValues(['controller' => 'Web\Users\Controllers\ListController'  ]);
+});

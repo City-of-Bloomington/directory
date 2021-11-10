@@ -1,0 +1,60 @@
+{#
+ * @copyright 2006-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Form field values
+ * @param int    id
+ * @param string firstname
+ * @param string lastname
+ * @param string email
+ * @param string username
+ * @param string role
+ * @param string password
+ * @param string authentication_method
+ *
+ * Metadata
+ * @param string title
+ * @param array  roles
+ * @param array  authentication_methods
+#}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h1>{{ title }}</h1></header>
+
+	<form method="post" action="{{ uri('users.update') }}">
+		<fieldset><legend>{{ _('user_info') }}</legend>
+			<input name="id" type="hidden" value="{{ id }}" />
+            <div><label   for="authentication_method">{{ _('authentication_method') }}</label>
+                 <select name="authentication_method" id="authentication_method">
+                    {% for o in authentication_methods %}<option {{ authentication_method==o ? 'selected="true"' : '' }}>{{ o }}</option>{% endfor %}
+                 </select>
+            </div>
+            <div><label  for="username">{{ _('username') }}</label>
+                 <input name="username" id="username" value="{{ username }}" />
+            </div>
+            <div><label  for="password">{{ _('password') }}</label>
+                 <input name="password" id="password" value="{{ password }}" type="password" />
+            </div>
+            <div><label   for="role">{{ _('role') }}</label>
+                 <select name="role" id="role">
+                    {% for o in roles %}<option {{ role==o ? 'selected="true"' : '' }}>{{ o }}</option>{% endfor %}
+                 </select>
+            </div>
+		</fieldset>
+		<fieldset><legend>{{ _('person_info') }}</legend>
+            <div><label  for="firstname">{{ _('firstname') }}</label>
+                 <input name="firstname" id="firstname" value="{{ firstname }}" />
+            </div>
+            <div><label  for="lastname">{{ _('lastname') }}</label>
+                 <input name="lastname" id="lastname" value="{{ lastname }}" />
+            </div>
+            <div><label  for="email">{{ _('email') }}</label>
+                 <input name="email" id="email" value="{{ email }}" />
+            </div>
+            <button type="submit" class="save">{{ _('save') }}</button>
+            <a href="{{ uri('users.index') }}" class="cancel">{{ _('cancel') }}</a>
+		</fieldset>
+	</form>
+</section>
+{% endblock %}

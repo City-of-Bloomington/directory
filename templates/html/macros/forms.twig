@@ -1,0 +1,38 @@
+{% macro field(name, id, label, type="text", value, options, required=false, attr, help) %}
+<div class="{{ type }}{% if required %} required{% endif %}">
+    {% if label %}<label for="{{ id }}">{{ label }}</label>{% endif %}
+    {% if type=='select' %}{{ _self.select(name, id, 'select', value, options, required, attr) }}{% endif %}
+    {% if type=='text'   %}{{ _self.input (name, id, 'text',   value, required, attr) }}{% endif %}
+    {% if help  %}<div class="help">{{ help }}</div>{% endif %}
+</div>
+{% endmacro %}
+
+
+{% macro input(name, id, type, value, required, attr) %}
+<input name="{{ name }}" value="{{ value }}"
+{%- if id %} id="{{ id }}"{% endif %}
+{%- if type != 'text' %} type="{{ type }}"{% endif %}
+{%- if required %} required="true"{% endif %}
+{%- if attr %}{% for k in attr|keys %} {{ k }}="{{ attr.k }}"{% endfor %}{% endif %}
+ />
+{% endmacro %}
+
+{% macro select(name, id, type, value, options, required, attr) %}
+<select name="{{ name }}" value="{{ value }}"
+{%- if id %} id="{{ id }}"{% endif %}
+{%- if required %} required="true"{% endif %}
+{%- if attr %}{% for k in attr|keys %} {{ k }}="{{ attr.k }}"{% endfor %}{% endif %}
+>
+{% for o in options %}
+<option value="{{ o.value }}"
+{%- if value==o.value %} selected="true"{% endif %}
+{%- if o.attr %}{% for k in o.attr|keys %} {{ k }}="{{ o.attr.k }}"{% endfor %}{% endif %}
+>{{ o.label ?? o.value }}</option>
+{% endfor %}
+</select>
+{% endmacro %}
+
+{% macro saveAndCancelButtons(url) %}
+<button type="submit" class="save" >{{ _('save'  ) }}</button>
+<a href="{{ url }}"  class="cancel">{{ _('cancel') }}</a>
+{% endmacro %}

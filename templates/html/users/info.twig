@@ -1,0 +1,36 @@
+{#
+ * @copyright 2019-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param User user
+#}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section>
+    <header><h1>{{ user.getFullname() }}</h1></header>
+    {% set canEdit   = isAllowed('users', 'update') %}
+    {% set canDelete = isAllowed('users', 'delete') %}
+    {% if canEdit or canDelete %}
+    <nav>
+        <table>
+        {% if canEdit   %}
+        <tr><th><a href="{{ uri('users.update', {'id':user.id}) }}" class="edit button">
+                {{ _('edit') }}
+                </a>
+            </th>
+        </tr>
+        {% endif %}
+        {% if canDelete %}
+        <tr><th><a href="{{ uri('users.delete', {'id':user.id}) }}" class="delete button">
+                {{ _('delete') }}
+            </th>
+        </tr>
+        {% endif %}
+        </table>
+    </nav>
+    {% endif %}
+    <table>
+        <tr><th>{{ _('username') }}</th><td>{{ user.username }}</td></tr>
+        <tr><th>{{ _('email'   ) }}</th><td>{{ user.email    }}</td></tr>
+    </table>
+</section>
+{% endblock %}

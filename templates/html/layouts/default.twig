@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="{{ LANG }}" lang="{{ LANG }}">
+{{ include('html/layouts/partials/head.twig') }}
+
+<body class="two-column">
+    {{ include('html/layouts/partials/header.twig') }}
+	<main>
+        <div id="content-panel" class="panel">
+            {% if errorMessages is defined %}
+            {{ include('html/layouts/partials/errorMessages.twig') }}
+            {% endif %}
+
+            {% block content %}
+            {% endblock %}
+        </div>
+        {{ include('html/layouts/partials/panelone.twig') }}
+	</main>
+	{{ include('html/layouts/partials/footer.twig') }}
+</body>
+</html>

@@ -1,12 +1,10 @@
 .build
 ansible/roles/*
 *.retry
-site_config.inc
+site_config.php
 data/cache/*
 data/photos/*
 data/sessions/*
-data/templates/*
-data/blocks/*
 vendor
 build
 screen-*.css*
@@ -16,4 +14,3 @@ node_modules
 gulpfile.js
 *.mo
 *.cache
-package.json

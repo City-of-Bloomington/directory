@@ -1,0 +1,90 @@
+<?php
+define('APPLICATION_NAME','application');
+
+/**
+ * URL Generation settings
+ *
+ * Do NOT use trailing slashes
+ *
+ * If your site is being proxied, change BASE_HOST to the hostname
+ * used for the outside world.
+ */
+define('BASE_URI' , '/directory');
+define('BASE_HOST', isset($_SERVER['HTTP_X_FORWARDED_HOST'])
+                        ? $_SERVER['HTTP_X_FORWARDED_HOST']
+                        : $_SERVER['SERVER_NAME']);
+define('BASE_URL' , "https://".BASE_HOST.BASE_URI);
+
+/**
+ * Javascript libraries
+ */
+define('JQUERY',         BASE_URI.'/js/vendor/jquery-2.1.1');
+define('INTL_TEL_INPUT', BASE_URI.'/js/vendor/intl-tel-input');
+
+/**
+ * Database Setup
+ */
+$DATABASES = [
+    'default' => [
+        'dsn'  => 'mysql:host=localhost;dbname=directory',
+        'user' => 'application',
+        'pass' => 'password'
+    ],
+    'hr' => [
+        'dsn'  => 'odbc:hrDatabase',
+        'user' => 'username',
+        'pass' => 'password'
+    ]
+];
+
+/**
+ * Directory Configuration
+ *
+ * This supports doing user authentication from multiple external
+ * directories, such as LDAP or ADS. This is required since city staff
+ * are in a seperate LDAP directory from public user accounts.
+ * Classes that implement ExternalIdentity should have an entry here.
+ *
+ * See: ExternalIdentity
+ */
+$DIRECTORY_CONFIG = [
+// Example for ADS style authentication
+// 	'LDAP' => [
+// 		'DIRECTORY_SERVER'             => 'ldaps://example.org:636',
+// 		'DIRECTORY_BASE_DN'            => 'OU=Department,DC=example,DC=org',
+// 		'DIRECTORY_USERNAME_ATTRIBUTE' => 'CN',
+// 		'DIRECTORY_USER_BINDING'       => '{username}@example.org',
+// 		'DIRECTORY_ADMIN_BINDING'      => 'admin@example.org',
+// 		'DIRECTORY_ADMIN_PASS'         => 'password',
+// 		'DIRECTORY_RESTRICTED'         => '',
+//      'DIRECTORY_PROMOTED'           => '',
+//      'DIRECTORY_NONPAYROLL'         => '',
+// 	]
+];
+
+/**
+ * CAS authentication https://www.apereo.org/projects/cas
+ *
+ * https://github.com/apereo/phpCAS
+ *
+ * phpCAS is a PHP library for handling the calls to the CAS service
+ * It is the official library, part of the Apereo CAS project
+ */
+//define('CAS_SERVER','cas.somewhere.org');
+//define('CAS_URI','cas');
+
+define('DATE_FORMAT', 'n/j/Y H:i:s');
+define('LOCALE', 'en_US');
+define('DEFAULT_CITY', 'Bloomington');
+define('DEFAULT_STATE', 'IN');
+define('DEFAULT_ZIP', 47404);
+
+/**
+ * Graylog is a centralized log manager
+ *
+ * This application supports sending errors and exceptions to a graylog instance.
+ * This is handy for notifying developers of a problem before users notice.
+ ** @see https://graylog.org
+ */
+#define('GRAYLOG_DOMAIN', 'graylog.example.org');
+#define('GRAYLOG_PORT',   12200);

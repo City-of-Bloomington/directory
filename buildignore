@@ -2,16 +2,8 @@
 /build
 .git/
 .git*
-configuration.inc
-site_config.inc
+site_config.php
 backup.cnf
 /data/cache/*
 /data/photos/*
 /data/sessions/*
-/public/css/Font-Awesome/less/
-/public/css/Font-Awesome/scss/
-/public/css/Font-Awesome/src/
-/public/js/vendor/intl-tel-input/examples/
-/public/js/vendor/intl-tel-input/grunt/
-/public/js/vendor/intl-tel-input/src/
-/public/js/vendor/intl-tel-input/*.*

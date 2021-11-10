@@ -1,0 +1,25 @@
+{% macro pageLinks(totalItemCount, itemsPerPage=20, currentPageNumber=1, pageRange=10) %}
+    {% set pageCount = (totalItemCount / itemsPerPage)|round(0, 'ceil') %}
+    {% if pageRange > pageCount %}
+        {% set pageRange = pageCount %}
+        {% set delta     = (pageRange / 2)|round(0, 'ceil') %}
+
+        {% if (pageNumber - delta) > (pageCount - pageRange) %}
+            {% set lowerBound = pageCount - pageRange + 1 %}
+            {% set upperBound = pageCount %}
+        {% else %}
+            {% if (pageNumber - delta) < 0 %}
+                {% set delta = pageNumber %}
+            {% endif %}
+
+            {% set lowerBound = (pageNumber - delta + 1) %}
+            {% set upperBound = (pageNumber - delta + pageRange) %}
+        {% endif %}
+
+        <nav class="pageNavigation">
+        {% for i in lowerBound..upperBound %}
+            <a href="">{{ i }}</a>
+        {% endfor %}
+        </nav>
+    {% endif %}
+{% endmacro %}

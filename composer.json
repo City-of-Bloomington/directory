@@ -1,24 +1,24 @@
 {
-    "repositories": [{
-        "type": "vcs",
-        "url": "https://github.com/City-of-Bloomington/blossom-lib"
-    }],
     "require": {
-        "php": ">=7.2",
-        "city-of-bloomington/blossom-lib": "dev-master",
-        "jasig/phpcas":                       "@stable",
-        "aws/aws-sdk-php":                    "@stable",
-        "guzzlehttp/guzzle":                  "@stable",
-        "zendframework/zend-db":              "@stable",
-        "zendframework/zend-log":             "@stable",
-        "zendframework/zend-paginator":       "@stable",
-        "zendframework/zend-permissions-acl": "@stable"
+        "php": ">=7.4",
+        "aura/di":                         "@stable",
+        "aura/router": "~2",
+        "aura/sqlquery":                   "@stable",
+        "apereo/phpcas":                   "@stable",
+        "graylog2/gelf-php":               "@stable",
+        "guzzlehttp/guzzle":               "@stable",
+        "laminas/laminas-log":             "@stable",
+        "laminas/laminas-permissions-acl": "@stable",
+        "twig/twig":                       "@stable"
     },
     "require-dev": {
-        "phpunit/phpunit": "@stable"
+        "phpunit/phpunit":                 "@stable"
     },
     "autoload": {
-        "psr-4": {"Application\\": "src/Application"}
+        "psr-4": {
+            "Web\\":    "src/Web/",
+            "Domain\\": "src/Domain"
+        }
     },
     "autoload-dev": {
         "psr-4": {

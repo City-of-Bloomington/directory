@@ -1,69 +1,81 @@
 <?php
 /**
- * @copyright 2012-2019 City of Bloomington, Indiana
+ * @copyright 2012-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
-namespace Application\Controllers;
-
-use Application\Authentication\Auth;
-use Application\Models\DepartmentGateway;
-use Blossom\Classes\Template;
-use Blossom\Classes\Block;
-
 /**
  * Grab a timestamp for calculating process time
  */
-$startTime = microtime(1);
+declare (strict_types=1);
+use Web\Authentication\Auth;
 
-include '../bootstrap.php';
+$startTime = microtime(true);
 
-// Check for routes
-if (preg_match('|'.BASE_URI.'/photos/(.+)\.jpg|', $_SERVER['REQUEST_URI'], $matches)) {
-    $resource         = 'people';
-    $action           = 'photo';
-    $_GET['username'] = $matches[1];
-}
-elseif (preg_match('|'.BASE_URI.'(/([a-zA-Z0-9]+))?(/([a-zA-Z0-9]+))?|',$_SERVER['REQUEST_URI'],$matches)) {
-	$resource = isset($matches[2]) ? $matches[2] : 'index';
-	$action   = isset($matches[4]) ? $matches[4] : 'index';
-}
+include '../src/Web/bootstrap.php';
 
-// Create the default Template
-$template = !empty($_REQUEST['format'])
-	? new Template('default',$_REQUEST['format'])
-	: new Template('default');
 
-// Execute the Controller::action()
-if (isset($resource) && isset($action) && $ZEND_ACL->hasResource($resource)) {
-    if (Auth::isAuthorized($resource, $action, Auth::getAuthenticatedUser())) {
-		$controller = __namespace__.'\\'.ucfirst($resource).'Controller';
-		$c = new $controller($template);
-		$c->$action();
-	}
-	else {
-		header('HTTP/1.1 403 Forbidden', true, 403);
-		$_SESSION['errorMessages'][] = new \Exception('noAccessAllowed');
-	}
+$p     = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$route = $ROUTES->match($p, $_SERVER);
+if ($route) {
+    if (isset($route->params['controller'])) {
+        $controller = $route->params['controller'];
+        $c = new $controller($DI);
+        if (is_callable($c)) {
+            $user = Auth::getAuthenticatedUser($DI->get('Web\Authentication\AuthenticationService'));
+            if (Auth::isAuthorized($route->name, $user)) {
+                // Convenience:
+                // Most of our applications are just basic form processing.
+                // Thus, the controllers typically read directly from the PHP
+                // global SERVER variables.
+                //
+                // 'id' is the standard name for primary key in tables.
+                // Most routes, by default, allow for a fancy treatment of {id} in the URL.
+                // If it the id param comes from the route handling, we copy
+                // it to the PHP Server variables, so we don't have to have
+                // special parameter handling code for the common case of checking
+                // for an id parameter.
+                if (!empty($route->params['id'])) {
+                        $_GET['id'] = $route->params['id'];
+                    $_REQUEST['id'] = $route->params['id'];
+                }
+
+                $view = $c($route->params);
+            }
+            else {
+                if     ( isset($_SESSION['USER'])
+                    || (!empty($_REQUEST['format']) && $_REQUEST['format'] != 'html')) {
+                    $view = new \Web\Views\ForbiddenView();
+                }
+                else {
+                    header('Location: '.\Web\View::generateUrl('login.login'));
+                    exit();
+                }
+            }
+        }
+        else {
+            $f = $ROUTES->getFailedRoute();
+            $view = new \Web\Views\NotFoundView();
+        }
+    }
 }
 else {
-    // Treat the url as if it's a path to a department
-    if (preg_match('|'.BASE_URI.'([^\?]+)|', $_SERVER['REQUEST_URI'], $matches)
-            && !empty($matches[1])) {
-        $_GET['dn'] = urldecode(DepartmentGateway::getDnForPath($matches[1]));
-        $c = new DepartmentsController($template);
-        $c->view();
-    }
-    else {
-        header('HTTP/1.1 404 Not Found', true, 404);
-        $template->blocks[] = new Block('404.inc');
-    }
+    $f = $ROUTES->getFailedRoute();
+    $view = new \Web\Views\NotFoundView();
 }
 
-echo $template->render();
 
-if ($template->outputFormat === 'html') {
+echo $view->render();
+
+// Append some useful stats to the output of HTML pages
+if ($view->outputFormat === 'html') {
     # Calculate the process time
-    $endTime = microtime(1);
+    $endTime = microtime(true);
     $processTime = $endTime - $startTime;
-    echo "<!-- Process Time: $processTime -->";
+    echo "<!-- Process Time: $processTime -->\n";
+
+    $size   = ['B','kB','MB','GB','TB','PB','EB','ZB','YB'];
+    $bytes  = memory_get_peak_usage();
+    $factor = floor( (strlen("$bytes") - 1) / 3);
+    $memory = sprintf("%.2f", $bytes / pow(1024, $factor)) . @$size[$factor];
+    echo "<!-- Memory: $memory -->";
 }
