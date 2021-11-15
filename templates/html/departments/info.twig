@@ -1,0 +1,31 @@
+{#
+ * @copyright 2014-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param Department department
+#}
+{% extends 'html/layouts/default.twig' %}
+
+{% macro departmentInfo(d) %}
+    {% if d.people %}
+        {{ include('html/people/list.twig', {'people': d.people}) }}
+    {% endif %}
+
+    {% if d.children %}
+    <ul>{% for c in d.children %}
+        <li><a href="{{ uri('departments.view', {'path': c.path}) }}">{{ c.name }}</a>
+            {{ _self.departmentInfo(c) }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+<nav class="breadcrumbs">
+</nav>
+
+<section>
+    <header><h1>{{ department.name }}</h1></header>
+    {{ _self.departmentInfo(department) }}
+</section>
+{% endblock %}

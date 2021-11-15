@@ -13,13 +13,17 @@
  * as the sAMAccountName.  This class declares the mapping for
  * all the fields used in the Directory application.
  *
- * @copyright 2014-2018 City of Bloomington, Indiana
+ * @copyright 2014-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
-namespace Application\Models;
+namespace Web;
 
-abstract class DirectoryAttributes
+abstract class LdapEntry
 {
+    public    $entry    = [];
+    protected $deleted  = [];
+    protected $modified = [];
+
     const NAME        = 'name';
     const DN          = 'dn';
     const OU          = 'ou';
@@ -48,6 +52,16 @@ abstract class DirectoryAttributes
     const EXTENSION   = 'extension';
     const NON_PAYROLL = 'non-payroll';
     const PROMOTED    = 'promoted';
+
+    /**
+     * @see https://www.php.net/manual/en/function.ldap-get-entries.php
+     *
+     * @param array $entry A single LDAP entry
+     */
+    public function __construct(array $entry)
+    {
+        $this->entry = $entry;
+    }
 
     /**
      * Maps internal application fieldnames to LDAP attributes
@@ -90,14 +104,14 @@ abstract class DirectoryAttributes
 
         // These are fields of information we want to only publish internally
         if (get_called_class() === __namespace__.'\Department'
-            || !DepartmentGateway::isExternalRequest()) {
+            || View::isAllowed('people', 'phones')) {
 
             $f[self::OFFICE] = 'telephonenumber';
             $f[self::CELL  ] = 'mobile';
             $f[self::OTHER ] = 'othertelephone';
         }
 
-        if (Person::isAllowed('hr', 'view')) {
+        if (View::isAllowed('people', 'hr')) {
             $f[self::EMPLOYEENUM] = 'employeenumber';
             $f[self::EMPLOYEEID ] = 'employeeid';
         }
@@ -121,14 +135,6 @@ abstract class DirectoryAttributes
     public static $phoneNumberFields = [
         self::OFFICE, self::FAX, self::CELL, self::OTHER, self::PAGER
     ];
-
-    /**
-     * The raw LDAP entry
-     */
-    public $entry;
-
-    protected $deleted  = [];
-    protected $modified = [];
 
     public function save()
     {

@@ -16,9 +16,9 @@ $DI->set('db.default', \Web\Database::getConnection('default', $DATABASES['defau
 //---------------------------------------------------------
 // Declare database repositories
 //---------------------------------------------------------
-$DI->params[ 'Web\Departments\LdapDepartmentRepository']['config'] = $LDAP['Employee'];
-$DI->set( 'Domain\Departments\DataStorage\DepartmentsRepository',
-$DI->lazyNew('Web\Departments\LdapDepartmentRepository'));
+$DI->params[ 'Web\Departments\LdapDepartmentGateway']['config'] = $LDAP['Employee'];
+$DI->set( 'Domain\Departments\DataStorage\DepartmentsGateway',
+$DI->lazyNew('Web\Departments\LdapDepartmentGateway'));
 
 $repos = [
     'Users'
@@ -44,6 +44,13 @@ $DI->lazyNew('Web\Authentication\AuthenticationService'));
 //---------------------------------------------------------
 // Use Cases
 //---------------------------------------------------------
+
+// Departments
+foreach (['Info', 'Search'] as $a) {
+    $DI->params[ "Domain\\Departments\\Actions\\$a\\Command"]['gateway'] = $DI->lazyGet('Domain\Departments\DataStorage\DepartmentsGateway');
+    $DI->set(    "Domain\\Departments\\Actions\\$a\\Command",
+    $DI->lazyNew("Domain\\Departments\\Actions\\$a\\Command"));
+}
 
 // Users
 foreach (['Delete', 'Info', 'Search', 'Update'] as $a) {

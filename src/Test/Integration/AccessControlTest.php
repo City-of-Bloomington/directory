@@ -1,38 +1,25 @@
 <?php
 /**
- * @copyright 2015-2019 City of Bloomington, Indiana
+ * @copyright 2015-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 use PHPUnit\Framework\TestCase;
 
-use Application\Authentication\Auth;
-use Application\Models\User;
+use Domain\Users\Entities\User;
+use Web\View;
 
 class AccessControlTest extends TestCase
 {
-    public function testReadUserFromSession()
-    {
-        $_SESSION['USER'] = new User();
-        $_SESSION['USER']->setUsername('test');
-        $_SESSION['USER']->setRole('Staff');
-
-        $user = Auth::getAuthenticatedUser();
-
-        $this->assertEquals($_SESSION['USER']->getUsername(), $user->getUsername());
-    }
-
     public function testStaffCanOnlyEditOwnInfo()
     {
         $_REQUEST['username'] = 'someone';
 
-        $_SESSION['USER'] = new User();
-        $_SESSION['USER']->setUsername('test');
-        $_SESSION['USER']->setRole('Staff');
+        $_SESSION['USER'] = new User(['username'=>'test', 'role'=>'Staff']);
 
-        $this->assertFalse(User::isAllowed('people','updateEmergencyContacts'));
+        $this->assertFalse(View::isAllowed('people','updateEmergencyContacts'));
 
         $_REQUEST['username'] = 'test';
-        $this->assertTrue(User::isAllowed('people', 'updateEmergencyContacts'),
+        $this->assertTrue(View::isAllowed('people', 'updateEmergencyContacts'),
             'Staff cannot edit their own info'
         );
     }
@@ -41,10 +28,8 @@ class AccessControlTest extends TestCase
     {
         $_REQUEST['username'] = 'someone';
 
-        $_SESSION['USER'] = new User();
-        $_SESSION['USER']->setUsername('test');
-        $_SESSION['USER']->setRole('Administrator');
+        $_SESSION['USER'] = new User(['username'=>'test', 'role'=>'Administrator']);
 
-        $this->assertTrue(User::isAllowed('people'));
+        $this->assertTrue(View::isAllowed('people'));
     }
 }

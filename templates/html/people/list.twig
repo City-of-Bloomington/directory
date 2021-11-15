@@ -1,0 +1,23 @@
+{#
+ * @copyright 2014-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ * @param array people
+#}
+<table>
+    <thead>
+        <tr><th scope="col">{{ _('name' ) }}</th>
+            <th scope="col">{{ _('title') }}</th>
+            <th scope="col">{{ _('phone') }}</th>
+            <th scope="col">{{ _('email') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in people %}
+        <tr><td><a href="{{ uri('people.view', {'username':p.username}) }}">{{ p.fullname() }}</a></td>
+            <td>{{ p.title }}</td>
+            <td>{{ p.phone() }}</td>
+            <td><a href="mailto:{{ p.email }}">{{ p.email }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

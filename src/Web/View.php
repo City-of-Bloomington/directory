@@ -186,14 +186,14 @@ abstract class View
     public static function generateUri($route_name, $params=[]): string
     {
         global $ROUTES;
-        return $ROUTES->generate($route_name, $params);
+        return $ROUTES->generateRaw($route_name, $params);
     }
-    
+
     public static function generateUrl($route_name, $params=[]): string
     {
         return "https://".BASE_HOST.self::generateUri($route_name, $params);
     }
-    
+
     public static function current_url(): Url
     {
         return new Url(Url::current_url(BASE_HOST));

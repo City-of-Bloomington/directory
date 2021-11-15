@@ -36,7 +36,7 @@ foreach ($ROUTES->getRoutes() as $r) {
 $ACL->allow(null, ['home', 'login', 'departments']);
 
 // Permissions for unauthenticated browsing
-$ACL->allow(null, ['people'], ['index', 'view', 'photo', 'search']);
+$ACL->allow(null, ['people'], ['index', 'view', 'search']);
 
 // Allow Staff to do stuff
 // Staff need to be able to update their own Emergency Contact Information
@@ -44,13 +44,12 @@ class OwnInfoAssertion implements AssertionInterface
 {
     public function assert(Acl $acl, RoleInterface $role=null, ResourceInterface $resource=null, $privilege=null)
     {
-        if (isset($_REQUEST['username'])) {
-            $user = Auth::getAuthenticatedUser();
-            return $user->getUsername() == $_REQUEST['username'];
-        }
-        return false;
+        return isset($_REQUEST['username'])
+             ? isset($_SESSION['USER']) && $_SESSION['USER']->username == $_REQUEST['username']
+             : false;
     }
 }
+$ACL->allow('Staff', 'people', ['photo', 'phones', 'restricted', 'nonpayroll']);
 $ACL->allow('Staff', 'people', 'updateEmergencyContacts', new OwnInfoAssertion());
 
 // Administrator is allowed access to everything

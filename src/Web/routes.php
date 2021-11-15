@@ -19,7 +19,7 @@ $ROUTES->add('login.logout',  '/logout' )->setValues(['controller' => 'Web\Authe
 
 $ROUTES->attach('departments', '/departments', function ($r) {
     $r->add('numbers', '/numbers')->setValues(['controller'=>'Web\Departments\Controllers\NumbersController']);
-    $r->add('view',    '/{path}' )->setValues(['controller' => 'Web\Departments\Controllers\InfoController'])
+    $r->add('view',    '{path}'  )->setValues(['controller' => 'Web\Departments\Controllers\InfoController'])
                                   ->addTokens(['path' => '[a-z_/]+']);
     $r->add('index',   ''        )->setValues(['controller' => 'Web\Departments\Controllers\ListController']);
 });
