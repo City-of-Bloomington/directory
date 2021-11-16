@@ -1,0 +1,15 @@
+{#
+ * @copyright 2014-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - person: Domain\People\Entities\Person
+#}
+<form method="post" action="{{ uri('people.uploadPhoto', {'username': person.username}) }}" enctype="multipart/form-data">
+    <fieldset><legend>{{ _('uploadPhoto') }}</legend>
+        <p>{{ _('photo_type_requirements', 'messages') | format('jpg') }}</p>
+        <input name="username" type="hidden" value="{{ person.username }}" />
+        <input name="photo" type="file" />
+        <button type="submit">{{ _('upload') }}</button>
+    </fieldset>
+</form>

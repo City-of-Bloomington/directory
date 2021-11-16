@@ -20,6 +20,9 @@ namespace Web;
 
 abstract class LdapEntry
 {
+    public const TYPE_DEPARTMENT = 'department';
+    public const TYPE_PERSON     = 'person';
+
     public    $entry    = [];
     protected $deleted  = [];
     protected $modified = [];
@@ -77,7 +80,7 @@ abstract class LdapEntry
      * Even if a person's record is okay to publish to the outside world,
      * there are still fields that we want to keep hidden.
      */
-    public static function getPublishableFields()
+    public static function getPublishableFields(string $type)
     {
         // Fields that are freely available to the outside world
         $f = [
@@ -103,7 +106,7 @@ abstract class LdapEntry
         ];
 
         // These are fields of information we want to only publish internally
-        if (get_called_class() === __namespace__.'\Department'
+        if ($type == self::TYPE_DEPARTMENT
             || View::isAllowed('people', 'phones')) {
 
             $f[self::OFFICE] = 'telephonenumber';
@@ -209,19 +212,6 @@ abstract class LdapEntry
         }
         else {
             throw new \Exception('unknownAttribute');
-        }
-    }
-
-    public function getPhone()
-    {
-        if (!DepartmentGateway::isExternalRequest()) {
-            foreach (self::$phoneNumberFields as $field) {
-                $v = $this->__get($field);
-                if ($v) { return $v; }
-            }
-        }
-        else {
-            return $this->__get(self::PAGER);
         }
     }
 }

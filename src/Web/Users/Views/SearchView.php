@@ -21,12 +21,9 @@ class SearchView extends View
                                 array    $roles,
                                 array    $authentication_methods)
     {
+        if ($response->errors) { $_SESSION['errorMessages'] = $response->errors; }
+        
         parent::__construct();
-
-        if ($response->errors) {
-            $_SESSION['errorMessages'] = $response->errors;
-        }
-
 
         $this->vars = array_merge((array)$request, [
             'users'                  => $response->users,

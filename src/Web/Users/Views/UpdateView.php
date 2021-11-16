@@ -18,11 +18,11 @@ class UpdateView extends View
                                 array     $roles,
                                 array     $authentication_methods)
     {
-        parent::__construct();
-
         if ($response && $response->errors) {
             $_SESSION['errorMessages'] = $response->errors;
         }
+        
+        parent::__construct();
 
         $this->vars = array_merge((array)$request, [
             'title'                  => $request->id ? $this->_('user_edit') : $this->_('user_add'),

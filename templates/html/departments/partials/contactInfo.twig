@@ -1,0 +1,26 @@
+{#
+/**
+ * Renders address, phone number, and email for a directory entry
+ *
+ * We're using the same markup whether it's a Department or a Person
+ *
+ * @copyright 2015-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * @see Domain\Deparments\Entities\Department
+ * @see Domain\People\Entities\Person
+ *
+ * Available Variables:
+ * - entry: Either a Department or Person.  Both share the same properties.
+#}
+<div><address>{{ entry.address }}
+{{ entry.city }} {{ entry.state }} {{ entry.zip }}</div>
+<div><a href="mailto:{{ entry.email }}">{{ entry.email }}</a></div>
+
+<table>
+{% if entry.office %}<tr><th>{{ _('office') }}</th><td>{{ entry.office }}</td></tr>{% endif %}
+{% if entry.fax    %}<tr><th>{{ _('fax'   ) }}</th><td>{{ entry.fax    }}</td></tr>{% endif %}
+{% if entry.cell   %}<tr><th>{{ _('cell'  ) }}</th><td>{{ entry.cell   }}</td></tr>{% endif %}
+{% if entry.other  %}<tr><th>{{ _('other' ) }}</th><td>{{ entry.other  }}</td></tr>{% endif %}
+{% if entry.pager  %}<tr><th>{{ _('pager' ) }}</th><td>{{ entry.pager  }}</td></tr>{% endif %}
+</table>

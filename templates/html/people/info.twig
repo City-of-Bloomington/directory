@@ -1,0 +1,46 @@
+{#
+/**
+ * @copyright 2014-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available variables:
+ * - person: Domain\People\Entities\Person
+#}
+{% extends 'html/layouts/default.twig' %}
+
+{% block content %}
+<section class="person-profile">
+    {% if person.photoUri and isAllowed('people', 'photo') %}
+    <div><img src="{{ person.photoUri }}" /></div>
+    {% endif %}
+    <section class="person-details">
+        <header>
+            <h1>{{ person.fullname() }}</h1>
+            {% if isAllowed('people', 'update') %}
+            <div><a href="{{ uri('people.update', {'username': person.username}) }}"
+                    class="edit button">
+                    {{ _('edit') }}
+                </a>
+            </div>
+            {% endif %}
+        </header>
+         <h2>{{ person.title      }}</h2>
+        <div>{{ person.department }}</div>
+        <div>{{ person.division   }}</div>
+        <div>{{ person.location   }}</div>
+
+        {% if isAllowed('people', 'hr') %}
+        <table>
+        <tr><th>{{ _('employeenumber') }}</th><td>{{ person.employeenumber }}</td></tr>
+        <tr><th>{{ _('employeeid'    ) }}</th><td>{{ person.employeeid     }}</td></tr>
+        </table>
+        {% endif %}
+
+        {{ include('html/departments/partials/contactInfo.twig', {'entry': person}) }}
+
+        {% if isAllowed('people', 'uploadPhoto') %}
+        {{ include('html/people/uploadPhotoForm.twig') }}
+        {% endif %}
+    </section>
+</section>
+{% endblock %}

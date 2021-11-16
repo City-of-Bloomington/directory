@@ -1,11 +1,14 @@
 {#
  * @copyright 2014-2021 City of Bloomington, Indiana
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
- * @param Department department
+ *
+ * Available Variables:
+ * - department: Domain\Departments\Entities\Department
 #}
 {% extends 'html/layouts/default.twig' %}
 
 {% macro departmentInfo(d) %}
+    {{ include('html/departments/partials/contactInfo.twig', {'entry': d}) }}
     {% if d.people %}
         {{ include('html/people/list.twig', {'people': d.people}) }}
     {% endif %}

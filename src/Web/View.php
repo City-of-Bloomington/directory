@@ -44,6 +44,10 @@ abstract class View
         if (isset($_SESSION['USER'])) {
             $this->twig->addGlobal('USER', $_SESSION['USER']);
         }
+        if (isset($_SESSION['errorMessages'])) {
+            $this->twig->addGlobal('errorMessages', $_SESSION['errorMessages']);
+            unset($_SESSION['errorMessages']);
+        }
 
         $this->twig->addFunction(new TwigFunction('_'  ,         [$this, 'translate'  ]));
         $this->twig->addFunction(new TwigFunction('uri',         [$this, 'generateUri']));

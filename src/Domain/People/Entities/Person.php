@@ -23,6 +23,7 @@ class Person
     public $city;
     public $state;
     public $zip;
+
     public $office;
     public $fax;
     public $cell;
@@ -34,6 +35,7 @@ class Person
     public $division;
     public $employeenumber;
     public $employeeid;
+    public $photoUri;
 
     public function fullname(): string
     {

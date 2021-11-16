@@ -24,7 +24,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
     private function hydrate(array $entry): Department
     {
         $department        = new Department();
-        $publishableFields = LdapEntry::getPublishableFields();
+        $publishableFields = LdapEntry::getPublishableFields(LdapEntry::TYPE_DEPARTMENT);
 
         foreach ((array)$department as $k=>$v) {
             if (array_key_exists($k, $publishableFields)
@@ -40,7 +40,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
     private static function hydratePerson(array $entry): Person
     {
         $person = new Person();
-        $publishableFields = LdapEntry::getPublishableFields();
+        $publishableFields = LdapEntry::getPublishableFields(LdapEntry::TYPE_PERSON);
 
         foreach ((array)$person as $k=>$v) {
             if (array_key_exists($k, $publishableFields)
@@ -48,6 +48,9 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
 
                 $person->$k = $entry[$publishableFields[$k]][0];
             }
+        }
+        if (file_exists(SITE_HOME."/photos/{$person->username}.jpg")) {
+            $person->photoUri = View::generateUri('people.photo', ['username'=>$person->username]);
         }
         return $person;
     }
@@ -65,7 +68,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
         $result  = ldap_search($this->connection,
                              $dn,
                              "(objectClass=organizationalUnit)",
-                             array_values(LdapEntry::getPublishableFields()));
+                             array_values(LdapEntry::getPublishableFields(LdapEntry::TYPE_DEPARTMENT)));
         $count   = ldap_count_entries($this->connection, $result);
         if ($count) {
             $entries = ldap_get_entries($this->connection, $result);
@@ -175,7 +178,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
         $result   = ldap_search($this->connection,
                                 $base_dn,
                                 $filter,
-                                array_values(LdapEntry::getPublishableFields()));
+                                array_values(LdapEntry::getPublishableFields(LdapEntry::TYPE_PERSON)));
 
         $people = [];
         $count = ldap_count_entries($this->connection, $result);
@@ -286,39 +289,11 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
     }
 
     /**
-     * @param resource LDAP Result Set
-     * @return array An array of Person objects
-     */
-    private static function hydratePersonObjects($result)
-    {
-        $ldap = self::getConnection();
-
-        $people = [];
-        $count = ldap_count_entries($ldap, $result);
-        if ($count) {
-            $entries = ldap_get_entries($ldap, $result);
-            for ($i=0; $i<$count; $i++) {
-                // Ignore user account flagged with an asterisk
-                if (strpos($entries[$i]['cn'][0], '*') === false) {
-                    $people[] = self::hydratePerson($entries[$i]);
-                }
-            }
-        }
-        usort($people, function ($a, $b) {
-            $al = isset($a->entry['sn'][0]) ? $a->entry['sn'][0] : '';
-            $bl = isset($b->entry['sn'][0]) ? $b->entry['sn'][0] : '';
-
-            if     ($al === $bl) { return 0; }
-            return ($al  <  $bl) ? -1 : 1;
-        });
-        return $people;
-    }
-
-    /**
-     * @param string $id Username or Employee Number
+     * @throws Exception
+     * @param  string $id Username or Employee Number
      * @return Person
      */
-    public static function getPerson(string $id)
+    public function getPerson(string $id): Person
     {
         $objectClass = $this->getPersonFilter();
         $filter = is_numeric($id)
@@ -329,12 +304,37 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
             $this->connection,
             $this->base_dn(),
             "(&$objectClass($filter))",
-            array_values(Person::getPublishableFields())
+            array_values(LdapEntry::getPublishableFields(LdapEntry::TYPE_PERSON))
         );
         $count = ldap_count_entries($this->connection, $result);
         if ($count) {
             $entries = ldap_get_entries($this->connection, $result);
-            return new Person($entries[0]);
+            return self::hydratePerson($entries[0]);
+        }
+        throw new \Exception('people/unknown');
+    }
+    
+    /**
+     * @param Person $person
+     * @param string $file      Full path to image file
+     */
+    public function savePhoto(Person $person, string $file)
+    {
+        clearstatcache();
+        $size = filesize($file);
+        
+        $newFile   = SITE_HOME."/photos/{$person->username}.jpg";
+        $directory = dirname($newFile);
+        if (!is_dir($directory)) {
+            mkdir  ($directory, 0776, true);
+        }
+        move_uploaded_file($file, $newFile);
+        
+        // Check and make sure the file was saved
+        clearstatcache();
+        $ns = filesize($newFile);
+        if (!is_file($newFile) || filesize($newFile)!=$size) {
+            throw new \Exception('media/badServerPermissions');
         }
     }
 
