@@ -49,11 +49,11 @@ abstract class LdapEntry
     const CELL        = 'cell';
     const OTHER       = 'other';
     const PAGER       = 'pager';
-    const EMPLOYEENUM = 'employeeNum';
-    const EMPLOYEEID  = 'employeeID';
+    const EMPLOYEENUM = 'employeenumber';
+    const EMPLOYEEID  = 'employeeid';
 
     const EXTENSION   = 'extension';
-    const NON_PAYROLL = 'non-payroll';
+    const NON_PAYROLL = 'nonpayroll';
     const PROMOTED    = 'promoted';
 
     /**

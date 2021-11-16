@@ -10,6 +10,7 @@ use Web\LdapEntry;
 use Web\View;
 use Domain\Departments\DataStorage\DepartmentsGateway;
 use Domain\Departments\Entities\Department;
+use Domain\People\Actions\Update\Request as UpdateRequest;
 use Domain\People\Entities\Person;
 
 class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
@@ -337,44 +338,36 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
             throw new \Exception('media/badServerPermissions');
         }
     }
-
+    
     /**
-     * Returns the binary data for the image stored in LDAP
-     *
-     * @param  string $username
-     * @return data              Binary image data
+     * Saves a person back to Ldap
      */
-    public static function getPhoto($username)
+    public function update(UpdateRequest $req): Person
     {
-        $objectClass = $this->getPersonFilter();
-
-        $result = ldap_search(
-            $this->connection,
-            $this->base_dn(),
-            "(&$objectClass(sAMAccountName=$username))",
-            ['jpegphoto']
-        );
-        $count = ldap_count_entries($this->connection, $result);
-        if ($count) {
-            $e = ldap_first_entry($this->connection, $result);
-            $attributes = ldap_get_attributes($this->connection, $e);
-            if (!empty($attributes['jpegPhoto'][0])) {
-                $data = ldap_get_values_len($this->connection, $e, 'jpegphoto');
-                return $data[0];
+        $person   = $this->getPerson($req->username);
+        $data     = (array)$req;
+        $modified = [];
+        $deleted  = [];
+        $ldap     = LdapEntry::getPublishableFields(LdapEntry::TYPE_PERSON);
+        
+        unset($data['username']);
+        if (!View::isAllowed('people', 'updateHr')) { unset($data['employeeid']); }
+        
+        foreach ($data as $k=>$v) {
+            if ($person->$k != $v) {
+                if ($v) { $modified[$ldap[$k]] = $v; }
+                else    {  $deleted[$ldap[$k]] = []; }
             }
         }
-    }
-
-    /**
-     * @param string $dn
-     * @param array $modified
-     * @param array $deleted
-     */
-    public static function update($dn, array $modified=null, array $deleted=null)
-    {
-        $ldap = self::getConnection();
-        if ($modified) { ldap_mod_replace($ldap, $dn, $modified); }
-        if ($deleted ) { ldap_mod_del    ($ldap, $dn, $deleted ); }
+        
+        if ($modified) {
+            if (!ldap_mod_replace($this->connection, $person->dn, $modified)) { throw new \Exception(ldap_error($this->connection)); }
+        }
+        if ($deleted ) {
+            if (!ldap_mod_del    ($this->connection, $person->dn, $deleted )) { throw new \Exception(ldap_error($this->connection)); }
+        }
+        
+        return $this->getPerson($req->username);
     }
 
     /**

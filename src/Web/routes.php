@@ -25,7 +25,7 @@ $ROUTES->attach('departments', '/departments', function ($r) {
 });
 
 $ROUTES->attach('people', '/people', function ($r) {
-    $r->add('update',      '/{username}/update')->setValues(['controller' => 'Web\People\Controllers\UpdatedController']);
+    $r->add('update',      '/{username}/update')->setValues(['controller' => 'Web\People\Controllers\UpdateController']);
     $r->add('uploadPhoto', '/{username}/upload')->setValues(['controller' => 'Web\People\Controllers\UploadPhotoController']);
     $r->add('photo',       '/{username}.jpg'   )->setValues(['controller' => 'Web\People\Controllers\PhotoController']);
     $r->add('view',        '/{username}'       )->setValues(['controller' => 'Web\People\Controllers\InfoController']);

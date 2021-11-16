@@ -1,0 +1,90 @@
+{#
+ * @copyright 2015-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - person: Current person object from LDAP  Domain\People\Entities\Person
+ *
+ * - username
+ * - address
+ * - city
+ * - state
+ * - zip
+ * - office
+ * - fax
+ * - cell
+ * - other
+ * - pager
+ * - employeeid
+#}
+{% extends 'html/layouts/default.twig' %}
+{% block content %}
+<section class="person-profile">
+    {% if person.photoUri and isAllowed('people', 'photo') %}
+    <div><img src="{{ person.photoUri }}" /></div>
+    {% endif %}
+    <section class="person-details">
+        <header>
+            <h1>{{ person.fullname() }}</h1>
+            {% if isAllowed('people', 'update') %}
+            <div><a href="{{ uri('people.update', {'username': person.username}) }}"
+                    class="edit button">
+                    {{ _('edit') }}
+                </a>
+            </div>
+            {% endif %}
+        </header>
+         <h2>{{ person.title      }}</h2>
+        <div>{{ person.department }}</div>
+        <div>{{ person.division   }}</div>
+        <div>{{ person.location   }}</div>
+    </section>
+    
+    <form method="post">
+        <fieldset><legend>{{ _('address') }}</legend>
+            <textarea name="address" id="address">{{ address }}</textarea>
+            <div><label  for="city">{{ _('city') }}</label>
+                 <input name="city" id="city" value="{{ city }}" />
+            </div>
+            <div><label  for="state">{{ _('state') }}</label>
+                 <input name="state" id="state" value="{{ state }}" />
+            </div>
+            <div><label  for="zip">{{ _('zip') }}</label>
+                 <input name="zip" id="zip" value="{{ zip }}" />
+            </div>
+        </fieldset>
+        
+        {% if isAllowed('people', 'updateHr') %}
+        <fieldset><legend>{{ _('hr') }}</legend>
+            <div><a href="mailto:{{ person.email }}">{{ person.email }}</a></div>
+            <div><label  for="employeeid">{{ _('employeeid') }}</label>
+                 <input name="employeeid" id="employeeid" value="{{ employeeid }}" />
+            </div>
+        </fieldset>
+        {% endif %}
+        
+        <fieldset><legend>{{ _(['phone', 'phones', 5]) }}</legend>
+            <input name="username" type="hidden" value="{{ username }}" />
+            <div><label  for="office">{{ _('office') }}</label>
+                 <input name="office" id="office" value="{{ office }}" />
+            </div>
+            <div><label  for="fax">{{ _('fax') }}</label>
+                 <input name="fax" id="fax" value="{{ fax }}" />
+            </div>
+            <div><label  for="cell">{{ _('cell') }}</label>
+                 <input name="cell" id="cell" value="{{ cell }}" />
+            </div>
+            <div><label  for="other">{{ _('other') }}</label>
+                 <input name="other" id="other" value="{{ other }}" />
+            </div>
+            <div><label  for="pager">{{ _('pager') }}</label>
+                 <input name="pager" id="pager" value="{{ pager }}" />
+            </div>
+            
+            <button type="submit" class="save">{{ _('save') }}</button>
+            <a href="{{ uri('people.view', {'username': username}) }}">{{ _('cancel') }}</a>
+        </fieldset>
+    </form>
+    </div>
+</section>
+{% endblock %}
