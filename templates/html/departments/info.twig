@@ -25,6 +25,9 @@
 
 {% block content %}
 <nav class="breadcrumbs">
+    {% for name, link in breadcrumbs %}
+    <a href="{{ link }}">{{ name }}</a>
+    {% endfor %}
 </nav>
 
 <section>

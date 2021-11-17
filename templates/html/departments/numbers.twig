@@ -1,0 +1,36 @@
+{#
+ * @copyright 2014-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - departments: An array of Domain\Departments\Entities\Department objects
+#}
+{% extends 'html/layouts/default.twig' %}
+
+{% macro tree(departments, prefix) %}
+    {% for d in departments %}
+        <tr><th>{% if prefix %}{{ prefix ~ " - "}}{% endif %}{{ d.name }}</th>
+            <td>{{ d.office }}</td>
+            <td>{{ d.address }}</td>
+        </tr>
+        {% set newprefix = prefix ? prefix ~ ' - ' ~ d.name : (d.name=='City Hall' ? '' : d.name) %}
+        {% if d.children %}{{ _self.tree(d.children, newprefix) }}{% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% block content %}
+<section id="departments-numbers">
+    <h1>{{ _('main_numbers') }}</h1>
+    <table>
+        <thead>
+            <tr><th scope="col">{{ _('name'   ) }}</th>
+                <th scope="col">{{ _('phone'  ) }}</th>
+                <th scope="col">{{ _('address') }}</th>
+            </tr>
+        </thead>
+        <tbody>
+        {{ _self.tree(departments) }}
+        </tbody>
+    </table>
+</section>
+{% endblock %}
