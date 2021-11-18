@@ -26,18 +26,14 @@ define('INTL_TEL_INPUT', BASE_URI.'/js/vendor/intl-tel-input');
  */
 $DATABASES = [
     'default' => [
-        'driver'   => 'Pdo_Mysql',
-        'hostname' => 'localhost',
-        'database' => '{{ directory_db.default.name }}',
-        'username' => '{{ directory_db.default.user }}',
-        'password' => '{{ directory_db.default.pass }}',
-        'charset'  => 'utf8'
+        'dsn'  => 'mysql:host={{ directory_db.default.host }};dbname={{ directory_db.default.name }}',
+        'user' => '{{ directory_db.default.user }}',
+        'pass' => '{{ directory_db.default.pass }}'
     ],
     'hr' => [
-        'driver'   => 'Pdo',
-        'dsn'      => 'odbc:hrdb',
-        'username' => '{{ directory_db.hr.user }}',
-        'password' => '{{ directory_db.hr.pass }}'
+        'dsn'  => 'odbc:hrdb',
+        'user' => '{{ directory_db.hr.user }}',
+        'pass' => '{{ directory_db.hr.pass }}'
     ]
 ];
 
@@ -51,30 +47,29 @@ $DATABASES = [
  *
  * See: ExternalIdentity
  */
-$DIRECTORY_CONFIG = [
+$LDAP = [
     'Employee'=> [
-        'DIRECTORY_TYPE'               => '{{ directory_ldap.TYPE               }}',
-        'DIRECTORY_SERVER'             => '{{ directory_ldap.SERVER             }}',
-        'DIRECTORY_BASE_DN'            => '{{ directory_ldap.BASE_DN            }}',
-        'DIRECTORY_USERNAME_ATTRIBUTE' => '{{ directory_ldap.USERNAME_ATTRIBUTE }}',
-        'DIRECTORY_USER_BINDING'       => '{{ directory_ldap.USER_BINDING       }}',
-        'DIRECTORY_ADMIN_BINDING'      => '{{ directory_ldap.ADMIN_BINDING      }}',
-        'DIRECTORY_ADMIN_PASS'         => '{{ directory_ldap.ADMIN_PASS         }}',
-        'DIRECTORY_RESTRICTED'         => '{{ directory_ldap.RESTRICTED         }}',
-        'DIRECTORY_PROMOTED'           => '{{ directory_ldap.PROMOTED           }}',
-        'DIRECTORY_NONPAYROLL'         => '{{ directory_ldap.NONPAYROLL         }}'
+        'classname'          => 'Site\Employee',
+        'server'             => '{{ directory_ldap.SERVER             }}',
+        'base_dn'            => '{{ directory_ldap.BASE_DN            }}',
+        'username_attribute' => '{{ directory_ldap.USERNAME_ATTRIBUTE }}',
+        'user_binding'       => '{{ directory_ldap.USER_BINDING       }}',
+        'admin_binding'      => '{{ directory_ldap.ADMIN_BINDING      }}',
+        'admin_pass'         => '{{ directory_ldap.ADMIN_PASS         }}',
+        'restricted'         => '{{ directory_ldap.RESTRICTED         }}',
+        'promoted'           => '{{ directory_ldap.PROMOTED           }}',
+        'nonpayroll'         => '{{ directory_ldap.NONPAYROLL         }}'
     ]
 ];
 
 /**
- * CAS authentication http://www.jasig.org/cas
+ * CAS authentication https://www.apereo.org/projects/cas
  *
- * https://wiki.jasig.org/display/CASC/phpCAS
+ * https://github.com/apereo/phpCAS
  *
  * phpCAS is a PHP library for handling the calls to the CAS service
- * It is the official library, part of the Jasig CAS project
+ * It is the official library, part of the Apereo CAS project
  */
-define('CAS', APPLICATION_HOME.'/vendor/jasig/phpcas/source');
 define('CAS_SERVER','{{ directory_cas_server }}');
 define('CAS_URI','cas');
 
@@ -85,15 +80,11 @@ define('DEFAULT_STATE', 'IN');
 define('DEFAULT_ZIP', 47404);
 
 /**
- * Skidder is a web service for error loggin.  This application supports
- * logging errors to a Skidder server.  You must register for an application_id
- * on the skidder server you want to post errors to.
+ * Graylog is a centralized log manager
+ *
+ * This application supports sending errors and exceptions to a graylog instance.
+ * This is handy for notifying developers of a problem before users notice.
+ ** @see https://graylog.org
  */
-{% if directory_skidder is defined and directory_skidder.application_id %}
-$writer = new Blossom\Classes\Log\SkidderWriter('{{ directory_skidder.server }}', {{ directory_skidder.application_id }} );
-$logger = new Zend\Log\Logger();
-$logger->addWriter($writer);
-Zend\Log\Logger::registerErrorHandler($logger);
-Zend\Log\Logger::registerExceptionHandler($logger);
-Zend\Log\Logger::registerFatalErrorShutdownFunction($logger);
-{% endif %}
+#define('GRAYLOG_DOMAIN', 'graylog.bloomington.in.gov');
+#define('GRAYLOG_PORT',   12202);

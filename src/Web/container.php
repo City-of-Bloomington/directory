@@ -10,8 +10,7 @@ $builder = new ContainerBuilder();
 $DI = $builder->newInstance();
 
 $DI->set('db.default', \Web\Database::getConnection('default', $DATABASES['default']));
-#$DI->set('db.hr',      \Web\Database::getConnection('hr',      $DATABASES['hr'     ]));
-
+$DI->set('db.hr',      \Web\Database::getConnection('hr',      $DATABASES['hr'     ]));
 
 //---------------------------------------------------------
 // Declare database repositories
@@ -20,14 +19,13 @@ $DI->params[ 'Web\Departments\LdapDepartmentGateway']['config'] = $LDAP['Employe
 $DI->set( 'Domain\Departments\DataStorage\DepartmentsGateway',
 $DI->lazyNew('Web\Departments\LdapDepartmentGateway'));
 
-$repos = [
-    'Users'
-];
-foreach ($repos as $t) {
-    $DI->params[ "Web\\$t\\Pdo{$t}Repository"]["pdo"] = $DI->lazyGet('db.default');
-    $DI->set("Domain\\$t\\DataStorage\\{$t}Repository",
-    $DI->lazyNew("Web\\$t\\Pdo{$t}Repository"));
-}
+$DI->params[ 'Web\JobTitles\PdoJobTitlesRepository']['pdo'] = $DI->lazyGet('db.hr');
+$DI->set( 'Domain\JobTitles\DataStorage\JobTitlesRepository',
+$DI->lazyNew('Web\JobTitles\PdoJobTitlesRepository'));
+
+$DI->params[ "Web\Users\PdoUsersRepository"]["pdo"] = $DI->lazyGet('db.default');
+$DI->set( "Domain\Users\DataStorage\UsersRepository",
+$DI->lazyNew("Web\Users\PdoUsersRepository"));
 
 //---------------------------------------------------------
 // Metadata providers
@@ -50,6 +48,12 @@ foreach (['Info', 'Search'] as $a) {
     $DI->params[ "Domain\\Departments\\Actions\\$a\\Command"]['gateway'] = $DI->lazyGet('Domain\Departments\DataStorage\DepartmentsGateway');
     $DI->set(    "Domain\\Departments\\Actions\\$a\\Command",
     $DI->lazyNew("Domain\\Departments\\Actions\\$a\\Command"));
+}
+// Job Titles
+foreach (['Add', 'Find', 'Info', 'Update'] as $a) {
+    $DI->params[ "Domain\\JobTitles\\Actions\\$a\\Command"]["repository"] = $DI->lazyGet('Domain\JobTitles\DataStorage\JobTitlesRepository');
+    $DI->set(    "Domain\\JobTitles\\Actions\\$a\\Command",
+    $DI->lazyNew("Domain\\JobTitles\\Actions\\$a\\Command"));
 }
 
 // People

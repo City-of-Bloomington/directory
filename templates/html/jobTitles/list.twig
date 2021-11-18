@@ -1,0 +1,33 @@
+{#
+ * @copyright 2016-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - titles: An array of job titles
+#}
+{% extends 'html/layouts/default.twig' %}
+
+{% block content %}
+<section>
+    <header>
+        <h1>{{ _(['title', 'titles', titles|length ]) }}</h1>
+        {% if isAllowed('titles', 'add') %}
+        <div class="tools">
+            <a href="{{ uri('titles.add') }}" class="add button">{{ _('add') }}</a>
+        </div>
+        {% endif %}
+    </header>
+    <table>
+    {% set userCanEdit = isAllowed('titles', 'update') %}
+    {% for t in titles %}
+    <tr><th>{{ t.code }}</th>
+        <td>{{ t.title }} </td>
+        <td>{% if userCanEdit %}
+            <a href="{{ uri('titles.update', {'id': t.id}) }}" class="edit button">{{ _('edit') }}</a>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+</section>
+{% endblock %}

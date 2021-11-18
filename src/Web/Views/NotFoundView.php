@@ -14,14 +14,10 @@ class NotFoundView extends View
         header('HTTP/1.1 404 Not Found', true, 404);
 
         parent::__construct();
-        if (isset($_SESSION['errorMessages'])) {
-            $this->vars = ['errorMessages' => $_SESSION['errorMessages']];
-            unset($_SESSION['errorMessages']);
-        }
     }
 
     public function render(): string
     {
-        return $this->twig->render('html/404.twig', $this->vars);
+        return $this->twig->render('html/404.twig', []);
     }
 }

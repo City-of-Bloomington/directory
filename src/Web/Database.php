@@ -9,7 +9,7 @@ namespace Web;
 class Database
 {
     private static $connections = [];
-    
+
     public static function getConnection(string $name='default', array $config, bool $reconnect=false): \PDO
     {
         if ($reconnect) {
@@ -17,15 +17,14 @@ class Database
                 unset(self::$connections[$name]);
             }
         }
-        
+
         if (!isset(self::$connections[$name])) {
             try {
                 self::$connections[$name] = new \PDO($config['dsn'], $config['user'], $config['pass'], $config['opts'] ?? null);
                 self::$connections[$name]->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             }
             catch (\Exception $e) {
-                print_r($e);
-                die("Could not connect to default database server\n");
+                die("Could not connect to $name database\n");
             }
         }
         return self::$connections[$name];

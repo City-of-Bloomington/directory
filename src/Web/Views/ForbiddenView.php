@@ -13,18 +13,15 @@ class ForbiddenView extends View
     {
         header('HTTP/1.1 403 Forbidden', true, 403);
 
-        parent::__construct();
-        if (isset($_SESSION['errorMessages'])) {
-            $this->vars['errorMessages'] = $_SESSION['errorMessages'];
-            unset($_SESSION['errorMessages']);
-        }
-        $this->vars['errorMessages'][] = isset($_SESSION['USER'])
+        $_SESSION['errorMessages'][] = isset($_SESSION['USER'])
             ? 'noAccessAllowed'
             : 'notLoggedIn';
+
+        parent::__construct();
     }
 
     public function render(): string
     {
-        return $this->twig->render('html/403.twig', $this->vars);
+        return $this->twig->render('html/403.twig', []);
     }
 }

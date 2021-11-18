@@ -76,7 +76,7 @@
     - name: "Install site_config"
       template:
         src:  "site_config.j2"
-        dest: "{{ directory_site_home }}/site_config.inc"
+        dest: "{{ directory_site_home }}/site_config.php"
 
     - name: "Update directory ownership"
       command: "chown -R www-data:staff {{ item }}"

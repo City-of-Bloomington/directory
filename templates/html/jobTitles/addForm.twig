@@ -1,0 +1,29 @@
+{#
+ * @copyright 2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - code
+ * - title
+#}
+{% extends 'html/layouts/default.twig' %}
+
+{% block content %}
+<section>
+    <h1>{{ _('jobTitleCode_add') }}</h1>
+    <form method="post">
+        <fieldset>
+            <div class="required">
+                <label for="code">{{ _('code') }}</label>
+                <input name="code" id="code" value="{{ code }}" required="true" />
+            </div>
+            <div class="required">
+                <label for="title">{{ _('title') }}</label>
+                <input name="title" id="title" value="{{ title }}" required="true" />
+            </div>
+            <button type="submit" class="save">{{ _('save') }}</button>
+            <a href="{{ uri('titles.index') }}">{{ _('cancel') }}</a>
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

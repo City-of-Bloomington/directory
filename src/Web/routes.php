@@ -32,8 +32,14 @@ $ROUTES->attach('people', '/people', function ($r) {
 });
 
 $ROUTES->attach('users', '/users', function ($r) {
-    $r->add('update', '/update{/id}') ->setValues(['controller' => 'Web\Users\Controllers\UpdateController']);
-    $r->add('delete', '/delete/{id}') ->setValues(['controller' => 'Web\Users\Controllers\DeleteController']);
-    $r->add('view',   '/{id}'       ) ->setValues(['controller' => 'Web\Users\Controllers\InfoController'  ]);
-    $r->add('index',  '')             ->setValues(['controller' => 'Web\Users\Controllers\ListController'  ]);
+    $r->add('update', '/update{/id}')->setValues(['controller' => 'Web\Users\Controllers\UpdateController']);
+    $r->add('delete', '/delete/{id}')->setValues(['controller' => 'Web\Users\Controllers\DeleteController']);
+    $r->add('view',   '/{id}'       )->setValues(['controller' => 'Web\Users\Controllers\InfoController'  ]);
+    $r->add('index',  ''            )->setValues(['controller' => 'Web\Users\Controllers\ListController'  ]);
+});
+
+$ROUTES->attach('titles', '/titles', function ($r) {
+    $r->add('add',    '/add'        )->setValues(['controller' => 'Web\JobTitles\Controllers\AddController'   ]);
+    $r->add('update', '/{id}/update')->setValues(['controller' => 'Web\JobTitles\Controllers\UpdateController']);
+    $r->add('index',  ''            )->setValues(['controller' => 'Web\JobTitles\Controllers\ListController'  ]);
 });
