@@ -18,13 +18,16 @@ $ROUTES->add('login.login',   '/login'  )->setValues(['controller' => 'Web\Authe
 $ROUTES->add('login.logout',  '/logout' )->setValues(['controller' => 'Web\Authentication\LogoutController']);
 
 $ROUTES->attach('departments', '/departments', function ($r) {
-    $r->add('numbers', '/numbers')->setValues(['controller'=>'Web\Departments\Controllers\NumbersController']);
+    $r->add('monkeys', '/monkeys')->setValues(['controller' => 'Web\Departments\Controllers\MonkeysController']);
+    $r->add('numbers', '/numbers')->setValues(['controller' => 'Web\Departments\Controllers\NumbersController']);
     $r->add('view',    '{path}'  )->setValues(['controller' => 'Web\Departments\Controllers\InfoController'])
                                   ->addTokens(['path' => '[a-z_/]+']);
     $r->add('index',   ''        )->setValues(['controller' => 'Web\Departments\Controllers\ListController']);
 });
 
 $ROUTES->attach('people', '/people', function ($r) {
+    $r->add('emergency',   '/{username}/emergency')->setValues(['controller' => 'Web\People\Controllers\EmergencyContactsController']);
+
     $r->add('update',      '/{username}/update')->setValues(['controller' => 'Web\People\Controllers\UpdateController']);
     $r->add('uploadPhoto', '/{username}/upload')->setValues(['controller' => 'Web\People\Controllers\UploadPhotoController']);
     $r->add('photo',       '/{username}.jpg'   )->setValues(['controller' => 'Web\People\Controllers\PhotoController']);

@@ -1,6 +1,8 @@
+{% extends "html/layouts/default.twig" %}
+{% block content %}
 <section class="person-profile">
     <div class="person-photoContainer">
-        <img src="<?php echo BASE_URI; ?>/css/images/stab.gif" alt="Furious George" />
+        <img src="{{ BASE_URI }}/images/stab.gif" alt="Furious George" />
     </div>
     <div class="person-details">
         <header>
@@ -10,7 +12,7 @@
 </section>
 <section class="person-profile">
     <div class="person-photoContainer">
-        <img src="<?php echo BASE_URI; ?>/css/images/karl_monkey.jpg" alt="Karl" />
+        <img src="{{ BASE_URI }}/images/karl_monkey.jpg" alt="Karl" />
     </div>
     <div class="person-details">
         <header>
@@ -18,3 +20,4 @@
         </header>
     </div>
 </section>
+{% endblock %}
