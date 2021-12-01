@@ -3,6 +3,9 @@
     {% if isAllowed('titles', 'index') %}
     <a href="{{ uri('titles.index') }}">{{ _(['jobTitleCode', 'jobTitleCodes', 10]) }}</a>
     {% endif %}
+    {% if isAllowed('emergencyContacts', 'index') %}
+    <a href="{{ uri('emergencyContacts.index') }}">{{ _(['emergencyContact', 'emergencyContacts', 10]) }}</a>
+    {% endif %}
     {% if isAllowed('users', 'index') %}
     <a href="{{ uri('users.index') }}">{{ _(['user', 'users', 10]) }}</a>
     {% endif %}

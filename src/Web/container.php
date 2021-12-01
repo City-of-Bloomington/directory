@@ -15,6 +15,10 @@ $DI->set('db.hr',      \Web\Database::getConnection('hr',      $DATABASES['hr'  
 //---------------------------------------------------------
 // Declare database repositories
 //---------------------------------------------------------
+$DI->params[ "Web\EmergencyContacts\PdoEmergencyContactsRepository"]["pdo"] = $DI->lazyGet('db.default');
+$DI->set( "Domain\EmergencyContacts\Repository",
+$DI->lazyNew("Web\EmergencyContacts\PdoEmergencyContactsRepository"));
+
 $DI->params[ 'Web\Departments\LdapDepartmentGateway']['config'] = $LDAP['Employee'];
 $DI->set( 'Domain\Departments\DataStorage\DepartmentsGateway',
 $DI->lazyNew('Web\Departments\LdapDepartmentGateway'));
@@ -42,6 +46,13 @@ $DI->lazyNew('Web\Authentication\AuthenticationService'));
 //---------------------------------------------------------
 // Actions
 //---------------------------------------------------------
+
+// Emergency Contacts
+foreach (['Find', 'Load'] as $a) {
+    $DI->params[ "Domain\\EmergencyContacts\\Actions\\$a\\Command"]["repository"] = $DI->lazyGet('Domain\EmergencyContacts\Repository');
+    $DI->set(    "Domain\\EmergencyContacts\\Actions\\$a\\Command",
+    $DI->lazyNew("Domain\\EmergencyContacts\\Actions\\$a\\Command"));
+}
 
 // Departments
 foreach (['Info', 'Search'] as $a) {

@@ -20,7 +20,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
     private static $hiddenDepartments = ['Departments','Other Users'];
     private static $department_dn;
 
-    private function base_dn(): string { return $this->getConfig()['base_dn']; }
+    public function base_dn(): string { return $this->getConfig()['base_dn']; }
 
     private function hydrate(array $entry): Department
     {
@@ -314,7 +314,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
         }
         throw new \Exception('people/unknown');
     }
-    
+
     /**
      * @param Person $person
      * @param string $file      Full path to image file
@@ -323,14 +323,14 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
     {
         clearstatcache();
         $size = filesize($file);
-        
+
         $newFile   = SITE_HOME."/photos/{$person->username}.jpg";
         $directory = dirname($newFile);
         if (!is_dir($directory)) {
             mkdir  ($directory, 0776, true);
         }
         move_uploaded_file($file, $newFile);
-        
+
         // Check and make sure the file was saved
         clearstatcache();
         $ns = filesize($newFile);
@@ -338,7 +338,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
             throw new \Exception('media/badServerPermissions');
         }
     }
-    
+
     /**
      * Saves a person back to Ldap
      */
@@ -349,24 +349,24 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
         $modified = [];
         $deleted  = [];
         $ldap     = LdapEntry::getPublishableFields(LdapEntry::TYPE_PERSON);
-        
+
         unset($data['username']);
         if (!View::isAllowed('people', 'updateHr')) { unset($data['employeeid']); }
-        
+
         foreach ($data as $k=>$v) {
             if ($person->$k != $v) {
                 if ($v) { $modified[$ldap[$k]] = $v; }
                 else    {  $deleted[$ldap[$k]] = []; }
             }
         }
-        
+
         if ($modified) {
             if (!ldap_mod_replace($this->connection, $person->dn, $modified)) { throw new \Exception(ldap_error($this->connection)); }
         }
         if ($deleted ) {
             if (!ldap_mod_del    ($this->connection, $person->dn, $deleted )) { throw new \Exception(ldap_error($this->connection)); }
         }
-        
+
         return $this->getPerson($req->username);
     }
 

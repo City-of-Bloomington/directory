@@ -50,7 +50,7 @@ class OwnInfoAssertion implements AssertionInterface
     }
 }
 $ACL->allow('Staff', 'people', ['photo', 'phones', 'restricted', 'nonpayroll']);
-$ACL->allow('Staff', 'people', 'updateEmergencyContacts', new OwnInfoAssertion());
+$ACL->allow('Staff', 'people', 'emergency', new OwnInfoAssertion());
 
 // Administrator is allowed access to everything
 $ACL->allow('Administrator');

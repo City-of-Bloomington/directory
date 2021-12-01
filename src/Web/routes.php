@@ -25,9 +25,12 @@ $ROUTES->attach('departments', '/departments', function ($r) {
     $r->add('index',   ''        )->setValues(['controller' => 'Web\Departments\Controllers\ListController']);
 });
 
-$ROUTES->attach('people', '/people', function ($r) {
-    $r->add('emergency',   '/{username}/emergency')->setValues(['controller' => 'Web\People\Controllers\EmergencyContactsController']);
+$ROUTES->attach('emergencyContacts', '/emergency', function ($r) {
+    $r->add('update', '/{username}/update')->setValues(['controller' => 'Web\EmergencyContacts\Controllers\UpdateController']);
+    $r->add('index', '')->setValues(['controller'=>'Web\EmergencyContacts\Controllers\ListController']);
+});
 
+$ROUTES->attach('people', '/people', function ($r) {
     $r->add('update',      '/{username}/update')->setValues(['controller' => 'Web\People\Controllers\UpdateController']);
     $r->add('uploadPhoto', '/{username}/upload')->setValues(['controller' => 'Web\People\Controllers\UploadPhotoController']);
     $r->add('photo',       '/{username}.jpg'   )->setValues(['controller' => 'Web\People\Controllers\PhotoController']);

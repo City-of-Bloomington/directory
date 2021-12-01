@@ -1,0 +1,29 @@
+{#
+ * @copyright 2015-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - contacts: An array of emergency contact information
+ * - fields:   An array of fieldnames we want to display from the contact
+#}
+<section>
+    <header>
+        <h1>{{ _(['emergencyContact', 'emergencyContacts', 100]) }}</h1>
+        <div class="tools">
+            <a href="{{ uri('emergencyContacts.index') ~ '?format=csv' }}" class="download button">CSV</a>
+        </div>
+    </header>
+
+    {% for c in contacts %}
+    <article>
+        <header><h2>{{ c.username }}</h2></header>
+        <table>
+        {% for f in fields %}
+            {% if attribute(c, f) %}
+            <tr><th>{{ f }}</th><td>{{ attribute(c, f) }}</td></tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+    </article>
+    {% endfor %}
+</section>
