@@ -10,7 +10,7 @@
 {% block content %}
 <section>
     <header>
-        <h1>{{ _(['emergencyContact', 'emergencyContacts', 100]) }}</h1>
+        <h2>{{ _(['emergencyContact', 'emergencyContacts', 100]) }}</h2>
         <div class="tools">
             <a href="{{ uri('emergencyContacts.index') ~ '?format=csv' }}" class="download button">CSV</a>
         </div>
@@ -18,7 +18,7 @@
 
     {% for c in contacts %}
     <article>
-        <header><h2>{{ c.username }}</h2></header>
+        <header><h3>{{ c.username }}</h3></header>
         <table>
         {% for f in fields %}
             {% if attribute(c, f) %}

@@ -16,7 +16,7 @@
     {% endif %}
     <section class="person-details">
         <header>
-            <h1>{{ person.fullname() }}</h1>
+            <h2>{{ person.fullname() }}</h2>
             {% if isAllowed('people', 'update') %}
             <div><a href="{{ uri('people.update', {'username': person.username}) }}"
                     class="edit button">
@@ -25,7 +25,7 @@
             </div>
             {% endif %}
         </header>
-         <h2>{{ person.title      }}</h2>
+         <h3>{{ person.title      }}</h3>
         <div>{{ person.department }}</div>
         <div>{{ person.division   }}</div>
         <div>{{ person.location   }}</div>

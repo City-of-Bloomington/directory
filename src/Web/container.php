@@ -68,7 +68,7 @@ foreach (['Add', 'Find', 'Info', 'Update'] as $a) {
 }
 
 // People
-foreach (['Info', 'SavePhoto', 'Update'] as $a) {
+foreach (['Info', 'SavePhoto', 'Search', 'Update'] as $a) {
     $DI->params[ "Domain\\People\\Actions\\$a\\Command"]['gateway'] = $DI->lazyGet('Domain\Departments\DataStorage\DepartmentsGateway');
     $DI->set(    "Domain\\People\\Actions\\$a\\Command",
     $DI->lazyNew("Domain\\People\\Actions\\$a\\Command"));

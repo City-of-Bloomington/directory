@@ -1,5 +1,9 @@
 {% extends "html/layouts/default.twig" %}
 {% block content %}
+<nav class="breadcrumbs">
+    <a href="{{ uri('departments.monkeys') }}">{{ _('monkeys') }}</a>
+</nav>
+
 <section class="person-profile">
     <div class="person-photoContainer">
         <img src="{{ BASE_URI }}/images/stab.gif" alt="Furious George" />

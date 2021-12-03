@@ -13,7 +13,7 @@ $ROUTES->setTokens([
 ]);
 
 
-$ROUTES->add('home.index',    '/'       )->setValues(['controller' => 'Web\Departments\Controllers\ListController']);
+$ROUTES->add('home.index',    '/'       )->setValues(['controller' => 'Web\People\Controllers\SearchController']);
 $ROUTES->add('login.login',   '/login'  )->setValues(['controller' => 'Web\Authentication\LoginController']);
 $ROUTES->add('login.logout',  '/logout' )->setValues(['controller' => 'Web\Authentication\LogoutController']);
 
@@ -31,6 +31,7 @@ $ROUTES->attach('emergencyContacts', '/emergency', function ($r) {
 });
 
 $ROUTES->attach('people', '/people', function ($r) {
+    $r->add('search',      '/search'           )->setValues(['controller' => 'Web\People\Controllers\SearchController']);
     $r->add('update',      '/{username}/update')->setValues(['controller' => 'Web\People\Controllers\UpdateController']);
     $r->add('uploadPhoto', '/{username}/upload')->setValues(['controller' => 'Web\People\Controllers\UploadPhotoController']);
     $r->add('photo',       '/{username}.jpg'   )->setValues(['controller' => 'Web\People\Controllers\PhotoController']);

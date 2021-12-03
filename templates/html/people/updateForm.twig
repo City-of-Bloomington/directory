@@ -25,7 +25,7 @@
     {% endif %}
     <section class="person-details">
         <header>
-            <h1>{{ person.fullname() }}</h1>
+            <h2>{{ person.fullname() }}</h2>
             {% if isAllowed('people', 'update') %}
             <div><a href="{{ uri('people.update', {'username': person.username}) }}"
                     class="edit button">
@@ -39,7 +39,7 @@
         <div>{{ person.division   }}</div>
         <div>{{ person.location   }}</div>
     </section>
-    
+
     <form method="post">
         <fieldset><legend>{{ _('address') }}</legend>
             <textarea name="address" id="address">{{ address }}</textarea>
@@ -53,7 +53,7 @@
                  <input name="zip" id="zip" value="{{ zip }}" />
             </div>
         </fieldset>
-        
+
         {% if isAllowed('people', 'updateHr') %}
         <fieldset><legend>{{ _('hr') }}</legend>
             <div><a href="mailto:{{ person.email }}">{{ person.email }}</a></div>
@@ -62,7 +62,7 @@
             </div>
         </fieldset>
         {% endif %}
-        
+
         <fieldset><legend>{{ _(['phone', 'phones', 5]) }}</legend>
             <input name="username" type="hidden" value="{{ username }}" />
             <div><label  for="office">{{ _('office') }}</label>
@@ -80,7 +80,7 @@
             <div><label  for="pager">{{ _('pager') }}</label>
                  <input name="pager" id="pager" value="{{ pager }}" />
             </div>
-            
+
             <button type="submit" class="save">{{ _('save') }}</button>
             <a href="{{ uri('people.view', {'username': username}) }}">{{ _('cancel') }}</a>
         </fieldset>

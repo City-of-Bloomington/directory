@@ -1,0 +1,28 @@
+{#
+ * @copyright 2018-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - people:  An array of Domain\People\Entities\Person objects
+ * - query:   The query string the user typed
+#}
+{% extends 'html/layouts/default.twig' %}
+
+{% block content %}
+<section>
+    <header><h2>{{ _('search') }}</h2></header>
+    <p>{{ _('search_help', 'messages') }}</p>
+    <form method="get">
+        <fieldset>
+            <input name="query" value="{{ query }}" placeholder="{{ _('search_placeholder', 'messages') }}" />
+        </fieldset>
+    </form>
+    {% if people %}
+    {{ include('html/people/list.twig') }}
+    {% else %}
+        {% if query %}
+        {{ _('noResults_help', 'messages') }}
+        {% endif %}
+    {% endif %}
+</section>
+{% endblock %}
