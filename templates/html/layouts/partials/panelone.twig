@@ -2,6 +2,26 @@
     {% block panelone %}
     {% endblock %}
 
-    {{ include('html/layouts/partials/panel-widgets/Administrator_menu.twig')  }}
-    {{ include('html/layouts/partials/panel-widgets/User_menu.twig')  }}
+    <nav>
+        <header><h2>{{ _('admin') }}</h2></header>
+        {% if isAllowed('titles', 'index') %}
+        <a href="{{ uri('titles.index') }}">{{ _(['jobTitleCode', 'jobTitleCodes', 10]) }}</a>
+        {% endif %}
+        {% if isAllowed('emergencyContacts', 'index') %}
+        <a href="{{ uri('emergencyContacts.index') }}">{{ _(['emergencyContact', 'emergencyContacts', 10]) }}</a>
+        {% endif %}
+        {% if isAllowed('users', 'index') %}
+        <a href="{{ uri('users.index') }}">{{ _(['user', 'users', 10]) }}</a>
+        {% endif %}
+    </nav>
+
+    <nav>
+        {% if USER is defined %}
+            <header><h2>{{ USER.firstname }} {{ USER.lastname }}</h2></header>
+            <a href="{{ uri('emergencyContacts.update', {'username': USER.username}) }}">{{ _('emergencyContacts_update') }}</a>
+            <a href="{{ uri('login.logout') }}">{{ _('logout') }}</a>
+        {% else %}
+            <a href="{{ url('login.login') ~ '?return_url=' ~ REQUEST_URI }}">{{ _('login') }}</a>
+        {% endif %}
+    </nav>
 </div>

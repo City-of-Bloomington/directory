@@ -34,11 +34,25 @@ class Contact
                         case 'id':
                             $this->$k = (int)$data[$k];
                         break;
+                        case 'sms_1':
+                        case 'sms_2':
+                        case 'phone_1':
+                        case 'phone_2':
+                        case 'phone_3':
+                        case 'tty':
+                            $this->$k = self::cleanPhoneNumber($data[$k]);
+                        break;
+
                         default:
                             $this->$k = $data[$k];
                     }
                 }
             }
         }
+    }
+
+    public static function cleanPhoneNumber(string $phone): string
+    {
+        return preg_replace('/[^0-9]/', '', $phone);
     }
 }

@@ -1,0 +1,32 @@
+{#
+ * @copyright 2015-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available variables:
+ * - person:  Domain\People\Entities\Person
+ * - contact: Domain\EmergencyContacts\Contact
+#}
+<section class="person-emergencyProfile">
+    <header>
+        <h2>{{ _(['emergencyContact', 'emergencyContacts', 1]) }}</h2>
+        {% if isAllowed('emergencyContacts', 'update') %}
+        <div class="tools">
+            <a href="{{ uri('emergencyContacts.update', {'username': person.username}) }}">
+                {{ _('emergencyContacts_update') }}
+            </a>
+        </div>
+        {% endif %}
+    </header>
+    <p>{{ _('emergencyContacts_help', 'messages') }}</p>
+    <table>
+    {% if contact.email_1 %}<tr><th>{{ _('email') }} 1</th><td>{{ contact.email_1 }}</td></tr>{% endif %}
+    {% if contact.email_2 %}<tr><th>{{ _('email') }} 2</th><td>{{ contact.email_2 }}</td></tr>{% endif %}
+    {% if contact.email_3 %}<tr><th>{{ _('email') }} 3</th><td>{{ contact.email_3 }}</td></tr>{% endif %}
+    {% if contact.sms_1   %}<tr><th>{{ _('sms'  ) }} 1</th><td>{{ contact.sms_1  |format_phone }}</td></tr>{% endif %}
+    {% if contact.sms_2   %}<tr><th>{{ _('sms'  ) }} 2</th><td>{{ contact.sms_2  |format_phone }}</td></tr>{% endif %}
+    {% if contact.phone_1 %}<tr><th>{{ _('phone') }} 1</th><td>{{ contact.phone_1|format_phone }}</td></tr>{% endif %}
+    {% if contact.phone_2 %}<tr><th>{{ _('phone') }} 2</th><td>{{ contact.phone_2|format_phone }}</td></tr>{% endif %}
+    {% if contact.phone_3 %}<tr><th>{{ _('phone') }} 3</th><td>{{ contact.phone_3|format_phone }}</td></tr>{% endif %}
+    {% if contact.tty_1   %}<tr><th>{{ _('tty'  ) }} 1</th><td>{{ contact.tty_1  |format_phone }}</td></tr>{% endif %}
+    </table>
+</section>

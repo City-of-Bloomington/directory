@@ -17,6 +17,14 @@ class InfoController extends Controller
         $info = $this->di->get('Domain\People\Actions\Info\Command');
         $res  = $info($params['username']);
         if ($res->person) {
+            if (View::isAllowed('emergencyContacts', 'update')) {
+                $load = $this->di->get('Domain\EmergencyContacts\Actions\Load\Command');
+                $er   = $load($params['username']);
+                if ($er->contact) {
+                    return new InfoView($res->person, $er->contact);
+                }
+            }
+
             return new InfoView($res->person);
         }
         else {

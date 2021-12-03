@@ -27,7 +27,7 @@ $ROUTES->attach('departments', '/departments', function ($r) {
 
 $ROUTES->attach('emergencyContacts', '/emergency', function ($r) {
     $r->add('update', '/{username}/update')->setValues(['controller' => 'Web\EmergencyContacts\Controllers\UpdateController']);
-    $r->add('index', '')->setValues(['controller'=>'Web\EmergencyContacts\Controllers\ListController']);
+    $r->add('index',  ''                  )->setValues(['controller' => 'Web\EmergencyContacts\Controllers\ListController']);
 });
 
 $ROUTES->attach('people', '/people', function ($r) {

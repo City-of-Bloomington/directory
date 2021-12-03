@@ -6,6 +6,8 @@
  * - contacts: An array of emergency contact information
  * - fields:   An array of fieldnames we want to display from the contact
 #}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
 <section>
     <header>
         <h1>{{ _(['emergencyContact', 'emergencyContacts', 100]) }}</h1>
@@ -27,3 +29,4 @@
     </article>
     {% endfor %}
 </section>
+{% endblock %}

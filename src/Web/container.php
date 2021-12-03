@@ -48,7 +48,7 @@ $DI->lazyNew('Web\Authentication\AuthenticationService'));
 //---------------------------------------------------------
 
 // Emergency Contacts
-foreach (['Find', 'Load'] as $a) {
+foreach (['Find', 'Load', 'Update'] as $a) {
     $DI->params[ "Domain\\EmergencyContacts\\Actions\\$a\\Command"]["repository"] = $DI->lazyGet('Domain\EmergencyContacts\Repository');
     $DI->set(    "Domain\\EmergencyContacts\\Actions\\$a\\Command",
     $DI->lazyNew("Domain\\EmergencyContacts\\Actions\\$a\\Command"));

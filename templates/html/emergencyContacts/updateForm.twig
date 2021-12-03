@@ -1,0 +1,79 @@
+{#
+ * @copyright 2015-2021 City of Bloomington, Indiana
+ * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
+ *
+ * Available Variables:
+ * - username
+ * - firstname
+ * - lastname
+ * - email_1
+ * - email_2
+ * - email_3
+ * - sms_1
+ * - sms_2
+ * - phone_1
+ * - phone_2
+ * - phone_3
+ * - tty_1
+#}
+{% extends "html/layouts/default.twig" %}
+{% block content %}
+<section class="person-emergencyProfile-edit">
+    <header>
+        <h1>{{ _('emergencyContacts_update') }}</h1>
+        <p>{{ _('emergencyContacts_help', 'messages') }}</p>
+    </header>
+    <form method="post">
+        <fieldset><legend>{{ _('email') }}</legend>
+            <p>{{ _('email_help', 'messages') }}</p>
+            <div><label  for="email_1">{{ _('email') }}</label>
+                 <input name="email_1" id="email_1" type="email" value="{{ email_1 }}" />
+            </div>
+            <div><label  for="email_2">{{ _('email') }}</label>
+                 <input name="email_2" id="email_2" type="email" value="{{ email_2 }}" />
+            </div>
+            <div><label  for="email_3">{{ _('email') }}</label>
+                 <input name="email_3" id="email_3" type="email" value="{{ email_3 }}" />
+            </div>
+        </fieldset>
+
+        <fieldset><legend>{{ _('sms') }}</legend>
+            <p>{{ _('sms_help', 'messages') }}</p>
+            <div><label  for="sms_1">{{ _('sms') }}</label>
+                 <input name="sms_1" id="sms_1" type="tel" value="{{ sms_1 }}" />
+            </div>
+            <div><label  for="sms_2">{{ _('sms') }}</label>
+                 <input name="sms_2" id="sms_2" type="tel" value="{{ sms_2 }}" />
+            </div>
+        </fieldset>
+
+        <fieldset><legend>{{ _('phone') }}</legend>
+            <p>{{ _('phone_help', 'messages') }}</p>
+            <div><label  for="phone_1">{{ _('phone') }}</label>
+                 <input name="phone_1" id="phone_1" type="tel" value="{{ phone_1 }}" />
+            </div>
+            <div><label  for="phone_2">{{ _('phone') }}</label>
+                 <input name="phone_2" id="phone_2" type="tel" value="{{ phone_2 }}" />
+            </div>
+            <div><label  for="phone_3">{{ _('phone') }}</label>
+                 <input name="phone_3" id="phone_3" type="tel" value="{{ phone_3 }}" />
+            </div>
+        </fieldset>
+
+        <fieldset><legend>{{ _('tty') }}</legend>
+            <p>{{ _('tty_help', 'messages') }}</p>
+            <div><label  for="tty_1">{{ _('tty') }}</label>
+                 <input name="tty_1" id="tty_1" type="tel" value="{{ tty_1 }}" />
+            </div>
+        </fieldset>
+        <fieldset>
+            <input name="username"  type="hidden" value="{{ username  }}" />
+            <input name="firstname" type="hidden" value="{{ firstname }}" />
+            <input name="lastname"  type="hidden" value="{{ lastname  }}" />
+
+            <button type="submit" class="save">{{ _('save') }}</button>
+            <a href="{{ uri('people.view', {'username': username}) }}">{{ _('cancel') }}</a>
+        </fieldset>
+    </form>
+</section>
+{% endblock %}

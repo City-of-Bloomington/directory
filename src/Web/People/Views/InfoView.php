@@ -8,15 +8,18 @@ namespace Web\People\Views;
 
 use Web\View;
 use Domain\People\Entities\Person;
+use Domain\EmergencyContacts\Contact;
 
 class InfoView extends View
 {
-    public function __construct(Person $person)
+    public function __construct( Person  $person,
+                                ?Contact $contact=null)
     {
         parent::__construct();
 
         $this->vars = [
-            'person' => $person
+            'person'  => $person,
+            'contact' => $contact
         ];
     }
 

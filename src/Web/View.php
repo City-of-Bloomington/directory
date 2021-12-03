@@ -7,6 +7,7 @@ namespace Web;
 
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 use Twig\TwigTest;
 
@@ -54,6 +55,8 @@ abstract class View
         $this->twig->addFunction(new TwigFunction('url',         [$this, 'generateUrl']));
         $this->twig->addFunction(new TwigFunction('isAllowed',   [$this, 'isAllowed'  ]));
         $this->twig->addFunction(new TwigFunction('current_url', [$this, 'current_url']));
+
+        $this->twig->addFilter(new TwigFilter('format_phone', [$this, 'formatPhoneNumber']));
 
         $locale = LOCALE.'.utf8';
         $this->twig->addGlobal('LANG', strtolower(substr(LOCALE, 0, 2)));
@@ -177,6 +180,11 @@ abstract class View
                 $format
             );
         }
+    }
+
+    public static function formatPhoneNumber(string $phone): string
+    {
+        return '('.substr($phone, 0, 3).') '.substr($phone, 3, 3).'-'.substr($phone, 6);
     }
 
     /**

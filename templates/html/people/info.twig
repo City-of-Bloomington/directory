@@ -4,7 +4,8 @@
  * @license http://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  *
  * Available variables:
- * - person: Domain\People\Entities\Person
+ * - person:  Domain\People\Entities\Person
+ * - contact: Domain\EmergencyContacts\Contact
 #}
 {% extends 'html/layouts/default.twig' %}
 
@@ -42,5 +43,9 @@
         {{ include('html/people/uploadPhotoForm.twig') }}
         {% endif %}
     </section>
+
+    {% if isAllowed('emergencyContacts', 'update') %}
+    {{ include('html/emergencyContacts/info.twig') }}
+    {% endif %}
 </section>
 {% endblock %}
