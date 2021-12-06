@@ -29,10 +29,7 @@ class Person
     public $cell;
     public $other;
     public $pager;
-    
     public $extension;
-    public $promoted;
-    public $nonpayroll;
 
     public $department;
     public $division;

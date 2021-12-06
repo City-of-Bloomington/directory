@@ -22,6 +22,10 @@ class InfoView extends View
 
     public function render(): string
     {
+        if ($this->outputFormat == 'json') {
+            return json_encode($this->vars['department'], JSON_PRETTY_PRINT);
+        }
+
         return $this->twig->render('html/departments/info.twig', $this->vars);
     }
 

@@ -10,13 +10,16 @@ use Web\Controller;
 use Web\View;
 use Web\Departments\Views\InfoView;
 
+use Domain\Departments\Actions\Info\Request;
+
 class InfoController extends Controller
 {
     public function __invoke(array $params): View
     {
-        $path = $params['path'] ?? null;
+        $req  = new Request($params['path'] ?? null,
+                            isset($_GET['promoted']) ? (bool)$_GET['promoted'] : false);
         $info = $this->di->get('Domain\Departments\Actions\Info\Command');
-        $res  = $info($path);
+        $res  = $info($req);
         return new InfoView($res->department);
     }
 }

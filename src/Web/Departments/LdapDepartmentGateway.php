@@ -59,18 +59,14 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
     /**
      * @return array An array of Department objects
      */
-    public function getDepartments(?string $dn=null): array
+    public function getDepartments(?string $dn=null, ?array $personFilters=[]): array
     {
-
         if (!$dn) { $dn = $this->base_dn(); }
 
         $departments = [];
-
-        $result  = ldap_search($this->connection,
-                             $dn,
-                             "(objectClass=organizationalUnit)",
-                             array_values(LdapEntry::getPublishableFields(LdapEntry::TYPE_DEPARTMENT)));
-        $count   = ldap_count_entries($this->connection, $result);
+        $fields      = array_values(LdapEntry::getPublishableFields(LdapEntry::TYPE_DEPARTMENT));
+        $result      = ldap_search($this->connection, $dn, "(objectClass=organizationalUnit)", $fields);
+        $count       = ldap_count_entries($this->connection, $result);
         if ($count) {
             $entries = ldap_get_entries($this->connection, $result);
             unset($entries['count']);
@@ -91,7 +87,7 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
             $c = count($departments);
 
             // Put people inside their departments
-            $people = $this->search($dn, []);
+            $people = $this->search($dn, $personFilters);
             foreach ($people as $p) {
                 for ($i=$c-1; $i>=0; $i--) {
                     if (strpos($p->dn, $departments[$i]->dn) !== false) {
@@ -231,44 +227,46 @@ class LdapDepartmentGateway extends Ldap implements DepartmentsGateway
 
         foreach ($fields as $key=>$value) {
             switch ($key) {
-                case DirectoryAttributes::FIRSTNAME:
+                case LdapEntry::FIRSTNAME:
                     $f[] = "(|(givenName=$value*)(displayName=$value*))";
                 break;
 
-                case DirectoryAttributes::LASTNAME:
+                case LdapEntry::LASTNAME:
                     $f[] = "(|(sn=$value*)(sn=*-$value*))";
                 break;
 
-                case DirectoryAttributes::EMPLOYEENUM:
+                case LdapEntry::EMPLOYEENUM:
                     $f[] = empty($value)
                          ? "(!(employeeNumber=*))"
                          :   "(employeeNumber=$value)";
                 break;
 
-                case DirectoryAttributes::PROMOTED:
-                    $f[] = $value
-                         ?   "(memberOf=$config[DIRECTORY_PROMOTED])"
-                         : "(!(memberOf=$config[DIRECTORY_PROMOTED]))";
+                case LdapEntry::PROMOTED:
+                    $group = $config[LdapEntry::PROMOTED];
+                    $f[]   = $value
+                           ?   "(memberOf=$group)"
+                           : "(!(memberOf=$group))";
                 break;
 
-                case DirectoryAttributes::EXTENSION:
+                case LdapEntry::EXTENSION:
                     if (View::isAllowed('people', 'phones')) {
                         $f[] = "(telephoneNumber=*$value)";
                     }
                 break;
 
-                case DirectoryAttributes::NON_PAYROLL:
+                case LdapEntry::NON_PAYROLL:
                     if (View::isAllowed('people', 'nonpayroll')) {
-                        $f[] = empty($value)
-                                ? "(!(memberOf=$config[DIRECTORY_NONPAYROLL]))"
-                                :   "(memberOf=$config[DIRECTORY_NONPAYROLL])";
+                        $group = $config[LdapEntry::NON_PAYROLL];
+                        $f[]   = empty($value)
+                                ? "(!(memberOf=$group))"
+                                :   "(memberOf=$group)";
                     }
                 break;
 
                 default:
-                    if (array_key_exists($key, Person::getPublishableFields())) {
-                        $ldapKey = DirectoryAttributes::$fields[$key];
-                        $f[]     = "($ldapKey=$value)";
+                    $ldap = LdapEntry::getPublishableFields();
+                    if (array_key_exists($key, $ldap)) {
+                        $f[] = "({$ldap[$key]}=$value)";
                     }
             }
         }

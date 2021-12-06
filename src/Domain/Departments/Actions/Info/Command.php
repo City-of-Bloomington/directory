@@ -16,11 +16,12 @@ class Command
         $this->gw = $gateway;
     }
 
-    public function __invoke(string $path): Response
+    public function __invoke(Request $req): Response
     {
         try {
-            $dn          = $this->gw->dnForPath($path);
-            $departments = $this->gw->getDepartments($dn);
+            $dn          = $this->gw->dnForPath($req->path);
+            $filters     = $req->promoted ? ['promoted'=>true] : [];
+            $departments = $this->gw->getDepartments($dn, $filters);
             return new Response($departments[0]);
         }
         catch (\Exception $e) {
