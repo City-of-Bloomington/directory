@@ -34,7 +34,7 @@ class LoginController extends Controller
 		// If they don't have CAS configured, send them onto the application's
 		// internal authentication system
 		if (!defined('CAS_SERVER')) {
-			header('Location: '.View::generateUrl('login.login').'?return_url='.parent::generateUrl('login.login'));
+			header('Location: '.View::generateUrl('login.login').'?return_url='.View::generateUrl('login.login'));
 			exit();
 		}
 

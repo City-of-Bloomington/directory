@@ -193,12 +193,19 @@ abstract class View
      * This imports the $ROUTES global variable and calls the
      * generate function on it.
      *
-     * @see https://github.com/auraphp/Aura.Router/tree/2.x
+     * @see https://github.com/auraphp/Aura.Router/tree/3.x
+     * @param string $route_name
+     * @param array  $params
+     * @return string
      */
-    public static function generateUri($route_name, $params=[]): string
+    public static function generateUri($route_name, $params=[])
     {
-        global $ROUTES;
-        return $ROUTES->generateRaw($route_name, $params);
+        static $helper = null;
+        if (!$helper) {
+            global $ROUTES;
+            $helper = $ROUTES->newRouteHelper();
+        }
+        return $helper($route_name, $params);
     }
 
     public static function generateUrl($route_name, $params=[]): string

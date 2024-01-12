@@ -19,14 +19,13 @@ $ACL->addRole(new Role('Anonymous'))
     ->addRole(new Role('Staff'    ), 'Public'   )
     ->addRole(new Role('Administrator'));
 
-
 /**
  * Create resources for all the routes
  */
-foreach ($ROUTES->getRoutes() as $r) {
-    list($resource, $permission) = explode('.', $r->name);
+foreach (array_keys($ROUTES->getMap()->getRoutes()) as $r) {
+    list($resource, $permission) = explode('.', $r);
     if (!$ACL->hasResource($resource)) {
-         $ACL->addResource(new Resource($resource));
+        $ACL->addResource(new Resource($resource));
     }
 }
 

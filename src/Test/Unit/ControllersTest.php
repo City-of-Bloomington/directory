@@ -1,10 +1,11 @@
 <?php
 /**
- * @copyright 2019 City of Bloomington, Indiana
+ * @copyright 2019-2023 City of Bloomington, Indiana
  * @license https://www.gnu.org/licenses/agpl.txt GNU/AGPL, see LICENSE
  */
 declare (strict_types=1);
 use PHPUnit\Framework\TestCase;
+use Aura\Di\ContainerBuilder;
 
 class ControllersTest extends TestCase
 {
@@ -12,11 +13,13 @@ class ControllersTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        global $DI;
-        self::$container = $DI;
+        $builder = new ContainerBuilder();
+        self::$container = $builder->newInstance();
+        self::$container->set('Web\Authentication\AuthenticationService',
+        self::$container->lazyNew('Test\DataStorage\StubAuthenticationService'));
     }
 
-    public function controllers(): array
+    public static function controllers(): array
     {
         $pattern  = APPLICATION_HOME.'/src/Web/{*,*/**}/*Controller.php';
         $files    = [];

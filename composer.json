@@ -1,8 +1,8 @@
 {
     "require": {
-        "php": ">=7.4",
+        "php": ">=8",
         "aura/di":                         "@stable",
-        "aura/router": "~2",
+        "aura/router":                     "@stable",
         "aura/sqlquery":                   "@stable",
         "apereo/phpcas":                   "@stable",
         "graylog2/gelf-php":               "@stable",

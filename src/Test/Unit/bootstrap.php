@@ -9,6 +9,5 @@ define('SITE_HOME', __DIR__);
 include SITE_HOME.'/test_config.php';
 
 $loader = require APPLICATION_HOME.'/vendor/autoload.php';
-include SITE_HOME.'/container.php';
 include APPLICATION_HOME.'/src/Web/routes.php';
 include APPLICATION_HOME.'/src/Web/access_control.php';
