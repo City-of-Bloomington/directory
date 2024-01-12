@@ -1,5 +1,5 @@
 <?php
-define('APPLICATION_NAME','application');
+define('APPLICATION_NAME','directory');
 
 /**
  * URL Generation settings
@@ -28,50 +28,63 @@ $DATABASES = [
     'default' => [
         'dsn'  => 'mysql:host=localhost;dbname=directory',
         'user' => 'application',
-        'pass' => 'password'
+        'pass' => 'password',
     ],
     'hr' => [
-        'dsn'  => 'odbc:hrDatabase',
+        'dsn'  => 'sqlsrv:host=localhost;dbname=hr',
         'user' => 'username',
         'pass' => 'password'
     ]
 ];
 
 /**
- * Directory Configuration
+ * Ldap Configuration
  *
  * This supports doing user authentication from multiple external
  * directories, such as LDAP or ADS. This is required since city staff
  * are in a seperate LDAP directory from public user accounts.
- * Classes that implement ExternalIdentity should have an entry here.
+ * Classes that implement AuthenticationInterface should have an entry here.
  *
- * See: ExternalIdentity
+ * @see Domain\Auth
  */
-$DIRECTORY_CONFIG = [
-// Example for ADS style authentication
-// 	'LDAP' => [
-// 		'DIRECTORY_SERVER'             => 'ldaps://example.org:636',
-// 		'DIRECTORY_BASE_DN'            => 'OU=Department,DC=example,DC=org',
-// 		'DIRECTORY_USERNAME_ATTRIBUTE' => 'CN',
-// 		'DIRECTORY_USER_BINDING'       => '{username}@example.org',
-// 		'DIRECTORY_ADMIN_BINDING'      => 'admin@example.org',
-// 		'DIRECTORY_ADMIN_PASS'         => 'password',
-// 		'DIRECTORY_RESTRICTED'         => '',
-//      'DIRECTORY_PROMOTED'           => '',
-//      'DIRECTORY_NONPAYROLL'         => '',
-// 	]
+$LDAP = [
+    'Employee' => [
+        'classname'          => 'Site\Employee',
+        'server'             => 'ldaps://ldap.example.org:636',
+        'base_dn'            => 'DC=ldap,DC=example,DC=org',
+        'username_attribute' => 'sAMAccountName',
+        'user_binding'       => '{username}@bldap.example.org',
+        'admin_binding'      => 'admin@ldap.example.org',
+        'admin_pass'         => 'secret password'
+    ]
 ];
 
-/**
- * CAS authentication https://www.apereo.org/projects/cas
- *
- * https://github.com/apereo/phpCAS
- *
- * phpCAS is a PHP library for handling the calls to the CAS service
- * It is the official library, part of the Apereo CAS project
- */
-//define('CAS_SERVER','cas.somewhere.org');
-//define('CAS_URI','cas');
+$AUTHENTICATION = [
+    'cas' => [
+        'host' => 'example.org',
+        'uri'  => 'cas'
+    ],
+    'oidc' => [
+        'server'         => 'https://example.org',
+        'client_id'      => '',
+        'client_secret'  => '',
+        'claims' => [
+            // Blossom field => OIDC Claim
+            'username'    => 'adfs1upn',
+            'displayname' => 'commonname',
+            'firstname'   => 'given_name',
+            'lastname'    => 'family_name',
+            'email'       => 'upn',
+            'groups'      => 'group',
+            'groupmap'    => [
+                // Blossom Role => OIDC Group
+                'Administrator' => 'Blossom Administrators',
+                'Supervisor'    => 'Blossom Supervisors',
+                'Staff'         => 'Blossom Staff'
+            ]
+        ],
+    ]
+];
 
 define('DATE_FORMAT', 'n/j/Y H:i:s');
 define('LOCALE', 'en_US');
