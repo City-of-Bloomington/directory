@@ -119,7 +119,7 @@ abstract class DirectoryAttributes
     }
 
     public static $phoneNumberFields = [
-        self::OFFICE, self::FAX, self::CELL, self::OTHER, self::PAGER
+        self::OFFICE, self::CELL, self::OTHER, self::PAGER, self::FAX
     ];
 
     /**
